@@ -1,0 +1,12 @@
+<mat-card class="example-card">
+    
+    <div fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="20px">
+        <div fxFill> <b>Materias seleccionadas</b> </div>
+    
+        <app-tabla-de-materias (getMaterias)="configurarObservable($event)" fxFill>
+        </app-tabla-de-materias>
+    
+    </div>
+</mat-card>
+<mat-divider>   
+</mat-divider>

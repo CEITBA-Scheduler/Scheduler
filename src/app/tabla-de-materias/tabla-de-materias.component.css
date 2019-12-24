@@ -1,0 +1,15 @@
+
+table {
+    width: 100%;
+}
+.add-materia-input{
+    min-width: 150px;
+    max-width: 500px;
+    width: 90%;
+}
+.add-codigo-input{
+    max-width: 120px;
+}
+.mat-row:hover {
+    background-color: #ffcccc;
+}
