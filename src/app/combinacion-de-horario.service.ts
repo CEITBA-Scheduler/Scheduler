@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Materia } from './materia';
+import { Subject } from './materia';
 import { MateriaComisiones} from './materia-comisiones'
 import { Observable, of, BehaviorSubject } from 'rxjs';
 
@@ -7,7 +7,7 @@ import { Observable, of, BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class CombinacionDeHorarioService {
-  materias = new BehaviorSubject<Materia[]>([]);
+  materias = new BehaviorSubject<Subject[]>([]);
   materiasComisiones : Observable<MateriaComisiones[]>;
   constructor() { 
     
@@ -15,10 +15,9 @@ export class CombinacionDeHorarioService {
   getMaterias(){
     return this.materias;
   }
-  updateMaterias(newMaterias : Materia[]){
+  updateMaterias(newMaterias : Subject[]){
     this.materias.next(newMaterias);
   }
   updateMateriasComisiones(){
-
   }
 }

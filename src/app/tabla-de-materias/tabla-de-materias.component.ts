@@ -1,10 +1,10 @@
 import { Component, OnInit, Output } from '@angular/core';
-import { Materia } from '../materia';
+import { Subject } from '../materia';
 import { BehaviorSubject, Observable } from 'rxjs'
 import { EventEmitter } from 'protractor';
 import { CombinacionDeHorarioService } from '../combinacion-de-horario.service'
 
-const ELEMENT_DATA: Materia[] = [
+const ELEMENT_DATA: Subject[] = [
 ];
 
 @Component({
@@ -14,19 +14,19 @@ const ELEMENT_DATA: Materia[] = [
 })
 export class TablaDeMateriasComponent implements OnInit {
   displayedColumns: string[] = ['name', 'code'];
-  data : Materia[] = [];
-  dataSource = new BehaviorSubject<Materia[]>([]);
+  data : Subject[] = [];
+  dataSource = new BehaviorSubject<Subject[]>([]);
 
   constructor(private combinacionService : CombinacionDeHorarioService) { }
 
   ngOnInit() {
     
   }
-  private addMateria(materia : Materia){
+  private addMateria(materia : Subject){
     console.log("agregando materia ");
     console.log(materia);
     this.data.push(
-      {nombre: materia.nombre, codigo: materia.codigo, search: materia.search});
+      {name: materia.name, code: materia.code, search: materia.search});
     
     this.dataSource.next(this.data);
     this.combinacionService.updateMaterias(this.dataSource.value);
@@ -37,7 +37,7 @@ export class TablaDeMateriasComponent implements OnInit {
     console.log("Eliminando ...");
     console.log(materia);
 
-    this.data.splice(this.data.findIndex((item : Materia) => item.codigo == materia.codigo),1);
+    this.data.splice(this.data.findIndex((item : Subject) => item.code == materia.code),1);
     console.log(this.data);
 
     this.dataSource.next(this.data);

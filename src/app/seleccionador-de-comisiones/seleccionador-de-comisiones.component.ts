@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Materia } from '../materia';
+import { Subject } from '../materia';
 import { MateriasService } from '../materias.service';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { CombinacionDeHorarioService } from '../combinacion-de-horario.service';
@@ -10,7 +10,7 @@ import { CombinacionDeHorarioService } from '../combinacion-de-horario.service';
   styleUrls: ['./seleccionador-de-comisiones.component.css']
 })
 export class SeleccionadorDeComisionesComponent implements OnInit {
-  materias = new BehaviorSubject<Materia[]>([]);
+  materias = new BehaviorSubject<Subject[]>([]);
 
   constructor(private combinacionDeHorarioService: CombinacionDeHorarioService) {
   }

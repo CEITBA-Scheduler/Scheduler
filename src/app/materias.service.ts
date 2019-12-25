@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {catchError, map, tap } from 'rxjs/operators';
 
-import { Materia } from './materia';
+import { Subject } from './materia';
 
 @Injectable({
   providedIn: 'root'
@@ -20,17 +20,17 @@ export class MateriasService {
     private messageService: MessageService
   ) { }
   
-  buscarMaterias(term : string) : Observable<Materia[]> {
+  buscarMaterias(term : string) : Observable<Subject[]> {
     if (!term.trim()){
       return of([]);
     }
-    return this.http.get<Materia[]>(`${this.getMateriasUrl}/?nombre=${term}`).pipe(
+    return this.http.get<Subject[]>(`${this.getMateriasUrl}/?nombre=${term}`).pipe(
       tap(_ => this.log(`se encontrar materias con el termino "${term}"`)),
-      catchError(this.handleError<Materia[]>('materias',[]))
+      catchError(this.handleError<Subject[]>('materias',[]))
     );
   }
   getMaterias(){
-      return this.http.get<Materia[]>(this.getMateriasUrl);
+      return this.http.get<Subject[]>(this.getMateriasUrl);
   }
   private handleError<T>(operation = 'operation', result?:T){
     return (error: any): Observable<T> => {

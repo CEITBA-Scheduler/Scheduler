@@ -1,10 +1,10 @@
 import { Component, OnInit, ValueProvider, EventEmitter, Output  } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject as SubjectRXJS } from 'rxjs';
 import { pipe } from 'rxjs';
 import { filter, map, startWith } from 'rxjs/operators';
 import {FormsModule, ReactiveFormsModule, FormControl} from '@angular/forms';
 import { debounceTime, multicast, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { Materia } from '../materia';
+import { Subject } from '../materia';
 import { MateriasService } from '../materias.service'
 import { MatTableDataSource} from '@angular/material/table';
  
@@ -15,10 +15,10 @@ import { MatTableDataSource} from '@angular/material/table';
 })
 
 export class BuscadorDeMateriasComponent implements OnInit {
-  @Output() onOptionSelected : EventEmitter<Materia> = new EventEmitter<Materia>();
+  @Output() onOptionSelected : EventEmitter<Subject> = new EventEmitter<Subject>();
 
-  options: Observable<Materia[]>;
-  filteredOptions: Observable<Materia[]>;
+  options: Observable<Subject[]>;
+  filteredOptions: Observable<Subject[]>;
   searchValue: string;
   myControl = new FormControl();
   displayedColumns: string[] = ['name', 'code'];
@@ -31,7 +31,7 @@ export class BuscadorDeMateriasComponent implements OnInit {
     this.options = this.materiasService.getMaterias();
 
     this.options.subscribe(
-      (materias :Materia[]) => (console.log(materias) )
+      (materias :Subject[]) => (console.log(materias) )
     );
 
     this.myControl.valueChanges.subscribe(
@@ -43,14 +43,14 @@ export class BuscadorDeMateriasComponent implements OnInit {
     this.searchValue = value.toLowerCase();
     this.filteredOptions = this.getFilteredValues();
   }
-  private getFilteredValues(): Observable<Materia[]> {
+  private getFilteredValues(): Observable<Subject[]> {
     return this.options.pipe(
       map(
-        (options : Materia[]) => options.filter((option: Materia) => option.search.includes(this.searchValue))
+        (options : Subject[]) => options.filter((option: Subject) => option.search.includes(this.searchValue))
       )
     );
   }
-  private optionSelected(value : Materia){
+  private optionSelected(value : Subject){
     console.log("Materia seleccionada", value);
     this.onOptionSelected.emit(value);
 
