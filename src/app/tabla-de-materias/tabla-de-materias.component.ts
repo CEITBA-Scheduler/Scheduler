@@ -25,8 +25,7 @@ export class TablaDeMateriasComponent implements OnInit {
   private addMateria(materia : Subject){
     console.log("agregando materia ");
     console.log(materia);
-    this.data.push(
-      {name: materia.name, code: materia.code, search: materia.search});
+    this.data.push(materia);
     
     this.dataSource.next(this.data);
     this.combinacionService.updateMaterias(this.dataSource.value);

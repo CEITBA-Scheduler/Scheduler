@@ -24,7 +24,7 @@ export class MateriasService {
     if (!term.trim()){
       return of([]);
     }
-    return this.http.get<Subject[]>(`${this.getMateriasUrl}/?nombre=${term}`).pipe(
+    return this.http.get<Subject[]>(`${this.getMateriasUrl}/?name=${term}`).pipe(
       tap(_ => this.log(`se encontrar materias con el termino "${term}"`)),
       catchError(this.handleError<Subject[]>('materias',[]))
     );

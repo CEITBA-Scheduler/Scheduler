@@ -10,7 +10,13 @@ import { Time } from '@angular/common';
 export class InMemoryDataMateriasService implements InMemoryDbService {
   createDb(){
     var materias = [
-      { code: "22.04", name: "Algebra Lineal", search: "", comissions:
+      { code: "22.04", name: "Algebra Lineal", search: ""},
+      { code: "21.04", name: "Mátematica I", search: ""},
+      { code: "42.04", name: "Quimica I", search: ""},
+      { code: "22.04", name: "Formación general I", search: ""},
+      { code: "22.06", name: "Formación general II", search: ""},
+    ];
+/*, comissions:
         [
           {name: "A", profesores: ["Fulano"], subject: new Subject(), schedule:
             [
@@ -18,13 +24,7 @@ export class InMemoryDataMateriasService implements InMemoryDbService {
               {dia: "Martes", start: {minutes: 0, hours: 14}, end: {minutes: 0, hours: 16}}
             ]
           }
-        ]},
-      { code: "21.04", name: "Mátematica I", search: ""},
-      { code: "42.04", name: "Quimica I", search: ""},
-      { code: "22.04", name: "Formación general I", search: ""},
-      { code: "22.06", name: "Formación general II", search: ""},
-    ]
-
+        ]},*/
     for (let materia in materias){
       var concat = materias[materia].code + materias[materia].name;
       materias[materia].search = concat.toString().toLowerCase();
