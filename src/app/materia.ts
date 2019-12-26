@@ -5,6 +5,7 @@ export class Subject{
     code: string;
     search: string;
     comissions : Comission[];
+    priority: number;
 }
 export class Timeblock{
     dia : String;

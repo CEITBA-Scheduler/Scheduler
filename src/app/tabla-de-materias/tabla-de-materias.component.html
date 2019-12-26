@@ -5,18 +5,24 @@
     <!--- Note that these columns can be defined in any order.
             The actual rendered columns are set as a property on the row definition" -->
 
+    <!-- Order Column -->
+    <ng-container matColumnDef="priority">
+        <th mat-header-cell *matHeaderCellDef> Prioridad </th>
+        <td mat-cell *matCellDef="let element" > {{element.priority}} </td>
+        <td mat-footer-cell *matFooterCellDef>  </td>
+    </ng-container>
 
     <!-- Name Column -->
     <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef> Nombre </th>
-        <td mat-cell *matCellDef="let element" (click)="removeMateria(element)"> {{element.nombre}} </td>
+        <td mat-cell *matCellDef="let element" (click)="removeMateria(element)"> {{element.name}} </td>
         <td mat-footer-cell *matFooterCellDef> <app-buscador-de-materias (onOptionSelected)="addMateria($event)"></app-buscador-de-materias> </td>
     </ng-container>
 
     <!-- Position Column -->
     <ng-container matColumnDef="code">
         <th mat-header-cell *matHeaderCellDef> Código </th>
-        <td mat-cell *matCellDef="let element" (click)="removeMateria(element)"> {{element.codigo}} </td>
+        <td mat-cell *matCellDef="let element" (click)="removeMateria(element)"> {{element.code}} </td>
         <td mat-footer-cell *matFooterCellDef>  </td>
     </ng-container>
 

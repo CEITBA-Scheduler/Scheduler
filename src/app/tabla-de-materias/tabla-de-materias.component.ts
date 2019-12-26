@@ -13,7 +13,7 @@ const ELEMENT_DATA: Subject[] = [
   styleUrls: ['./tabla-de-materias.component.css']
 })
 export class TablaDeMateriasComponent implements OnInit {
-  displayedColumns: string[] = ['name', 'code'];
+  displayedColumns: string[] = ['priority', 'name', 'code'];
   data : Subject[] = [];
   dataSource = new BehaviorSubject<Subject[]>([]);
 
@@ -25,9 +25,12 @@ export class TablaDeMateriasComponent implements OnInit {
   private addMateria(materia : Subject){
     console.log("agregando materia ");
     console.log(materia);
+    materia.priority = this.data.length+1;
     this.data.push(materia);
+
     
-    this.dataSource.next(this.data);
+    this.dataSource.next(this.data);    
+
     this.combinacionService.updateMaterias(this.dataSource.value);
 
     console.log(this.data);
@@ -37,6 +40,10 @@ export class TablaDeMateriasComponent implements OnInit {
     console.log(materia);
 
     this.data.splice(this.data.findIndex((item : Subject) => item.code == materia.code),1);
+    for (var i = 0;i < this.data.length;i++){
+      this.data[i].priority = i + 1;
+    }
+    
     console.log(this.data);
 
     this.dataSource.next(this.data);

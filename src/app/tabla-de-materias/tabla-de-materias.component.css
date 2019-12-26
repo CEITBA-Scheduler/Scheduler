@@ -7,6 +7,9 @@ table {
     max-width: 500px;
     width: 90%;
 }
+.mat-columun-priority{
+    width: 20px;
+}
 .add-codigo-input{
     max-width: 120px;
 }
