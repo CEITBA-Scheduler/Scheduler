@@ -11,10 +11,10 @@ export class DragComisionesComponent implements OnInit {
   todo = [
   ];
   done = [
-    
+
   ];
-  @Input() comissions : { [letter : string] : Comission; };
-  @Output() selected : EventEmitter<string[]> = new EventEmitter<string[]>();
+  @Input() comissions: { [letter: string]: Comission; };
+  @Output() selected: EventEmitter<string[]> = new EventEmitter<string[]>();
 
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
@@ -26,11 +26,11 @@ export class DragComisionesComponent implements OnInit {
                         event.currentIndex);
     }
   }
-  
+
   constructor() { }
 
   ngOnInit() {
-    this.todo = []
+    this.todo = [];
     for (let key in this.comissions){
       this.todo.push(key);
     }

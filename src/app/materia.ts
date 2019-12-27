@@ -1,22 +1,22 @@
 import {Time} from '@angular/common';
 
-export class Subject{
+export interface Subject {
     name: string;
     code: string;
     search: string;
-    comissions : Comission[];
+    comissions: Comission[];
     priority: number;
 }
-export class Timeblock{
-    dia : String;
-    start : Time;
-    end : Time;
+export interface Timeblock {
+    dia: string;
+    start: Time;
+    end: Time;
 }
 
-export class Comission{
-    name : string;
-    profesores : string[];
-    subject : Subject;
-    schedule : Timeblock[];
+export interface Comission {
+    name: string;
+    profesores: string[];
+    subject?: Subject;
+    schedule: Timeblock[];
 }
 
