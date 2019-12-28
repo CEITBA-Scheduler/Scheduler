@@ -1,5 +1,5 @@
 import { Component, OnInit, ValueProvider, EventEmitter, Output  } from '@angular/core';
-import { Observable, Subject as SubjectRXJS } from 'rxjs';
+import { Observable, BehaviorSubject, Subject as SubjectRXJS } from 'rxjs';
 import { pipe } from 'rxjs';
 import { filter, map, startWith } from 'rxjs/operators';
 import {FormsModule, ReactiveFormsModule, FormControl} from '@angular/forms';
@@ -7,6 +7,7 @@ import { debounceTime, multicast, distinctUntilChanged, switchMap } from 'rxjs/o
 import { Subject } from '../materia';
 import { MateriasService } from '../materias.service'
 import { MatTableDataSource} from '@angular/material/table';
+import { SgaLinkerService } from '../sga-linker.service';
  
 @Component({
   selector: 'app-buscador-de-materias',
@@ -24,11 +25,11 @@ export class BuscadorDeMateriasComponent implements OnInit {
   displayedColumns: string[] = ['name', 'code'];
   
 
-  constructor(private materiasService: MateriasService) { }
+  constructor(private sgaLinkerService: SgaLinkerService) { }
 
   ngOnInit() {
     
-    this.options = this.materiasService.getMaterias();
+    this.options = this.sgaLinkerService.getAllSubjectsAsList();
 
     this.options.subscribe(
       (materias :Subject[]) => (console.log(materias) )
@@ -44,13 +45,14 @@ export class BuscadorDeMateriasComponent implements OnInit {
     this.filteredOptions = this.getFilteredValues();
   }
   private getFilteredValues(): Observable<Subject[]> {
+    /// filtramos acorde al input del usuario el observable
     return this.options.pipe(
       map(
         (options : Subject[]) => options.filter((option: Subject) => option.search.includes(this.searchValue))
       )
     );
   }
-  private optionSelected(value : Subject){
+  optionSelected(value : Subject){
     console.log("Materia seleccionada", value);
     this.onOptionSelected.emit(value);
 

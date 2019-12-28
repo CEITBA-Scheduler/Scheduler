@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Comission } from '../materia';
+import { Commission } from '../materia';
 
 @Component({
   selector: 'app-comission-card',
@@ -8,7 +8,7 @@ import { Comission } from '../materia';
 })
 export class ComissionCardComponent implements OnInit {
 
-  @Input() comission: Comission;
+  @Input() commission: Commission;
   
   constructor() { }
 

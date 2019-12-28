@@ -20,6 +20,6 @@ export class ComisionesService {
     
   }
   getComissions(subjectCode : string){ // get data from comission
-    return this.subjects[subjectCode].comissions;
+    return this.subjects[subjectCode].commissions;
   }
 }

@@ -12,7 +12,6 @@ import { DemoMaterialModule } from './material-module';
 import { TablaDeMateriasComponent } from './tabla-de-materias/tabla-de-materias.component';
 import { BuscadorDeMateriasComponent } from './buscador-de-materias/buscador-de-materias.component';
 import { HttpClientModule }    from '@angular/common/http';
-import { HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api';
 import { InMemoryDataMateriasService } from './in-memory-data-materias.service';
 import { FlexLayoutModule } from "@angular/flex-layout";
 import {FormsModule, ReactiveFormsModule, FormControl} from '@angular/forms';
@@ -41,10 +40,7 @@ import { ComissionCardComponent } from './comission-card/comission-card.componen
     MatStepperModule,
     MatToolbarModule,
     DemoMaterialModule,
-    HttpClientModule,
-    HttpClientInMemoryWebApiModule.forRoot(
-      InMemoryDataMateriasService, {dataEncapsulation: false}
-    )
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

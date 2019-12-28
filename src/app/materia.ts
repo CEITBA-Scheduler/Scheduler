@@ -4,7 +4,7 @@ export interface Subject {
     name: string;
     code: string;
     search: string;
-    comissions: Comission[];
+    commissions: Commission[];
     priority: number;
 }
 export interface Timeblock {
@@ -13,9 +13,10 @@ export interface Timeblock {
     end: Time;
 }
 
-export interface Comission {
+export interface Commission {
     name: string;
-    profesores: string[];
+    professors: string[];
     subject?: Subject;
     schedule: Timeblock[];
 }
+

@@ -22,7 +22,7 @@ export class TablaDeMateriasComponent implements OnInit {
   ngOnInit() {
     
   }
-  private addMateria(materia : Subject){
+  addMateria(materia : Subject){
     console.log("agregando materia ");
     console.log(materia);
     materia.priority = this.data.length+1;
@@ -35,7 +35,7 @@ export class TablaDeMateriasComponent implements OnInit {
 
     console.log(this.data);
   }
-  private removeMateria(materia){
+  removeMateria(materia){
     console.log("Eliminando ...");
     console.log(materia);
 

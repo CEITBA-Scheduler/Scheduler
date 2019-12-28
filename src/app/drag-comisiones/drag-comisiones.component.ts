@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
-import { Comission, Timeblock } from '../materia';
+import { Commission, Timeblock } from '../materia';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -9,12 +9,10 @@ import { Observable } from 'rxjs';
   styleUrls: ['./drag-comisiones.component.css']
 })
 export class DragComisionesComponent implements OnInit {
-  todo = [
-  ];
-  done = [
+  todo = [];
+  done = [];
 
-  ];
-  @Input() comissions: { [letter: string]: Comission; };
+  @Input() commissions: { [letter: string]: Commission; };
   @Output() selected: EventEmitter<string[]> = new EventEmitter<string[]>();
 
   drop(event: CdkDragDrop<string[]>) {
@@ -38,11 +36,8 @@ export class DragComisionesComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log("ng on init");
-    
-    console.log(this.comissions);
-    for (let key in this.comissions){
-      this.todo.push(this.comissions[key]);
+    for (let key in this.commissions){
+      this.todo.push(this.commissions[key]);
     }
   }
 
