@@ -4,15 +4,22 @@ import { BehaviorSubject, Observable } from 'rxjs'
 import { EventEmitter } from 'protractor';
 import { CombinacionDeHorarioService } from '../combinacion-de-horario.service'
 
+/** Tabla de materias 
+ * 
+ * 
+ * 
+ * **/
+
+
 const ELEMENT_DATA: Subject[] = [
 ];
 
 @Component({
-  selector: 'app-tabla-de-materias',
-  templateUrl: './tabla-de-materias.component.html',
-  styleUrls: ['./tabla-de-materias.component.css']
+  selector: 'app-subject-table',
+  templateUrl: './subject-table.component.html',
+  styleUrls: ['./subject-table.component.css']
 })
-export class TablaDeMateriasComponent implements OnInit {
+export class SubjectTableComponent implements OnInit {
   displayedColumns: string[] = ['priority', 'name', 'code'];
   data : Subject[] = [];
   dataSource = new BehaviorSubject<Subject[]>([]);
