@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
-import { Comission } from '../materia';
+import { Comission, Timeblock } from '../materia';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-drag-comisiones',
@@ -20,19 +21,28 @@ export class DragComisionesComponent implements OnInit {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
-      transferArrayItem(event.previousContainer.data,
-                        event.container.data,
-                        event.previousIndex,
-                        event.currentIndex);
+      
+        transferArrayItem(event.previousContainer.data,
+                          event.container.data,
+                          event.previousIndex,
+                          event.currentIndex);
+        if (this.done.length == 4){
+          transferArrayItem(event.previousContainer.data,
+            event.container.data,
+            event.previousIndex,
+            event.currentIndex);
+        }
     }
   }
 
   constructor() { }
 
   ngOnInit() {
-    this.todo = [];
+    console.log("ng on init");
+    
+    console.log(this.comissions);
     for (let key in this.comissions){
-      this.todo.push(key);
+      this.todo.push(this.comissions[key]);
     }
   }
 

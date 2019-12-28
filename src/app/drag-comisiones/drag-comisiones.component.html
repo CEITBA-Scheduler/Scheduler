@@ -1,13 +1,15 @@
 <div cdkDropListGroup fxLayout="row">
-    <div class="example-container">
-      <h2>Comisiones</h2>
+  <div class="example-container">
+    <h2>Comisiones</h2>
 
       <div
         cdkDropList
         [cdkDropListData]="todo"
         class="example-list"
         (cdkDropListDropped)="drop($event)">
-        <div class="example-box" *ngFor="let item of todo" cdkDrag>{{item}}</div>
+        <div class="example-box" *ngFor="let item of todo" cdkDrag>
+          <app-comission-card [comission]="item"></app-comission-card>
+        </div>
       </div>
     </div>
 
@@ -18,7 +20,9 @@
         [cdkDropListData]="done"
         class="example-list"
         (cdkDropListDropped)="drop($event)">
-        <div class="example-box" *ngFor="let item of done" cdkDrag>{{item}}</div>
+        <div class="example-box" *ngFor="let item of done" cdkDrag>
+          <app-comission-card [comission]="item"></app-comission-card>
+        </div>
       </div>
     </div>
-  </div>
+</div>

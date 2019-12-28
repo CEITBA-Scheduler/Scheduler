@@ -1,0 +1,47 @@
+[debug] [2019-12-27T16:06:24.353Z] ----------------------------------------------------------------------
+[debug] [2019-12-27T16:06:24.357Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\newtonis\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2019-12-27T16:06:24.357Z] CLI Version:   7.11.0
+[debug] [2019-12-27T16:06:24.357Z] Platform:      win32
+[debug] [2019-12-27T16:06:24.357Z] Node Version:  v10.15.1
+[debug] [2019-12-27T16:06:24.358Z] Time:          Fri Dec 27 2019 13:06:24 GMT-0300 (Argentina Standard Time)
+[debug] [2019-12-27T16:06:24.358Z] ----------------------------------------------------------------------
+[debug] [2019-12-27T16:06:24.358Z] 
+[debug] [2019-12-27T16:06:24.424Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-12-27T16:06:24.425Z] > authorizing via signed-in user
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\newtonis\Documents\GitHub\Scheduler
+
+Before we get started, keep in mind:
+
+  * You are initializing in an existing Firebase project directory
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[info] i  .firebaserc already has a default project, using websitetest-225ca.
+[debug] [2019-12-27T16:26:13.606Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2019-12-27T16:26:13.606Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2019-12-27T16:26:15.539Z] <<< HTTP RESPONSE 200
+[debug] [2019-12-27T16:26:15.574Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/websitetest-225ca  
+ 
+[debug] [2019-12-27T16:26:16.870Z] <<< HTTP RESPONSE 200
+[info] 
+=== Hosting Setup
+[info] 
+[info] Your public directory is the folder (relative to your project directory) that
+[info] will contain Hosting assets to be uploaded with firebase deploy. If you
+[info] have a build process for your assets, use your build's output directory.
+[info] 

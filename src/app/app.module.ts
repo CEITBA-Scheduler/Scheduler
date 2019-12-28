@@ -18,6 +18,7 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 import {FormsModule, ReactiveFormsModule, FormControl} from '@angular/forms';
 import { SeleccionadorDeComisionesComponent } from './seleccionador-de-comisiones/seleccionador-de-comisiones.component';
 import { DragComisionesComponent } from './drag-comisiones/drag-comisiones.component';
+import { ComissionCardComponent } from './comission-card/comission-card.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { DragComisionesComponent } from './drag-comisiones/drag-comisiones.compo
     TablaDeMateriasComponent,
     BuscadorDeMateriasComponent,
     SeleccionadorDeComisionesComponent,
-    DragComisionesComponent
+    DragComisionesComponent,
+    ComissionCardComponent
   ],
   imports: [
     BrowserModule,

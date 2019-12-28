@@ -6,30 +6,32 @@ import {Time} from '@angular/common';
   providedIn: 'root'
 })
 export class SgaLinkerService {
+  AllSubjects: { [id: string] : Subject; } = {};
+
   constructor() { }
 
-  obtenerMaterias(planes: string[]){
-
-  }
-
-  obtenerComisiones(materia: Subject): Comission[] {
+  getComissions(materia: Subject): { [letter: string]: Comission; } {
     if (materia.code === "21.04"){
-
       const horario1: Timeblock = {
-        dia:"Lunes", start : {hours: 11, minutes: 0}, end: {hours: 15, minutes: 0}
+        day:"Lunes", start : {hours: 11, minutes: 0}, end: {hours: 15, minutes: 0}
       };
       const horario2: Timeblock = {
-        dia:"Jueves", start : {hours: 11, minutes: 0}, end: {hours: 15, minutes: 0}
+        day:"Jueves", start : {hours: 11, minutes: 0}, end: {hours: 15, minutes: 0}
       };
       // matematica 1
-      return [
-        { name: '', profesores: [
+      return { A : { name: 'A', profesores: [
           'Profesor 1',
           'Profesor 2'
-        ], schedule : [horario1, horario2]
-        }
-      ];
+          ], schedule : [horario1, horario2]
+          },
+          B : { name: 'B', profesores: [
+            'Profesor 3',
+            'Profesor 4'
+          ], schedule: [horario1, horario2]
+        }   
+        };
     }
   }
 
+  
 }

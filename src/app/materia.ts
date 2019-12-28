@@ -8,7 +8,7 @@ export interface Subject {
     priority: number;
 }
 export interface Timeblock {
-    dia: string;
+    day: string;
     start: Time;
     end: Time;
 }
@@ -19,4 +19,3 @@ export interface Comission {
     subject?: Subject;
     schedule: Timeblock[];
 }
-
