@@ -11,7 +11,6 @@ import { SeleccionadorDeMateriasComponent } from './seleccionador-de-materias/se
 import { DemoMaterialModule } from './material-module';
 import { BuscadorDeMateriasComponent } from './buscador-de-materias/buscador-de-materias.component';
 import { HttpClientModule }    from '@angular/common/http';
-import { InMemoryDataMateriasService } from './in-memory-data-materias.service';
 import { FlexLayoutModule } from "@angular/flex-layout";
 import {FormsModule, ReactiveFormsModule, FormControl} from '@angular/forms';
 import { SeleccionadorDeComisionesComponent } from './seleccionador-de-comisiones/seleccionador-de-comisiones.component';

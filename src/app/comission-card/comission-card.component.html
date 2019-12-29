@@ -1,12 +1,11 @@
-<mat-card>
-    <mat-card-title fxLayoutAlign="center center">
-        Comisión {{commission.name}}
-    </mat-card-title>
-    <mat-card-content>
-        <div fxLayout="column" fxLayoutAlign="center center">
-        <div *ngFor="let timeblock of commission.schedule">
-            {{timeblock.day}} {{timeblock.start.hours}}:{{timeblock.start.minutes}}-{{timeblock.end.hours}}:{{timeblock.end.minutes}}
-        </div>
-        </div>
-    </mat-card-content>
-</mat-card>
+<div div fxLayout="column">
+    <div >
+        <h1>{{commission.name}}</h1>
+    </div>
+    <mat-divider [vertical]="true"></mat-divider>
+    <div>
+      <div *ngFor="let timeblock of commission.schedule">
+          {{timeblock.day}} {{timeblock.start.hours}}:{{timeblock.start.minutes}}-{{timeblock.end.hours}}:{{timeblock.end.minutes}}
+      </div>
+    </div>
+</div>
