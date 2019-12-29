@@ -1,3 +1,11 @@
+/**
+ * Subject search
+ * Este componente se encarga de administrar la busqueda de materias
+ * obtenidas desde la base de datos. Tiene tanto la interfaz gráfica 
+ * como la lógica para el buscador
+ */
+
+
 import { Component, OnInit, ValueProvider, EventEmitter, Output  } from '@angular/core';
 import { Observable, BehaviorSubject, Subject as SubjectRXJS } from 'rxjs';
 import { pipe } from 'rxjs';
@@ -16,6 +24,7 @@ import { SgaLinkerService } from '../sga-linker.service';
 })
 
 export class BuscadorDeMateriasComponent implements OnInit {
+  // onOptionSelected es la acción a ejecutarse cuando se elije una opción
   @Output() onOptionSelected : EventEmitter<Subject> = new EventEmitter<Subject>();
 
   options: Observable<Subject[]>;
