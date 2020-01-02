@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DragComisionesComponent } from './drag-comisiones.component';
+import { DragCommissionsComponent } from './drag-commissions.component';
 
-describe('DragComisionesComponent', () => {
-  let component: DragComisionesComponent;
-  let fixture: ComponentFixture<DragComisionesComponent>;
+describe('DragCommissionsComponent', () => {
+  let component: DragCommissionsComponent;
+  let fixture: ComponentFixture<DragCommissionsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DragComisionesComponent ]
+      declarations: [ DragCommissionsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DragComisionesComponent);
+    fixture = TestBed.createComponent(DragCommissionsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -14,7 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from "@angular/flex-layout";
 import {FormsModule, ReactiveFormsModule, FormControl} from '@angular/forms';
 import { CommissionSelectorComponent } from './commission-selector/commission-selector.component';
-import { DragComisionesComponent } from './drag-comisiones/drag-comisiones.component';
+import { DragCommissionsComponent } from './drag-commissions/drag-commissions.component';
 import { ComissionCardComponent } from './comission-card/comission-card.component';
 import { SubjectTableComponent } from './subject-table/subject-table.component';
 
@@ -25,7 +25,7 @@ import { SubjectTableComponent } from './subject-table/subject-table.component';
     SubjectSelectorComponent,
     SubjectSearchComponent,
     CommissionSelectorComponent,
-    DragComisionesComponent,
+    DragCommissionsComponent,
     ComissionCardComponent,
     SubjectTableComponent
   ],
