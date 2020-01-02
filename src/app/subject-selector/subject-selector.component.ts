@@ -3,11 +3,11 @@ import { CombinacionDeHorarioService } from '../combinacion-de-horario.service'
 
 
 @Component({
-  selector: 'app-seleccionador-de-materias',
-  templateUrl: './seleccionador-de-materias.component.html',
-  styleUrls: ['./seleccionador-de-materias.component.css']
+  selector: 'app-subject-selector',
+  templateUrl: './subject-selector.component.html',
+  styleUrls: ['./subject-selector.component.css']
 })
-export class SeleccionadorDeMateriasComponent implements OnInit {
+export class SubjectSelectorComponent implements OnInit {
   constructor(private combinacionDeHorarioService: CombinacionDeHorarioService) { }
 
   ngOnInit() {

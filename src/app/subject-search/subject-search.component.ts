@@ -1,7 +1,7 @@
 /**
  * Subject search
  * Este componente se encarga de administrar la busqueda de materias
- * obtenidas desde la base de datos. Tiene tanto la interfaz gráfica 
+ * obtenidas desde la base de datos. Tiene tanto la interfaz gráfica
  * como la lógica para el buscador
  */
 
@@ -16,14 +16,14 @@ import { Subject } from '../materia';
 import { MateriasService } from '../materias.service'
 import { MatTableDataSource} from '@angular/material/table';
 import { SgaLinkerService } from '../sga-linker.service';
- 
+
 @Component({
-  selector: 'app-buscador-de-materias',
-  templateUrl: './buscador-de-materias.component.html',
-  styleUrls: ['./buscador-de-materias.component.css']
+  selector: 'app-subject-search',
+  templateUrl: './subject-search.component.html',
+  styleUrls: ['./subject-search.component.css']
 })
 
-export class BuscadorDeMateriasComponent implements OnInit {
+export class SubjectSearchComponent implements OnInit {
   // onOptionSelected es la acción a ejecutarse cuando se elije una opción
   @Output() onOptionSelected : EventEmitter<Subject> = new EventEmitter<Subject>();
 
@@ -32,12 +32,12 @@ export class BuscadorDeMateriasComponent implements OnInit {
   searchValue: string;
   myControl = new FormControl();
   displayedColumns: string[] = ['name', 'code'];
-  
+
 
   constructor(private sgaLinkerService: SgaLinkerService) { }
 
   ngOnInit() {
-    
+
     this.options = this.sgaLinkerService.getAllSubjectsAsList();
 
     this.options.subscribe(

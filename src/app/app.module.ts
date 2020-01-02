@@ -7,13 +7,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatStepperModule } from '@angular/material/stepper';
 import { StepperControlComponent } from './stepper-control/stepper-control.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { SeleccionadorDeMateriasComponent } from './seleccionador-de-materias/seleccionador-de-materias.component';
+import { SubjectSelectorComponent } from './subject-selector/subject-selector.component';
 import { DemoMaterialModule } from './material-module';
-import { BuscadorDeMateriasComponent } from './buscador-de-materias/buscador-de-materias.component';
-import { HttpClientModule }    from '@angular/common/http';
+import { SubjectSearchComponent } from './subject-search/subject-search.component';
+import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from "@angular/flex-layout";
 import {FormsModule, ReactiveFormsModule, FormControl} from '@angular/forms';
-import { SeleccionadorDeComisionesComponent } from './seleccionador-de-comisiones/seleccionador-de-comisiones.component';
+import { CommissionSelectorComponent } from './commission-selector/commission-selector.component';
 import { DragComisionesComponent } from './drag-comisiones/drag-comisiones.component';
 import { ComissionCardComponent } from './comission-card/comission-card.component';
 import { SubjectTableComponent } from './subject-table/subject-table.component';
@@ -22,9 +22,9 @@ import { SubjectTableComponent } from './subject-table/subject-table.component';
   declarations: [
     AppComponent,
     StepperControlComponent,
-    SeleccionadorDeMateriasComponent,
-    BuscadorDeMateriasComponent,
-    SeleccionadorDeComisionesComponent,
+    SubjectSelectorComponent,
+    SubjectSearchComponent,
+    CommissionSelectorComponent,
     DragComisionesComponent,
     ComissionCardComponent,
     SubjectTableComponent

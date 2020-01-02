@@ -7,11 +7,11 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { CombinacionDeHorarioService } from '../combinacion-de-horario.service';
 
 @Component({
-  selector: 'app-seleccionador-de-comisiones',
-  templateUrl: './seleccionador-de-comisiones.component.html',
-  styleUrls: ['./seleccionador-de-comisiones.component.css']
+  selector: 'app-commission-selector',
+  templateUrl: './commission-selector.component.html',
+  styleUrls: ['./commission-selector.component.css']
 })
-export class SeleccionadorDeComisionesComponent implements OnInit {
+export class CommissionSelectorComponent implements OnInit {
   materias = new BehaviorSubject<Subject[]>([]);
 
   commissions: { [subject: string]: Commission[] };
