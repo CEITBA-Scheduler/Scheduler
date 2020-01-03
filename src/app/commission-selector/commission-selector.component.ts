@@ -12,7 +12,7 @@ import { CombinacionDeHorarioService } from '../combinacion-de-horario.service';
   styleUrls: ['./commission-selector.component.css']
 })
 export class CommissionSelectorComponent implements OnInit {
-  materias = new BehaviorSubject<Subject[]>([]);
+  subjects = new Observable<Subject[]>([]);
 
   commissions: { [subject: string]: Commission[] };
 
@@ -21,14 +21,14 @@ export class CommissionSelectorComponent implements OnInit {
 
   ngOnInit() {
     // consigo todas las materias seleccionadas del menu 1 (el seleccionador de materias)
-    this.materias = this.combinacionDeHorarioService.getMaterias();
-    this.materias.subscribe(materias =>{
+    this.subjects = this.combinacionDeHorarioService.getMaterias();
+    
+    
+    this.subjects.subscribe(materias =>{
       this.commissions = {};
       for (let materia of materias){
         this.commissions[materia.code] = this.sgaLinkerService.getCommissions(materia);
       }
-      console.log("Comisiones:");
-      console.log(this.commissions);
     });
   }
 }

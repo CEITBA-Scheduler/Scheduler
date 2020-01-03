@@ -19,26 +19,34 @@ export class DragCommissionsComponent implements OnInit {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
-
-        transferArrayItem(event.previousContainer.data,
-                          event.container.data,
-                          event.previousIndex,
-                          event.currentIndex);
-        if (this.done.length == 4){
-          transferArrayItem(event.previousContainer.data,
-            event.container.data,
-            event.previousIndex,
-            event.currentIndex);
-        }
+      transferArrayItem(event.previousContainer.data,
+                        event.container.data,
+                        event.previousIndex,
+                        event.currentIndex);
+        // if (this.done.length == 4){
+        //   transferArrayItem(event.previousContainer.data,
+        //     event.container.data,
+        //     event.previousIndex,
+        //     event.currentIndex);
+        // }
     }
   }
 
   constructor() { }
 
   ngOnInit() {
-    for (let key in this.commissions){
-      this.todo.push(this.commissions[key]);
-    }
+    this.todo = [];
+
+    let getValues = (dic: {[id: string]: Commission}): Commission[] => {
+      var ans : Commission[] = [];
+      for (let key in dic){
+        ans.push(dic[key]);
+      }
+      return ans;
+    };
+
+    this.todo = getValues(this.commissions);
+
   }
 
 }

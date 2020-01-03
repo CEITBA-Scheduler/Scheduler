@@ -4,10 +4,11 @@ import { BehaviorSubject, Observable } from 'rxjs'
 import { EventEmitter } from 'protractor';
 import { CombinacionDeHorarioService } from '../combinacion-de-horario.service'
 
-/** Tabla de materias 
- * 
- * 
- * 
+/** Subject-table
+ *
+ *  Input: dataSource
+ *
+ *
  * **/
 
 
@@ -21,41 +22,35 @@ const ELEMENT_DATA: Subject[] = [
 })
 export class SubjectTableComponent implements OnInit {
   displayedColumns: string[] = ['priority', 'name', 'code'];
-  data : Subject[] = [];
+  plainData : Subject[] = [];
   dataSource = new BehaviorSubject<Subject[]>([]);
 
-  constructor(private combinacionService : CombinacionDeHorarioService) { }
+  @output() setData: EventEmitter<Subject>;
+
+  constructor() { }
 
   ngOnInit() {
-    
+    this.setData.emit(dataSource.asObservable());
   }
   addMateria(materia : Subject){
-    console.log("agregando materia ");
-    console.log(materia);
     materia.priority = this.data.length+1;
-    this.data.push(materia);
+    this.plainData.push(materia);
 
-    
-    this.dataSource.next(this.data);    
+    this.dataSource.next(this.plainData);
 
     this.combinacionService.updateMaterias(this.dataSource.value);
 
     console.log(this.data);
   }
   removeMateria(materia){
-    console.log("Eliminando ...");
-    console.log(materia);
 
-    this.data.splice(this.data.findIndex((item : Subject) => item.code == materia.code),1);
-    for (var i = 0;i < this.data.length;i++){
-      this.data[i].priority = i + 1;
+    this.data.splice(this.plainData.findIndex((item : Subject) => item.code == materia.code),1);
+    for (var i = 0;i < this.plainData.length;i++){
+      this.plainData[i].priority = i + 1;
     }
-    
-    console.log(this.data);
 
-    this.dataSource.next(this.data);
+    this.dataSource.next(this.plainData);
     this.combinacionService.updateMaterias(this.dataSource.value);
-    
-    console.log(this.dataSource);
+
   }
 }

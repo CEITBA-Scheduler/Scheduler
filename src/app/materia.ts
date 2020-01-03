@@ -18,8 +18,12 @@ export interface Commission {
     subject?: Subject;
     schedule: Timeblock[];
 }
-
-export interface UserSelection{
-
+export interface SubjectCommissions {
+  materia: Subject; // materia elegida
+  commissions: Commission[]; // comisiones de la elección
+}
+export interface UserSelection {
+  selection: SubjectCommissions[];
+  noCourseTime: Timeblock[];
 }
 

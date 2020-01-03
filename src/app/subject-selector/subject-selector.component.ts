@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CombinacionDeHorarioService } from '../combinacion-de-horario.service'
-
+import { Subject } from './materia.ts';
 
 @Component({
   selector: 'app-subject-selector',
@@ -8,9 +8,11 @@ import { CombinacionDeHorarioService } from '../combinacion-de-horario.service'
   styleUrls: ['./subject-selector.component.css']
 })
 export class SubjectSelectorComponent implements OnInit {
-  constructor(private combinacionDeHorarioService: CombinacionDeHorarioService) { }
+  constructor(private combinacionService : CombinacionDeHorarioService) { }
 
   ngOnInit() {
   }
-
+  setData(data : Observable<Subject[]>){
+    this.combinacionService.setSubjectData(data);
+  }
 }
