@@ -1,7 +1,6 @@
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Subject } from '../materia';
-import { BehaviorSubject, Observable } from 'rxjs'
-import { EventEmitter } from 'protractor';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { CombinacionDeHorarioService } from '../combinacion-de-horario.service'
 
 /** Subject-table
@@ -22,35 +21,35 @@ const ELEMENT_DATA: Subject[] = [
 })
 export class SubjectTableComponent implements OnInit {
   displayedColumns: string[] = ['priority', 'name', 'code'];
-  plainData : Subject[] = [];
+  plainData: Subject[] = [];
   dataSource = new BehaviorSubject<Subject[]>([]);
 
-  @output() setData: EventEmitter<Subject>;
+  @Output() setData: EventEmitter<Observable<Subject[]>> = new EventEmitter<Observable<Subject[]>>();
 
   constructor() { }
 
   ngOnInit() {
-    this.setData.emit(dataSource.asObservable());
+    this.setData.emit(this.dataSource.asObservable());
   }
-  addMateria(materia : Subject){
-    materia.priority = this.data.length+1;
+  addMateria(materia: Subject){
+    materia.priority = this.plainData.length + 1;
     this.plainData.push(materia);
 
     this.dataSource.next(this.plainData);
 
-    this.combinacionService.updateMaterias(this.dataSource.value);
+    //this.combinacionService.updateMaterias(this.dataSource.value);
 
-    console.log(this.data);
+    //console.log(this.data);
   }
   removeMateria(materia){
 
-    this.data.splice(this.plainData.findIndex((item : Subject) => item.code == materia.code),1);
+    this.plainData.splice(this.plainData.findIndex((item : Subject) => item.code == materia.code),1);
     for (var i = 0;i < this.plainData.length;i++){
       this.plainData[i].priority = i + 1;
     }
 
     this.dataSource.next(this.plainData);
-    this.combinacionService.updateMaterias(this.dataSource.value);
+    //this.combinacionService.updateMaterias(this.dataSource.value);
 
   }
 }

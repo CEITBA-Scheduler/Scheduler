@@ -10,7 +10,7 @@ import { Component, OnInit, ValueProvider, EventEmitter, Output  } from '@angula
 import { Observable, BehaviorSubject, Subject as SubjectRXJS } from 'rxjs';
 import { pipe } from 'rxjs';
 import { filter, map, startWith } from 'rxjs/operators';
-import {FormsModule, ReactiveFormsModule, FormControl} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormControl} from '@angular/forms';
 import { debounceTime, multicast, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Subject } from '../materia';
 import { MateriasService } from '../materias.service'
@@ -37,11 +37,10 @@ export class SubjectSearchComponent implements OnInit {
   constructor(private sgaLinkerService: SgaLinkerService) { }
 
   ngOnInit() {
-
     this.options = this.sgaLinkerService.getAllSubjectsAsList();
 
     this.options.subscribe(
-      (materias :Subject[]) => (console.log(materias) )
+      (materias: Subject[]) => (console.log(materias) )
     );
 
     this.myControl.valueChanges.subscribe(
@@ -57,11 +56,11 @@ export class SubjectSearchComponent implements OnInit {
     /// filtramos acorde al input del usuario el observable
     return this.options.pipe(
       map(
-        (options : Subject[]) => options.filter((option: Subject) => option.search.includes(this.searchValue))
+        (options: Subject[]) => options.filter((option: Subject) => option.search.includes(this.searchValue))
       )
     );
   }
-  optionSelected(value : Subject){
+  optionSelected(value: Subject) {
     console.log("Materia seleccionada", value);
     this.onOptionSelected.emit(value);
 
