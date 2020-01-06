@@ -7,7 +7,7 @@
       <mat-panel-description>
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <app-drag-commissions [commissions]="commissions[materia.code]">
+    <app-drag-commissions [commissions]="materia.commissions" (setCommissionData)="setCommissionData(materia, $event)" (onDestroy)="removeCommissionData(materia)">
     </app-drag-commissions>
   </mat-expansion-panel>
 </mat-accordion>

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import { Commission, Timeblock } from '../materia';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-drag-commissions',
@@ -11,9 +11,11 @@ import { Observable } from 'rxjs';
 export class DragCommissionsComponent implements OnInit {
   todo = [];
   done = [];
+  selectedCommissions: BehaviorSubject<Commission[]> = new BehaviorSubject([]);
 
   @Input() commissions: { [letter: string]: Commission; };
-  @Output() selected: EventEmitter<string[]> = new EventEmitter<string[]>();
+  @Output() setCommissionData: EventEmitter<Observable<Commission[]>> = new EventEmitter<Observable<Commission[]>>();
+  @Output() onDestroy: EventEmitter<void> = new EventEmitter<void>();
 
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
@@ -30,6 +32,7 @@ export class DragCommissionsComponent implements OnInit {
         //     event.currentIndex);
         // }
     }
+    this.selectedCommissions.next(this.done);
   }
 
   constructor() { }
@@ -44,9 +47,12 @@ export class DragCommissionsComponent implements OnInit {
       }
       return ans;
     };
-
     this.todo = getValues(this.commissions);
 
+    this.setCommissionData.emit(this.selectedCommissions.asObservable());
+  }
+  ngOnDestroy(){
+    this.onDestroy.emit();
   }
 
 }

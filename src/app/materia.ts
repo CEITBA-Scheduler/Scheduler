@@ -1,4 +1,5 @@
 import {Time} from '@angular/common';
+import { Observable, of, BehaviorSubject } from 'rxjs';
 
 export interface Subject {
     name: string;
@@ -19,8 +20,8 @@ export interface Commission {
     schedule: Timeblock[];
 }
 export interface SubjectCommissions {
-  materia: Subject; // materia elegida
-  commissions: Commission[]; // comisiones de la elección
+  subject: Subject; // materia elegida
+  commissions?: Commission[]; // comisiones de la elección
 }
 export interface UserSelection {
   selection: SubjectCommissions[];
