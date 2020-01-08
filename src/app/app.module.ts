@@ -17,6 +17,8 @@ import { CommissionSelectorComponent } from './commission-selector/commission-se
 import { DragCommissionsComponent } from './drag-commissions/drag-commissions.component';
 import { ComissionCardComponent } from './comission-card/comission-card.component';
 import { SubjectTableComponent } from './subject-table/subject-table.component';
+import { CheckboxItemComponent } from './checkbox-item/checkbox-item.component';
+import { ConfigurationsComponent } from './configurations/configurations.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { SubjectTableComponent } from './subject-table/subject-table.component';
     CommissionSelectorComponent,
     DragCommissionsComponent,
     ComissionCardComponent,
-    SubjectTableComponent
+    SubjectTableComponent,
+    CheckboxItemComponent,
+    ConfigurationsComponent
   ],
   imports: [
     BrowserModule,
