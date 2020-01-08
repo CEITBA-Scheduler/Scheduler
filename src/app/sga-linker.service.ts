@@ -13,13 +13,13 @@ export class SgaLinkerService {
   AllSubjectsValue : { [id: string] : Subject; };
   AllCommissions;
   url : string = "https://itbagw.itba.edu.ar/api/v1/courseCommissions/1wXxftFa4NTfsmOstgnQHDq55m7jZL1jq7r7gWlprbHg?level=GRADUATE&year=2019&period=SecondSemester";
-  
+
   constructor(
     private http: HttpClient
-  ) { 
+  ) {
     this.AllSubjects = new BehaviorSubject<{ [id: string] : Subject; }>({});
     this.getDataFromApi();
-    
+
   }
 
   addToAllSubjects(name, commission, currCommission) {
@@ -27,9 +27,9 @@ export class SgaLinkerService {
       // if such subject doesn't exist, we create it and then add it to the dictionary
       let currSubject : Subject = {
         name: commission.subjectName,
-        code: commission.subjectCode, 
-        search: (commission.subjectName + commission.subjectCode).toLowerCase(), 
-        commissions: [currCommission], 
+        code: commission.subjectCode,
+        search: (commission.subjectName + commission.subjectCode).toLowerCase(),
+        commissions: [currCommission],
         priority: 0
       };
       this.AllSubjectsValue[commission.subjectCode] = currSubject;
@@ -47,9 +47,9 @@ export class SgaLinkerService {
 
     // Esta funcion consigue en una lista todos los valores de un diccionario
     let getValues = (dic : {[id: string] : Subject}) : Subject[] => {
-      var ans : Subject[] = [];  
+      var ans : Subject[] = [];
       for (let key in dic){
-        ans.push(dic[key]);    
+        ans.push(dic[key]);
       }
       return ans;
     };
@@ -83,8 +83,8 @@ export class SgaLinkerService {
         // push each TimeBlock in the commission
         for(let schedule in commission.courseCommissionTimes){
 
-          var startDate : Date = parse(commission.courseCommissionTimes[schedule]["hourFrom"], 'HH:mm', new Date());
-          var endDate : Date = parse(commission.courseCommissionTimes[schedule]["hourTo"], 'HH:mm', new Date());
+          var startDate: Date = parse(commission.courseCommissionTimes[schedule]["hourFrom"], 'HH:mm', new Date());
+          var endDate: Date = parse(commission.courseCommissionTimes[schedule]["hourTo"], 'HH:mm', new Date());
 
           let currTimeBlock : Timeblock = {
             day: commission.courseCommissionTimes[schedule]["day"],
@@ -97,12 +97,12 @@ export class SgaLinkerService {
         // create the current comission with its current schedule
         let currCommission : Commission = {
           name: commission.commissionName,
-          professors: [], 
-          subject: null, 
+          professors: [],
+          subject: null,
           schedule: timeBlockArr
-        }; 
+        };
         this.addToAllSubjects(name, commission, currCommission);
-      } 
+      }
       this.AllSubjects.next(this.AllSubjectsValue);
       //console.log(this.getCommissionInfo('Álgebra Lineal','A'))
     })

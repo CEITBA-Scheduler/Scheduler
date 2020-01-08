@@ -1,0 +1,15 @@
+<div class="wrapper">
+  <div class="box a"></div>
+  <div class="box b"></div>
+  <div class="box c"></div>
+  <div class="box d"></div>
+  <div class="box e">
+      <div *ngIf="!this.authService.getLogged();">
+        <button (click)="iniciarSesion()">Login with Google</button>
+      </div>
+  </div>
+  <div *ngIf="this.authService.getLogged();">
+      <div class="box e"><button (click)="this.authService.getLogged()" [routerLink]="['/signout']">Authorize</button></div>
+  </div>
+  <div class="box f"></div>
+</div>

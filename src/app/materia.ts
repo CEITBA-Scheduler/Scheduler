@@ -12,6 +12,8 @@ export interface Timeblock {
     day: string;
     start: Time;
     end: Time;
+    classroom?: string;
+    building?: string;
 }
 export interface Commission {
     name: string;
