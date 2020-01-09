@@ -27,6 +27,11 @@ import { TestingModule3Component } from './testing-module3/testing-module3.compo
 import { CombinerComponent } from './combiner/combiner.component';
 import { LoginComponent } from './login/login.component';
 
+import { firebaseConfig } from './secrets';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -55,6 +60,9 @@ import { LoginComponent } from './login/login.component';
       { path: 'testingModule2', component: TestingModule2Component },
       { path: 'testingModule3', component: TestingModule3Component }
     ]),
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFirestoreModule,
+    AngularFireAuthModule,
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,

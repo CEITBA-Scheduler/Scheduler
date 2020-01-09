@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 export class MessageService {
 
   constructor() { }
-  add(message : string){
+  add(message: string){
 
   }
 }

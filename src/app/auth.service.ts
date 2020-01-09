@@ -62,7 +62,7 @@ export class AuthService implements CanActivate {
 
   async signOut() {
     await this.afAuth.auth.signOut();
-    this.router.navigate(['/']);
+    this.router.navigate(['/login']);
   }
 
   signInWithGoogle() {
@@ -73,8 +73,7 @@ export class AuthService implements CanActivate {
         console.log(this.credentials)
         console.log(this.credentials["user"]["email"])
         //console.log("Success... Google account Linked!")
-      }).catch(
-        err=>{
+      }).catch(err=> {
           console.log(err)
           console.log("Failed to do")
         }
