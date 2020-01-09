@@ -1,3 +1,0 @@
-const firebaseConfig = {
-  apiKey: 'hola'
-};
