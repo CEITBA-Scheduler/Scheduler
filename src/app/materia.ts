@@ -10,8 +10,8 @@ export interface Subject {
 
 export interface Timeblock {
     day: string;
-    start: Time;
-    end: Time;
+    start: number;
+    end: number;
     classroom?: string;
     building?: string;
 }

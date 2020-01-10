@@ -31,6 +31,7 @@ import { firebaseConfig } from './secrets';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import {TimeblockPrintInterval} from './time-schedules/time';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
     TestingModule2Component,
     TestingModule3Component,
     CombinerComponent,
-    LoginComponent
+    LoginComponent,
+    TimeblockPrintInterval
   ],
   imports: [
     BrowserModule,

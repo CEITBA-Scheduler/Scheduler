@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Commission } from '../materia';
+import {TimeblockPrintInterval} from '../time-schedules/time';
 
 @Component({
   selector: 'app-comission-card',
@@ -9,7 +10,7 @@ import { Commission } from '../materia';
 export class ComissionCardComponent implements OnInit {
 
   @Input() commission: Commission;
-  
+
   constructor() { }
 
   ngOnInit() {

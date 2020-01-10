@@ -12,8 +12,8 @@ export class SgaLinkerService {
   AllSubjects: BehaviorSubject<{ [id: string] : Subject; }>;
   AllSubjectsValue : { [id: string] : Subject; };
   AllCommissions;
-  url : string = "https://itbagw.itba.edu.ar/api/v1/courseCommissions/1wXxftFa4NTfsmOstgnQHDq55m7jZL1jq7r7gWlprbHg?level=GRADUATE&year=2019&period=SecondSemester";
-
+  url : string = 'https://itbagw.itba.edu.ar/api/v1/courseCommissions/1wXxftFa4NTfsmOstgnQHDq55m7jZL1jq7r7gWlprbHg?level=GRADUATE&year=2019&period=SecondSemester';
+  // url : string = 'https://itbagw.itba.edu.ar/api/v1/courseCommissions/1wXxftFa4NTfsmOstgnQHDq55m7jZL1jq7r7gWlprbHg?level=GRADUATE&year=2020&period=FirstSemester';
   constructor(
     private http: HttpClient
   ) {
@@ -79,17 +79,20 @@ export class SgaLinkerService {
 
       for (let commission of this.AllCommissions) {
         let name = commission.subjectName;
-        let timeBlockArr = []
+        let timeBlockArr = [];
         // push each TimeBlock in the commission
-        for(let schedule in commission.courseCommissionTimes){
-
-          var startDate: Date = parse(commission.courseCommissionTimes[schedule]["hourFrom"], 'HH:mm', new Date());
-          var endDate: Date = parse(commission.courseCommissionTimes[schedule]["hourTo"], 'HH:mm', new Date());
-
+        for (let schedule in commission.courseCommissionTimes) {
+          let startHHmm = commission.courseCommissionTimes[schedule]["hourFrom"];
+          let endHHmm = commission.courseCommissionTimes[schedule]["hourTo"];
+          if (startHHmm === undefined || endHHmm === undefined) {
+            break;
+          }
+          startHHmm = startHHmm.split();
+          endHHmm = endHHmm.split();
           let currTimeBlock : Timeblock = {
             day: commission.courseCommissionTimes[schedule]["day"],
-            start: {hours:startDate.getHours(), minutes:startDate.getMinutes()},
-            end: {hours:startDate.getHours(), minutes:startDate.getMinutes()}
+            start: (parseFloat(startHHmm[0] + parseFloat(startHHmm[1]) / 60.0)),
+            end: (parseFloat(endHHmm[0] + parseFloat(endHHmm[1]) / 60.0))
           };
 
           timeBlockArr.push(currTimeBlock);

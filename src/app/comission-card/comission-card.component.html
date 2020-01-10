@@ -5,7 +5,7 @@
     <mat-divider [vertical]="true"></mat-divider>
     <div>
       <div *ngFor="let timeblock of commission.schedule">
-          {{timeblock.day}} {{timeblock.start.hours}}:{{timeblock.start.minutes}}-{{timeblock.end.hours}}:{{timeblock.end.minutes}}
+          {{timeblock.day}} {{timeblock | TimeblockPrintInterval }}
       </div>
     </div>
 </div>
