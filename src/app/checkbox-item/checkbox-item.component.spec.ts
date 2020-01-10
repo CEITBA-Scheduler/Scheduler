@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { CheckboxItemComponent } from './checkbox-item.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 describe('CheckboxItemComponent', () => {
   let component: CheckboxItemComponent;
@@ -8,6 +8,9 @@ describe('CheckboxItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        MatCheckboxModule
+      ],
       declarations: [ CheckboxItemComponent ]
     })
     .compileComponents();
