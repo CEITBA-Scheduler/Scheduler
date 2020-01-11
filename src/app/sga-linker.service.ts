@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, map, startWith } from 'rxjs/operators';
 import { parse } from 'date-fns';
+import {isArray} from 'util';
+import {hasOwnProperty} from 'tslint/lib/utils';
 
 @Injectable({
   providedIn: 'root'
@@ -78,21 +80,28 @@ export class SgaLinkerService {
       this.AllSubjectsValue = {};
 
       for (let commission of this.AllCommissions) {
+        if ( commission.courseCommissionTimes === undefined ) { // La comision no tiene horarios
+          continue;
+        }
         let name = commission.subjectName;
         let timeBlockArr = [];
+        let commissionTimes = [];
+        if (Array.isArray(commission.courseCommissionTimes)) {
+          commissionTimes = commission.courseCommissionTimes; // if times are array
+        } else {
+          commissionTimes.push(commission.courseCommissionTimes); // if times are not an array we make them be an array
+        }
         // push each TimeBlock in the commission
-        for (let schedule in commission.courseCommissionTimes) {
-          let startHHmm = commission.courseCommissionTimes[schedule]["hourFrom"];
-          let endHHmm = commission.courseCommissionTimes[schedule]["hourTo"];
-          if (startHHmm === undefined || endHHmm === undefined) {
-            break;
-          }
-          startHHmm = startHHmm.split();
-          endHHmm = endHHmm.split();
+        for (let schedule in commissionTimes) {
+          let startHHmm = commissionTimes[schedule]["hourFrom"];
+          let endHHmm = commissionTimes[schedule]["hourTo"];
+
+          startHHmm = startHHmm.split(':');
+          endHHmm = endHHmm.split(':');
           let currTimeBlock : Timeblock = {
-            day: commission.courseCommissionTimes[schedule]["day"],
-            start: (parseFloat(startHHmm[0] + parseFloat(startHHmm[1]) / 60.0)),
-            end: (parseFloat(endHHmm[0] + parseFloat(endHHmm[1]) / 60.0))
+            day: commissionTimes[schedule]["day"],
+            start: (parseFloat(startHHmm[0]) + parseFloat(startHHmm[1]) / 60.0),
+            end: (parseFloat(endHHmm[0]) + parseFloat(endHHmm[1]) / 60.0)
           };
 
           timeBlockArr.push(currTimeBlock);
