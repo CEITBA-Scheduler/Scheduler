@@ -1,10 +1,4 @@
 /**
- * PossibleSchedules output of algorithm will be an array: Combination[].
- * @PossibleSchedules : Combination[].
- * Output of public method SchedulerAlgorithm()
- */
-
-/**
  * Contains information for a single combination. This object should
  * be graphable in Calendar component if the SUBJECTS object is at hand.
  *
@@ -13,7 +7,7 @@
 export interface Combination {
   weight: number;
   priorities: number[];
-  commissions: Commission[];
+  subjects: Subject[];
 }
 
 /**
@@ -26,8 +20,9 @@ export interface Combination {
  */
 export interface Subject {
   name: string;
-  code: string;    search: string;
-  commissions: Commission[];
+  code: string;
+  search: string;
+  commissions: Commission[] | Commission;
 }
 
 /**
@@ -47,23 +42,22 @@ export interface Commission {
  *
  * start and end properties are numbers and correspond to hours of the day (0-24)
  */
+export enum WeekDay {
+  SUNDAY,
+  MONDAY,
+  TUESDAY,
+  WEDNESDAY,
+  THURSDAY,
+  FRIDAY,
+  SATURDAY
+}
+
 export interface Timeblock {
-  day: number; // 0 == Sunday, 1 == Monday ...
+  day: WeekDay;
   start: number;  // 19.5 == 19:30hs
   end: number;
   building?: string;
   classroom?: string;
-}
-
-/**
- * Contains all information related to
- * the user's selection. priorities should be
- * obligatory property as it should have at least
- * a superposition priority to limit overlapping.
- */
-export interface UserSelection {
-  subjects: SubjectSelection[];
-  priorities: Priority[];
 }
 
 /**
@@ -74,25 +68,32 @@ export interface UserSelection {
  * to indicate maximum number of superposed hours between any two
  * schedules. Default value should be 0.
  */
+export enum PriorityTypes {
+  NONE = 'None',
+  COMMISSION = 'Commission',
+  PROFESSOR = 'Professor',
+  LOCATION = 'Location',
+  BUSYTIME = 'BusyTime',
+  FREEDAY = 'FreeDay',
+  SUPERPOSITION = 'Superposition'
+}
+
 export interface Priority {
-  type: number; // TODO declare enum for priorities
-  weight: number;
+  type: PriorityTypes;
   isExclusive: boolean;
-  // Below this line are values for priority!
-  teachers?: string[];
-  building?: string;
-  value?: number; // for
-  schedule?: Timeblock[];
+  weight: number;
+  relatedSubjectCode?: string;
+  value?: string | Timeblock[] | number;
 }
 
 /**
- * When the user selects a subject they must order
- * it. Ordering begins at 1. 1 represents a 'higher' weight.
+ * SubjectSelection represent a subject being selected by the user to
+ * be used in the algorithm to produce the current schedule.
+ * User must order them.
  */
 export interface SubjectSelection {
   code: string;
-  ordering?: number;
+  weight: number;
   // commissions property should not be used. It is unused for present algorithm although future implementations may require it.
   commissions?: Commission[];
 }
-
