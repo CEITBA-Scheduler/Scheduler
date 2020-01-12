@@ -94,8 +94,6 @@ export interface Priority {
 export interface SubjectSelection {
   code: string;
   weight: number;
-  // commissions property should not be used. It is unused for present algorithm although future implementations may require it.
-  commissions?: Commission[];
 }
 
 /**
