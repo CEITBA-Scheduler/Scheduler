@@ -4,10 +4,19 @@
  *
  * SUBJECTS should contain all subjects in an array.
  */
-export interface Combination {
+export interface ICombination {
   weight: number;
   priorities: number[];
-  subjects: Subject[];
+  subjects: ICombinationSubject[];
+}
+
+export interface ICombinationSubject {
+  name: string;
+  code: string;
+  search: string;
+  professors: string[];
+  commissionName: string;
+  commissionTimes: ITimeblock[];
 }
 
 /**
@@ -18,11 +27,11 @@ export interface Combination {
  * contain said information lest it be a SubjectSelection class. If commissions should
  * not need exist then SubjectSelection class may be used.
  */
-export interface Subject {
+export interface ISubject {
   name: string;
   code: string;
   search: string;
-  commissions: Commission[] | Commission;
+  commissions: ICommission[];
 }
 
 /**
@@ -30,11 +39,11 @@ export interface Subject {
  *
  * @label property contains commission name. Is usually a single capitalized letter.
  */
-export interface Commission {
+export interface ICommission {
   label: string;
   subjectCode: string;
   professors: string[];
-  schedule: Timeblock[];
+  schedule: ITimeblock[];
 }
 
 /**
@@ -52,7 +61,7 @@ export enum WeekDay {
   SATURDAY
 }
 
-export interface Timeblock {
+export interface ITimeblock {
   day: WeekDay;
   start: number;  // 19.5 == 19:30hs
   end: number;
@@ -78,12 +87,12 @@ export enum PriorityTypes {
   SUPERPOSITION = 'Superposition'
 }
 
-export interface Priority {
+export interface IPriority {
   type: PriorityTypes;
   isExclusive: boolean;
   weight: number;
   relatedSubjectCode?: string;
-  value?: string | Timeblock[] | number;
+  value?: string | ITimeblock[] | number;
 }
 
 /**
@@ -91,7 +100,7 @@ export interface Priority {
  * be used in the algorithm to produce the current schedule.
  * User must order them.
  */
-export interface SubjectSelection {
+export interface ISubjectSelection {
   code: string;
   weight: number;
 }
@@ -99,5 +108,5 @@ export interface SubjectSelection {
 /**
  * Type Definition for the callable functions used in the algorithms
  */
-export type VerifierFunction = (combination: Combination, priorities: Priority[]) => boolean;
+export type VerifierFunction = (combination: ICombination) => boolean;
 export type Transform = (value: number) => number;
