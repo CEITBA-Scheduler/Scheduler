@@ -97,3 +97,9 @@ export interface SubjectSelection {
   // commissions property should not be used. It is unused for present algorithm although future implementations may require it.
   commissions?: Commission[];
 }
+
+/**
+ * Type Definition for the callable functions used in the algorithms
+ */
+export type VerifierFunction = (combination: Combination, priorities: Priority[]) => boolean;
+export type Transform = (value: number) => number;
