@@ -51,7 +51,7 @@ export interface ICommission {
  *
  * start and end properties are numbers and correspond to hours of the day (0-24)
  */
-export enum WeekDay {
+export enum Weekday {
   SUNDAY,
   MONDAY,
   TUESDAY,
@@ -62,7 +62,7 @@ export enum WeekDay {
 }
 
 export interface ITimeblock {
-  day: WeekDay;
+  day: Weekday;
   start: number;  // 19.5 == 19:30hs
   end: number;
   building?: string;
@@ -89,10 +89,11 @@ export enum PriorityTypes {
 
 export interface IPriority {
   type: PriorityTypes;
-  isExclusive: boolean;
   weight: number;
   relatedSubjectCode?: string;
   value?: string | ITimeblock[] | number;
+
+  isExclusive(): boolean;
 }
 
 /**
