@@ -1,0 +1,60 @@
+.mat-checkbox {
+	-webkit-appearance: none;
+	/*background-color: #fafafa;
+	border: 1px solid #cacece; 
+	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);*/
+	padding: 8px;
+	/*border-radius: 3px;*/
+	display: inline-block;
+	position: relative;
+}
+
+
+.mat-checkbox:active, .mat-checkbox:checked:active {
+	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
+}
+
+.mat-checkbox:checked {
+	background-color: #eaeee9;
+	border: 1px solid #adb8c0;
+	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1);
+	color: #99a1a7;
+}
+
+
+
+
+table {
+    width: 100%;
+}
+.add-materia-input{
+    min-width: 150px;
+    max-width: 500px;
+    width: 90%;
+}
+.mat-columun-priority{
+    width: 20px;
+} 
+.add-codigo-input{
+    max-width: 120px;
+}
+.mat-row:hover {
+    background-color: #ffcccc;
+}
+
+
+
+
+mat-card-header{
+    background: #12121212;
+    padding: 5px;
+    color:white;
+}
+
+mat-card-content{
+padding: 10px;
+}
+
+mat-card{
+padding:0;
+}
