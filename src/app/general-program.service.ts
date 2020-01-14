@@ -27,7 +27,7 @@ export class GeneralProgramService {
   }
   **/
   // actualizar estado de un checkbox
-  updateCheckbox(checkboxName: string, status:boolean){
+  updateCheckbox(checkboxName: string, status: boolean){
     this.checkboxStatus[checkboxName].next(status); // actualizamos el estado del BehaviorSubject<boolean> al valor status
     // esto le indica al observable asociado que cambio de valor!
   }

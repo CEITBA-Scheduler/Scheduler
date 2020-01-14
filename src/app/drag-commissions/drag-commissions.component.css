@@ -1,13 +1,13 @@
 .example-container {
-    /*width: 200px;*/
-    max-width: 250%;
-    margin: 0 25px 25px 0;
-    display: inline-block;
-    vertical-align: top;
-  }
-  
+  width: 400px;
+  max-width: 100%;
+  margin: 0 25px 25px 0;
+  display: inline-block;
+  vertical-align: top;
+}
+
 .example-list {
-  border: solid 0px #ccc;
+  border: solid 1px #ccc;
   min-height: 60px;
   background: white;
   border-radius: 4px;
@@ -16,7 +16,7 @@
 }
 
 .example-box {
-  padding: 2px 1px;
+  padding: 20px 10px;
   border-bottom: solid 1px #ccc;
   color: rgba(0, 0, 0, 0.87);
   display: flex;
