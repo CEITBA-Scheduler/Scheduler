@@ -132,6 +132,18 @@ export class Priority implements IPriority {
   }
 
   /**
+   * Computes the corresponding weight for the ordered array of priorities,
+   * based on each priority's index inside the ordered array.
+   * @param priorities  List/Array of priorities
+   */
+  public static generateWeightedPriorities(priorities: Priority[]): Priority[] {
+    for (let priorityIndex = 0 ; priorityIndex < priorities.length ; priorityIndex++) {
+      priorities[priorityIndex].setWeight(priorities.length - priorityIndex);
+    }
+    return priorities;
+  }
+
+  /**
    * Commission Priority generator or factory method
    * @param commission    The chosen commission
    * @param subjectCode   The subjectCode from the subject's commission
