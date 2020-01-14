@@ -2,7 +2,7 @@
     <div >
         <h1>{{commission.name}}</h1>
     </div>
-    <mat-divider [vertical]="true"></mat-divider>
+    <mat-divider></mat-divider>
     <div>
       <div *ngFor="let timeblock of commission.schedule">
           {{timeblock.day}} {{timeblock.start.hours}}:{{timeblock.start.minutes}}-{{timeblock.end.hours}}:{{timeblock.end.minutes}}

@@ -26,18 +26,4 @@
         </div>
       </div>
     </div>
-
-    <div class="example-container">
-      <!-- <h1>Comisiones elegidas</h1> -->
-      COMISIONES ELEGIDAS
-      <div
-        cdkDropList
-        [cdkDropListData]="done"
-        class="example-list"
-        (cdkDropListDropped)="drop($event)">
-        <div class="example-box" *ngFor="let item of done" cdkDrag>
-          <app-comission-card [commission]="item"></app-comission-card>
-        </div>
-      </div>
-    </div>
 </div>
