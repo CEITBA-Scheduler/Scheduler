@@ -10,8 +10,8 @@ export function parseTimeblock(data: any): Timeblock {
   const day = data.day.toUpperCase();
   return new Timeblock(
     Weekday[day as string],
-    Timeblock.stringTimeToNumber(data.hourFrom),
-    Timeblock.stringTimeToNumber(data.hourTo),
+    Timeblock.parseHHmm(data.hourFrom),
+    Timeblock.parseHHmm(data.hourTo),
     data.building,
     data.classRoom
   );
