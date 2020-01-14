@@ -120,7 +120,7 @@ export class AlgorithmService {
    * @param priorities  List of priorities and criteria set by the user
    */
   private verifiesPriorities(combination: ICombination, priorities: IPriority[]): boolean {
-    if (!combination.hasOwnProperty('priorities')) {combination.priorities = []; } // property check
+    if (!combination.hasOwnProperty('priorities')) { combination.priorities = []; } // property check
     // tslint:disable-next-line:forin
     for (const index in priorities) {
       const currentPriority = priorities[index];
@@ -142,7 +142,7 @@ export class AlgorithmService {
                     totalSuperposition += superposition;
                     numberOfSuperpositions++;
                     if (superposition > currentPriority.value) {
-                      if (currentPriority.isExclusive()) {return false; } // Exclusive condition failed verify
+                      if (currentPriority.isExclusive()) { return false; } // Exclusive condition failed verify
                       tooSuperposed = true;
                     }
                   }
@@ -222,6 +222,7 @@ export class AlgorithmService {
             combination.priorities.push(Number(index));
           }
           break;
+
         case PriorityTypes.LOCATION:
           let hasPriorityLocation = false; // We assume there is no prioritized teacher to begin
           for (const currentCommission of combination.subjects) {
