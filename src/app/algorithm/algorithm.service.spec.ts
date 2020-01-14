@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { Priority, SubjectSelection } from './algorithm-object';
+import { Priority, SubjectSelection, Timeblock } from './algorithm-object';
 import { Weekday } from './algorithm-interface';
 import { AlgorithmService } from './algorithm.service';
 import { parseSubjects } from './algorithm-parser';
@@ -13,6 +13,18 @@ fdescribe('AlgorithmService', () => {
   fit('should be created', () => {
     const service: AlgorithmService = TestBed.get(AlgorithmService);
     expect(service).toBeTruthy();
+  });
+
+  fit('should order with quicksort', () => {
+    const service: AlgorithmService = TestBed.get(AlgorithmService);
+    const testArray = [1, 3, 99, 8, 67, 45, 21, 26, 66, 35, 28, 19, 17];
+    console.log(
+      service.quicksort(
+        testArray,
+        0,
+        testArray.length - 1
+      )
+    );
   });
 
   fit('should generate combinations', () => {
@@ -39,12 +51,7 @@ fdescribe('AlgorithmService', () => {
         ELECTROTECNIA_1,
         MATEMATICA_5,
         LABORATORIO_DE_ELECTRONICA,
-        MATEMATICA_DISCRETA,
-        MATEMATICA_3,
-        PROGRAMACION_1,
-        PROGRAMACION,
-        FISICA_1,
-        FISICA_2
+        MATEMATICA_DISCRETA
       ]
     );
     console.log('User SubjectSelections');
@@ -52,15 +59,15 @@ fdescribe('AlgorithmService', () => {
 
     const priorities: Priority[] = Priority.generateWeightedPriorities(
       [
-        Priority.gpCommission('A', FISICA_3),
+        Priority.gpCommission('A', FISICA_3).setExclusive(true),
         Priority.gpFreeDay(Weekday.THURSDAY),
-        Priority.gpSuperposition(2)
+        Priority.gpBusyTime([new Timeblock(Weekday.FRIDAY, 8, 12)])
       ]
     );
     console.log('User Priorities');
     console.log(priorities);
 
     console.log('Possible combinations incoming...');
-    console.log(service.schedulerAlgorithm(subjects, selectedSubjects, priorities));
+    console.log(service.schedulerAlgorithm(subjects, selectedSubjects, priorities, 'sort'));
   });
 });

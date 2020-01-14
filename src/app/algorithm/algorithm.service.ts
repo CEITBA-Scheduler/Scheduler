@@ -298,7 +298,7 @@ export class AlgorithmService {
    * @param selectedSubjects  List of subjects selected
    * @param priorities        List of user's priorities
    */
-  public schedulerAlgorithm(subjects: ISubject[], selectedSubjects: ISubjectSelection[], priorities: IPriority[]) {
+  public schedulerAlgorithm(subjects: ISubject[], selectedSubjects: ISubjectSelection[], priorities: IPriority[], sort: string = 'sort') {
         // 1°, run the combination algorithm to obtain all possible schedules and classify them by the criteria and priorities
         const chosenSubjects: ISubject[] = [];
         for (const selectedSubject of selectedSubjects) {
@@ -312,8 +312,7 @@ export class AlgorithmService {
 
         // 2°, compute for every combination its weight, starting with a simple linear transformation... could be changed!
         function transformation(value: number) {
-            const SLOPE = 10;
-            return value * SLOPE;
+          return value;
         }
 
         for (const combination of combinations) {
@@ -321,18 +320,27 @@ export class AlgorithmService {
         }
 
         // 3°, run an ordering algorithm based on the previously calculated weight
-        combinations = this.quicksort(
-            combinations,
-            0, combinations.length - 1,
-            (combination: ICombination) => combination.weight,
-            (current: number, pivot: number) => current < pivot
-        );
+        switch (sort) {
+          case 'sort':
+            combinations.sort(
+              (a, b) => b.weight - a.weight
+            );
+            break;
+          case 'quicksort':
+            combinations = this.quicksort(
+                combinations,
+                0, combinations.length - 1,
+                (combination: ICombination) => combination.weight,
+                (current: number, pivot: number) => current < pivot
+            );
+            break;
+        }
 
         // 4°, return the result
         return combinations;
   }
 
-  private quicksort(
+  public quicksort(
     array: Array<any>,
     left: number,
     right: number,
@@ -370,14 +378,21 @@ export class AlgorithmService {
         return partitionIndex;
     }
 
-    if (left < right) {
-        // Choose a pivot value and creates both partitions of the array, ordering with the given condition
-        const partitionIndex = partition(array, left, right, right);
+    const interval: Array<Array<number>> = [[left, right]];
+    do {
+      const iterInterval = interval.shift();
+      const iterLeft = iterInterval[0];
+      const iterRight = iterInterval[1];
 
-        // Swaps the partition and the pivot values and calls recursively to the quicksort function on both partitions
-        this.quicksort(array, left, partitionIndex - 1, get, condition);
-        this.quicksort(array, partitionIndex + 1, right, get, condition);
-    }
+      if (iterLeft < iterRight) {
+          // Choose a pivot value and creates both partitions of the array, ordering with the given condition
+          const partitionIndex = partition(array, iterLeft, iterRight, iterRight);
+
+          // Swaps the partition and the pivot values
+          interval.push([iterLeft, partitionIndex - 1]);
+          interval.push([partitionIndex + 1, iterRight]);
+      }
+    } while (interval.length > 0);
 
     return array;
   }

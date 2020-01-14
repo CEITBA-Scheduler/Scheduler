@@ -90,7 +90,7 @@ export class Timeblock implements ITimeblock {
   public building: string;
   public classroom: string;
 
-  constructor(day: Weekday, start: number, end: number, building: string, classroom: string) {
+  constructor(day: Weekday, start: number, end: number, building: string = '', classroom: string = '') {
     this.day = day;
     this.start = start;
     this.end = end;
@@ -106,6 +106,24 @@ export class Timeblock implements ITimeblock {
   static parseHHmm(time: string): number {
     const hourMinute: string[] = time.split(':', 2);
     return Number(hourMinute[0]) + Number(hourMinute[1]) / 60;
+  }
+
+  /**
+   * Sets the building field of the instance.
+   * @param value   Building
+   */
+  setBuilding(value: string): Timeblock {
+    this.building = value;
+    return this;
+  }
+
+  /**
+   * Sets the classroom field of the instance.
+   * @param value   ClassRoom
+   */
+  setClassRoom(value: string): Timeblock {
+    this.classroom = value;
+    return this;
   }
 
   endToHHmm(): string {
