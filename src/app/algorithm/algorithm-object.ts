@@ -43,10 +43,25 @@ export class Subject implements ISubject {
     this.commissions = commissions;
   }
 
+  /**
+   * Returns whether it has or not commissions this subject.
+   */
+  hasCommissions(): boolean {
+    return this.commissions.length > 0;
+  }
+
+  /**
+   * Adds a new commission to the subject.
+   * @param commission  Instance of the new commission being added
+   */
   addCommission(commission: ICommission) {
     this.commissions.push(commission);
   }
 
+  /**
+   * Adds an array of new commissions to the subject.
+   * @param commissions   Array of new instances of commissions
+   */
   addCommissions(commissions: ICommission[]) {
     for (const commission of commissions) {
       this.addCommission(commission);
@@ -165,8 +180,8 @@ export class Priority implements IPriority {
    * Location Priority generator or factory method
    * @param location      The chosen location
    */
-  public static gpLocation(location: string): Priority {
-    return new Priority(PriorityTypes.LOCATION, location);
+  public static gpLocation(): Priority {
+    return new Priority(PriorityTypes.LOCATION);
   }
 
   /**
