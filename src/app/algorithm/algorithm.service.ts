@@ -1,5 +1,7 @@
+'use strict';
 import { Injectable } from '@angular/core';
-import { ISubject, ICommission, ICombination, IPriority, VerifierFunction, ISubjectSelection, Transform } from './algorithm-interface';
+import { ISubject, ICommission, ICombination, IPriority, VerifierFunction,
+  ISubjectSelection, Transform, PriorityTypes } from './algorithm-interface';
 import { Combination, CombinationSubject } from './algorithm-object';
 
 @Injectable({
@@ -110,11 +112,126 @@ export class AlgorithmService {
    * @param priorities  List of priorities and criteria set by the user
    */
   private verifiesPriorities(combination: ICombination, priorities: IPriority[]): boolean {
+    if (!combination.hasOwnProperty('priorities')) {combination.priorities = []; } // property check
+    // tslint:disable-next-line:forin
+    for (const index in priorities) {
+      const currentPriority = priorities[index];
+
+      switch (currentPriority.type) {
+        // First verification is by superposition.
+        // This is usually an exclusive condition.
+        case PriorityTypes.SUPERPOSITION:
+          let tooSuperposed = false; // We assume our combination is not too superposed unless the contrary is proved
+          let totalSuperposition = 0.0;
+          let numberOfSuperpositions = 0;
+          for (let i = 0; i < combination.subjects.length; i++) {
+            if (tooSuperposed) {break; } // optimization line. Can be removed.
+            for (let j = i + 1; j < combination.subjects.length; j++) {
+              for (const currentTime1 of combination.subjects[i].commissionTimes) {
+                for (const currentTime2 of combination.subjects[j].commissionTimes) {
+                  const superposition = this.getSuperposition(currentTime1, currentTime2);
+                  if (superposition > 0.0) {
+                    totalSuperposition += superposition;
+                    numberOfSuperpositions++;
+                    if (superposition > currentPriority.value) {
+                      if (currentPriority.isExclusive()) {return false; } // Exclusive condition failed verify
+                      tooSuperposed = true;
+                    }
+                  }
+                }
+              }
+            }
+          }
+          if (!tooSuperposed) {
+            combination.priorities.push(Number(index));
+          }
+          break;
+
+        case PriorityTypes.COMMISSION:
+          let hasPriorityCommission = false; // We assume there is no prioritized commission to start
+          for (const currentCommission of combination.subjects) {
+            if (currentCommission.code !== currentPriority.relatedSubjectCode ||
+              currentCommission.commissionName !== currentPriority.value) {
+            } else { // We found the prioritized commission in our combination
+              combination.priorities.push(Number(index));
+              hasPriorityCommission = true;
+              break;
+            }
+          }
+          if (currentPriority.isExclusive() && !hasPriorityCommission) {return false; } // Exclusive condition failed verify
+          break;
+
+        case PriorityTypes.PROFESSOR:
+          let hasPriorityTeacher = false; // We assume there is no prioritized teacher to begin
+          for (const currentCommission of combination.subjects) {
+            if (currentCommission.code === currentPriority.relatedSubjectCode) {
+              for (const currentTeacher of currentCommission.professors) {
+                if (currentTeacher !== currentPriority.value) {
+                  continue;
+                }
+                combination.priorities.push(Number(index));
+                hasPriorityTeacher = true;
+              }
+            }
+          }
+          if (currentPriority.isExclusive() && !hasPriorityTeacher) {return false; } // Exclusive condition failed verify
+          break;
+
+        case PriorityTypes.FREEDAY:
+          let isFreeDay = true; // All days are freeDays until proven otherwise
+          for (const currentCommission of combination.subjects) {
+            for (const currentTime of currentCommission.commissionTimes) {
+              if (currentTime.day === currentPriority.value) {
+                isFreeDay = false; // If we find a schedule on our freeday it is NOT a priority
+                break;
+              }
+            }
+            if (!isFreeDay) {
+              if (currentPriority.isExclusive()) {return false; } // Exclusive condition failed verify
+              break; } // This line is to optimize code. Not entirely necessary
+          }
+          if (isFreeDay) {
+            combination.priorities.push(Number(index));
+          }
+          break;
+
+        case PriorityTypes.BUSYTIME:
+          let isBusyCombination = false; // All combinations comply with busyTime until proven otherwise
+          for (const currentCommission of combination.subjects) {
+            for (const currentTime of currentCommission.commissionTimes) {
+              const superposition = this.getSuperposition(currentTime, currentPriority.value);
+              if (superposition > 0.0) {
+                isBusyCombination = true; // Combination does not comply with priority
+                break;
+              }
+            }
+            if (isBusyCombination) {
+              if (currentPriority.isExclusive()) {return false; } // Exclusive condition failed verify
+              break;
+            }
+          }
+          if (!isBusyCombination) { // If we do not find commissions on busyTime, we add priority{
+            combination.priorities.push(Number(index));
+          }
+          break;
+      }
+    }
     return true;
   }
 
-  private getSuperposition(shedule1, schedule2) {
-
+  private getSuperposition(schedule1, schedule2) {
+    if (schedule1.day !== schedule2.day) {
+      return 0.0;
+    }
+    const duration1 = schedule1.hourTo - schedule1.hourFrom; // these variables shorten ternary expressions
+    const duration2 = schedule2.hourTo - schedule2.hourFrom;
+    if (schedule1.hourFrom >= schedule2.hourFrom && schedule1.hourFrom < schedule2.hourTo ) {
+      return schedule1.hourTo <= schedule2.hourTo ? duration1 : duration1 - schedule1.hourTo + schedule2.hourTo ;
+    }
+    if (schedule2.hourFrom >= schedule1.hourFrom && schedule2.hourFrom < schedule1.hourTo ) {
+      return schedule2.hourTo <= schedule1.hourTo ? duration2 : duration2 - schedule2.hourTo + schedule1.hourTo ;
+    }
+    return 0.0;
   }
 
   /**
