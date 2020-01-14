@@ -1,46 +1,49 @@
 import { TestBed } from '@angular/core/testing';
 
-import { Combination, SubjectSelection } from './algorithm-object';
+import { Priority, SubjectSelection } from './algorithm-object';
+import { Weekday } from './algorithm-interface';
 import { AlgorithmService } from './algorithm.service';
 import { parseSubjects } from './algorithm-parser';
 
 import { SUBJECTS_DATA } from './test/request';
 
 fdescribe('AlgorithmService', () => {
-  const subjects = parseSubjects(SUBJECTS_DATA);
   beforeEach(() => TestBed.configureTestingModule({}));
-
-  console.log('All Subjects have been parsed: ');
-  console.log(subjects);
 
   fit('should be created', () => {
     const service: AlgorithmService = TestBed.get(AlgorithmService);
     expect(service).toBeTruthy();
   });
 
-  fit('should generate possible combinations', () => {
-    const service: AlgorithmService = TestBed.get(AlgorithmService);
-    expect(
-      service.searchCombinations(
-          subjects.slice(0, 3),
-          () => true
-      )
-    ).toBeTruthy();
-  });
+  fit('should generate combinations', () => {
+    const FISICA_3 = '93.43';
+    const EECTROTECNIA_1 = '22.02';
+    const MATEMATICA_5 = '93.38';
+    const LABORATORIO_DE_ELECTRONICA = '22.42';
 
-  fit('console log combinations', () => {
     const service: AlgorithmService = TestBed.get(AlgorithmService);
-    const results = service.searchCombinations(
-        subjects.slice(0, 3),
-        () => true
+
+    const subjects = parseSubjects(SUBJECTS_DATA);
+    console.log(`All Subjects have been parsed. Result of ${subjects.length} subjects.`);
+    console.log(subjects);
+
+    const selectedSubjects: SubjectSelection[] = SubjectSelection.generateSelectionByArray(
+      [FISICA_3, EECTROTECNIA_1, MATEMATICA_5, LABORATORIO_DE_ELECTRONICA]
     );
+    console.log('User SubjectSelections');
+    console.log(selectedSubjects);
 
-    console.log(results);
+    const priorities: Priority[] = Priority.generateWeightedPriorities(
+      [
+        Priority.gpCommission('A', FISICA_3),
+        Priority.gpFreeDay(Weekday.THURSDAY),
+        Priority.gpSuperposition(2)
+      ]
+    );
+    console.log('User Priorities');
+    console.log(priorities);
+
+    console.log('Possible combinations incoming...');
+    console.log(service.schedulerAlgorithm(subjects, selectedSubjects, priorities));
   });
-
-  // Testing code for schedulerAlgorithm, outputs will go to the
-  // console to live check through the web browser
-  const selectedSubjects: SubjectSelection[] = SubjectSelection.generateSelectionByArray(
-    ['93.43', '23.09', '93.38', '94.24']
-  );
 });
