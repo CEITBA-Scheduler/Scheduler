@@ -84,7 +84,8 @@ export enum PriorityTypes {
   LOCATION = 'Location',
   BUSYTIME = 'BusyTime',
   FREEDAY = 'FreeDay',
-  SUPERPOSITION = 'Superposition'
+  SUPERPOSITION = 'Superposition',
+  TRAVEL = 'BuildingTravel',
 }
 
 export interface IPriority {
