@@ -17,7 +17,7 @@ fdescribe('AlgorithmService', () => {
 
   fit('should generate combinations', () => {
     const FISICA_3 = '93.43';
-    const EECTROTECNIA_1 = '22.02';
+    const ELECTROTECNIA_1 = '22.02';
     const MATEMATICA_5 = '93.38';
     const LABORATORIO_DE_ELECTRONICA = '22.42';
 
@@ -28,7 +28,12 @@ fdescribe('AlgorithmService', () => {
     console.log(subjects);
 
     const selectedSubjects: SubjectSelection[] = SubjectSelection.generateSelectionByArray(
-      [FISICA_3, EECTROTECNIA_1, MATEMATICA_5, LABORATORIO_DE_ELECTRONICA]
+      [
+        FISICA_3,
+        ELECTROTECNIA_1,
+        MATEMATICA_5,
+        LABORATORIO_DE_ELECTRONICA
+      ]
     );
     console.log('User SubjectSelections');
     console.log(selectedSubjects);
