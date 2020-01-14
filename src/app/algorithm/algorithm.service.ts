@@ -1,8 +1,16 @@
 'use strict';
-import { Injectable } from '@angular/core';
-import { ISubject, ICommission, ICombination, IPriority, VerifierFunction,
-  ISubjectSelection, Transform, PriorityTypes } from './algorithm-interface';
-import { Combination, CombinationSubject } from './algorithm-object';
+import {Injectable} from '@angular/core';
+import {
+  ICombination,
+  ICommission,
+  IPriority,
+  ISubject,
+  ISubjectSelection,
+  PriorityTypes,
+  Transform,
+  VerifierFunction
+} from './algorithm-interface';
+import {Combination, CombinationSubject} from './algorithm-object';
 
 @Injectable({
   providedIn: 'root'
@@ -214,12 +222,55 @@ export class AlgorithmService {
             combination.priorities.push(Number(index));
           }
           break;
+        case PriorityTypes.LOCATION:
+          let hasPriorityLocation = false; // We assume there is no prioritized teacher to begin
+          for (const currentCommission of combination.subjects) {
+            if (currentCommission.code === currentPriority.relatedSubjectCode) {
+              for (const currentTimeblock of currentCommission.commissionTimes) {
+                if (currentTimeblock.building !== currentPriority.value) {
+                  continue;
+                }
+                combination.priorities.push(Number(index));
+                hasPriorityLocation = true;
+              }
+            }
+          }
+          if (currentPriority.isExclusive() && !hasPriorityLocation) {return false; } // Exclusive condition failed verify
+          break;
+
+        case PriorityTypes.TRAVEL:
+          let tooFar = false; // We assume our combination works with realistic time-distances until the contrary is proved
+          for (let i = 0; i < combination.subjects.length; i++) {
+            if (tooFar) {break; } // optimization line. Can be removed.
+            for (let j = i + 1; j < combination.subjects.length; j++) {
+              for (const currentTime1 of combination.subjects[i].commissionTimes) {
+                for (const currentTime2 of combination.subjects[j].commissionTimes) {
+                  if (currentTime1.building !== currentTime2.building) { // Classes are in different buildings... can i get there in time?
+                    const travelTime = this.getTravelTime(currentTime1, currentTime2);
+                    if (travelTime > currentPriority.value) { // I don't want to travel from Parque patricios to Madero 6PM in 1 hour
+                      tooFar = true; // TODO: implement calculator for travel time between two buildings
+                    }
+                  }
+                }
+              }
+            }
+          }
+          if (!tooFar) {
+            combination.priorities.push(Number(index));
+          }
+          break;
       }
     }
     return true;
   }
 
-  private getSuperposition(schedule1, schedule2) {
+  private getTravelTime(schedule1, schedule2) {
+    if (schedule1.day !== schedule2.day) {
+      return 0.0;
+    }
+    return 1.0; // TODO implement minimum travel time
+  }
+  private getSuperposition(schedule1, schedule2): number {
     if (schedule1.day !== schedule2.day) {
       return 0.0;
     }
