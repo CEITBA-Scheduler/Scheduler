@@ -88,9 +88,27 @@ export class Timeblock implements ITimeblock {
    * @param time  String value with the time "19:30"
    * @returns     Returns an equivalent time value as a float number => 19.5
    */
-  static stringTimeToNumber(time: string): number {
+  static parseHHmm(time: string): number {
     const hourMinute: string[] = time.split(':', 2);
     return Number(hourMinute[0]) + Number(hourMinute[1]) / 60;
+  }
+  endToHHmm(): string {
+    const minutes = Math.round(60 * (this.end - Math.floor(this.end)));
+    const hours = Math.floor(this.end);
+    return minutes < 10.0 / 60.0 ? hours + ':' + '0' + minutes : hours + ':' + minutes;
+  }
+  startToHHmm(): string {
+    const minutes = Math.round(60 * (this.start - Math.floor(this.start)));
+    const hours = Math.floor(this.start);
+    return minutes < 10.0 / 60.0 ? hours + ':' + '0' + minutes : hours + ':' + minutes;
+  }
+  /**
+   * Converts the number representation of the time interval to a string value ready for UI display.
+   * @param Timeblock Requires properties start and end.
+   * @returns     String value with the time interval. In example: "18:00-19:30"
+   */
+  intervalToHHmm(): string {
+    return this.startToHHmm() + '-' + this.endToHHmm();
   }
 }
 
