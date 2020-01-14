@@ -20,6 +20,12 @@ fdescribe('AlgorithmService', () => {
     const ELECTROTECNIA_1 = '22.02';
     const MATEMATICA_5 = '93.38';
     const LABORATORIO_DE_ELECTRONICA = '22.42';
+    const MATEMATICA_DISCRETA = '93.16';
+    const MATEMATICA_3 = '93.03';
+    const PROGRAMACION_1 = '22.07';
+    const PROGRAMACION = '71.85';
+    const FISICA_1 = '93.41';
+    const FISICA_2 = '93.42';
 
     const service: AlgorithmService = TestBed.get(AlgorithmService);
 
@@ -32,7 +38,13 @@ fdescribe('AlgorithmService', () => {
         FISICA_3,
         ELECTROTECNIA_1,
         MATEMATICA_5,
-        LABORATORIO_DE_ELECTRONICA
+        LABORATORIO_DE_ELECTRONICA,
+        MATEMATICA_DISCRETA,
+        MATEMATICA_3,
+        PROGRAMACION_1,
+        PROGRAMACION,
+        FISICA_1,
+        FISICA_2
       ]
     );
     console.log('User SubjectSelections');

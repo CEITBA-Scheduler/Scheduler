@@ -32,6 +32,10 @@ export interface ISubject {
   code: string;
   search: string;
   commissions: ICommission[];
+
+  hasCommissions(): boolean;
+  addCommission(commission: ICommission): void;
+  addCommissions(commissions: ICommission[]): void;
 }
 
 /**
@@ -58,7 +62,8 @@ export enum Weekday {
   WEDNESDAY,
   THURSDAY,
   FRIDAY,
-  SATURDAY
+  SATURDAY,
+  ANY
 }
 
 export interface ITimeblock {
@@ -85,7 +90,7 @@ export enum PriorityTypes {
   BUSYTIME = 'BusyTime',
   FREEDAY = 'FreeDay',
   SUPERPOSITION = 'Superposition',
-  TRAVEL = 'BuildingTravel',
+  TRAVEL = 'BuildingTravel'
 }
 
 export interface IPriority {
