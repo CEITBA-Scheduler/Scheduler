@@ -180,8 +180,8 @@ export class Priority implements IPriority {
   /**
    * FreeDay Priority generator or factory method
    */
-  public static gpFreeDay(): Priority {
-    return new Priority(PriorityTypes.FREEDAY);
+  public static gpFreeDay(day: Weekday): Priority {
+    return new Priority(PriorityTypes.FREEDAY, day);
   }
 
   /**
@@ -206,6 +206,14 @@ export class Priority implements IPriority {
    */
   isExclusive(): boolean {
     return this.exclusive;
+  }
+
+  /**
+   * Returns whether the instance has a related subject
+   * linked to the priority.
+   */
+  hasSubjectRelated(): boolean {
+    return this.relatedSubjectCode !== '';
   }
 
   /**

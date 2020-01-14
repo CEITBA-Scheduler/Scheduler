@@ -95,6 +95,7 @@ export interface IPriority {
   value?: string | ITimeblock[] | number;
 
   isExclusive(): boolean;
+  hasSubjectRelated(): boolean;
 }
 
 /**
