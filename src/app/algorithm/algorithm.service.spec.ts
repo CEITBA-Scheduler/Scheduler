@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 
+import { Combination, SubjectSelection } from './algorithm-object';
 import { AlgorithmService } from './algorithm.service';
 import { parseSubjects } from './algorithm-parser';
 
 import { SUBJECTS_DATA } from './test/request';
-import { Combination } from './algorithm-object';
 
 fdescribe('AlgorithmService', () => {
   const subjects = parseSubjects(SUBJECTS_DATA);
@@ -37,4 +37,10 @@ fdescribe('AlgorithmService', () => {
 
     console.log(results);
   });
+
+  // Testing code for schedulerAlgorithm, outputs will go to the
+  // console to live check through the web browser
+  const selectedSubjects: SubjectSelection[] = SubjectSelection.generateSelectionByArray(
+    ['93.43', '23.09', '93.38', '94.24']
+  );
 });

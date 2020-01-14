@@ -1,5 +1,5 @@
 import { ICombination, ICombinationSubject, ICommission, ITimeblock, ISubject, Weekday } from './algorithm-interface';
-import { IPriority, PriorityTypes } from './algorithm-interface';
+import { ISubjectSelection, IPriority, PriorityTypes } from './algorithm-interface';
 
 export class CombinationSubject implements ICombinationSubject {
   public name: string;
@@ -123,15 +123,141 @@ export class Priority implements IPriority {
 
   private exclusive: boolean;
 
-  constructor(type: PriorityTypes, weight: number, exclusive: boolean, value: any = null, code: string = '') {
+  constructor(type: PriorityTypes, value: any = null) {
     this.type = type;
-    this.weight = weight;
-    this.exclusive = exclusive;
-    this.relatedSubjectCode = code;
     this.value = value;
+    this.weight = NaN;
+    this.exclusive = false;
+    this.relatedSubjectCode = '';
   }
 
+  /**
+   * Commission Priority generator or factory method
+   * @param commission    The chosen commission
+   * @param subjectCode   The subjectCode from the subject's commission
+   */
+  public static gpCommission(commission: string, subjectCode: string): Priority {
+    return new Priority(PriorityTypes.COMMISSION, commission).setCode(subjectCode);
+  }
+
+  /**
+   * Professor Priority generator or factory method
+   * @param professor     The chosen professor
+   * @param subjectCode   The subject's code
+   */
+  public static gpProfessor(professor: string, subjectCode: string): Priority {
+    return new Priority(PriorityTypes.PROFESSOR, professor).setCode(subjectCode);
+  }
+
+  /**
+   * Location Priority generator or factory method
+   * @param location      The chosen location
+   */
+  public static gpLocation(location: string): Priority {
+    return new Priority(PriorityTypes.LOCATION, location);
+  }
+
+  /**
+   * BusyTime Priority generator or factory method
+   * @param timeblocks    Array of busy time blocks
+   */
+  public static gpBusyTime(timeblocks: ITimeblock[]): Priority {
+    return new Priority(PriorityTypes.BUSYTIME, timeblocks);
+  }
+
+  /**
+   * FreeDay Priority generator or factory method
+   */
+  public static gpFreeDay(): Priority {
+    return new Priority(PriorityTypes.FREEDAY);
+  }
+
+  /**
+   * Superposition Priority generator or factory method
+   * @param maxSuperpositionHours Maximum amount of superposition hours allowed
+   */
+  public static gpSuperposition(maxSuperpositionHours: number): Priority {
+    return new Priority(PriorityTypes.SUPERPOSITION, maxSuperpositionHours);
+  }
+
+  /**
+   * Travel Priority generator or factory method
+   * @param travelTime  Maximum amount of time allowed for travelling
+   */
+  public static gpTravel(travelTime: number): Priority {
+    return new Priority(PriorityTypes.TRAVEL, travelTime);
+  }
+
+  /**
+   * Determines whether the priority is exclusive or not.
+   * @returns boolean
+   */
   isExclusive(): boolean {
     return this.exclusive;
+  }
+
+  /**
+   * Sets the current value of exclusivity.
+   * @param value   Boolean value, should be exclusive or not
+   */
+  setExclusive(value: boolean): Priority {
+    this.exclusive = value;
+    return this;
+  }
+
+  /**
+   * Sets the current value of the weight.
+   * @param value   Number value, the current weight
+   */
+  setWeight(value: number): Priority {
+    this.weight = value;
+    return this;
+  }
+
+  /**
+   * Sets the current value of the subject code,
+   * @param value   String value, the related subject code
+   */
+  setCode(value: string): Priority {
+    this.relatedSubjectCode = value;
+    return this;
+  }
+
+  /**
+   * Sets the current priority value.
+   * @param value   Any type of value according to the priority type chosen
+   */
+  setValue(value: any): Priority {
+    this.value = value;
+    return this;
+  }
+}
+
+export class SubjectSelection implements ISubjectSelection {
+  public code: string;
+  public weight: number;
+
+  constructor(code: string, weight: number) {
+    this.code = code;
+    this.weight = weight;
+  }
+
+  /**
+   * SubjectSelection Factory creates a list or array of SubjectSelection instances
+   * by getting the list of subjectCodes and generating their weights using the array's index.
+   * @param selections  String array with the subject codes
+   * @returns           Array of SubjectSelection
+   */
+  public static generateSelectionByArray(selections: string[]): SubjectSelection[] {
+    const subjectSelections: SubjectSelection[] = [];
+    for (let selectionIndex = 0 ; selectionIndex < selections.length ; selectionIndex++) {
+      subjectSelections.push(
+        new SubjectSelection(
+          selections[selectionIndex],
+          selections.length - selectionIndex
+        )
+      );
+    }
+    return subjectSelections;
   }
 }

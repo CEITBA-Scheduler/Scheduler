@@ -271,6 +271,7 @@ export class AlgorithmService {
     }
     return 1.0; // TODO implement minimum travel time
   }
+
   private getSuperposition(schedule1, schedule2): number {
     if (schedule1.day !== schedule2.day) {
       return 0.0;
