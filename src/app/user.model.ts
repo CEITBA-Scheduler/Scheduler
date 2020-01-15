@@ -1,7 +1,14 @@
+import { UserSelection } from './materia';
+
 export interface User {
   uid: string;
   email: string;
-  photoURL?: string;
-  displayName?: string;
-  myCustomData?: string;
+  displayName: string;
+  userSelection?: FirestoreCommissionSelection[];
+}
+
+export interface FirestoreCommissionSelection{
+  subjectCode: string;
+  subjectName: string;
+  commissions: string[];
 }

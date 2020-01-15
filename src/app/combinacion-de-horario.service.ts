@@ -3,6 +3,7 @@ import { Subject, SubjectCommissions, UserSelection, Commission } from './materi
 import { MateriaComisiones} from './materia-comisiones'
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { SgaLinkerService } from './sga-linker.service';
+import { AuthService } from './auth.service';
 
 /**
 Este servicio administra la información común llenada
@@ -17,11 +18,15 @@ en los distintos formularios, esto incluye
 })
 export class CombinacionDeHorarioService {
   subjectData: BehaviorSubject<Subject[]> = new BehaviorSubject<Subject[]>([]);
+  subjects: Subject[];
   // arreglo con las comisiones elegidas para cada materia
   subjectCommissions: { [id: string]: SubjectCommissions} = {}; // has all subjects
   subjectCommissionsBehavioural: BehaviorSubject<{ [id: string]: SubjectCommissions}> = new BehaviorSubject({});
 
-  constructor(private sgaLinkerService: SgaLinkerService) {
+  constructor(
+    private sgaLinkerService: SgaLinkerService,
+    private authService: AuthService
+  ) {
     this.getCommissionsSelectedData().subscribe((data: {[id: string]: SubjectCommissions}) => {
         console.log("data of commissions selected updated: ");
         console.log(data);
@@ -34,6 +39,7 @@ export class CombinacionDeHorarioService {
   setSubjectData(data: Observable<Subject[]>) {
     data.subscribe((subjects: Subject[]) => {
       this.subjectData.next(subjects);
+      this.subjects = subjects;
     });
 
     this.subjectData.subscribe(subjects => {
@@ -60,6 +66,8 @@ export class CombinacionDeHorarioService {
       }
       this.subjectCommissionsBehavioural.next(this.subjectCommissions);
     });
+
+    
   }
   removeSubject(subject: Subject){
    delete this.subjectCommissions[subject.code];
@@ -69,6 +77,13 @@ export class CombinacionDeHorarioService {
   getCommissionsSelectedData(): Observable<{[id: string]: SubjectCommissions}> {
     return this.subjectCommissionsBehavioural.asObservable();
   }
+  getSelectedData() : SubjectCommissions[]{
+    var ans : SubjectCommissions[] = [];
 
+    for (var item of this.subjects){
+      ans.push({subject: item, commissions: this.subjectCommissions[item.code].commissions});
+    }
+    return ans;
+  }
   // }
 }

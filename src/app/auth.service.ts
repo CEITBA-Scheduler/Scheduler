@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 
+/*** Este es el servicio que se encarga de autentificar al usuario ***/
+
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { User } from './user.model'; // optional
+import { User, FirestoreCommissionSelection } from './user.model'; // optional
 
 import { auth } from 'firebase/app';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
-
-import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
-import { ThrowStmt } from '@angular/compiler';
+//import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { Observable, of, BehaviorSubject } from 'rxjs';
+import { AngularFirestore } from 'angularfire2/firestore';
+import { SubjectCommissions, Commission } from './materia';
 
 @Injectable({
   providedIn: 'root'
@@ -18,12 +19,14 @@ import { ThrowStmt } from '@angular/compiler';
 export class AuthService implements CanActivate {
 
   user?: User = null;
+  behaviourUser: BehaviorSubject<User> = new BehaviorSubject<User>(null);
+
   credentials?;
 
   constructor(
     private afAuth: AngularFireAuth,
-    private afs: AngularFirestore,
-    private router: Router
+    private router: Router,
+    private afs: AngularFirestore
 ) {
     // Get the auth state, then fetch the Firestore user document or return null
     this.afAuth.authState.subscribe(user => {
@@ -31,17 +34,63 @@ export class AuthService implements CanActivate {
       if(user){
         //logged in
         this.user = user;
+        this.generateUserDb();
+
       }else{
         // Logged out
         this.user = null;
       }
+      this.behaviourUser.next(this.user);
     })
+  }
+  generateUserDb(){
+    console.log("Generating user db ...");
+    this.afs.collection("users").doc(this.user.uid).set({
+      uid: this.user.uid,
+      email: this.user.email,
+      displayName: this.user.displayName
+    });
+  }
+  updateUserSelection(subjectCommissions: SubjectCommissions[]){
+    this.user.userSelection = [];
+
+    for (var item of subjectCommissions){
+      var comList: string[] = []; 
+
+      for (var com of item.commissions){
+        comList.push(com.name);
+      }
+
+      this.user.userSelection.push(
+        {subjectCode: item.subject.code, subjectName: item.subject.name, commissions: comList}
+      );
+    }
+  }
+  getUserObservable(): Observable<User>{
+    return this.behaviourUser.asObservable();
+  }
+  getUser(){
+    return this.user;
   }
 
   getLogged(): boolean {
     return this.user != null;
   }
 
+  getUserUid() : string{
+    if (this.user == null){
+      return "none";
+    }else{
+      return this.user.uid;
+    }
+  }
+  getUserEmail(): string{
+    if (this.user == null){
+      return "none";
+    }else{
+      return this.user.email;
+    }
+  }
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     if (this.getLogged()) {
       if (route.data.requireLogin) {
@@ -52,7 +101,7 @@ export class AuthService implements CanActivate {
       }
     } else {
       if (route.data.requireLogin) {
-        this.router.navigate(['login']);
+        //this.router.navigate(['login']);
         return false;
       } else {
         return true;
@@ -62,17 +111,18 @@ export class AuthService implements CanActivate {
 
   async signOut() {
     await this.afAuth.auth.signOut();
-    this.router.navigate(['/login']);
+    //this.router.navigate(['/login']);
   }
-
+  
   signInWithGoogle() {
     const provider = new auth.GoogleAuthProvider();
     this.afAuth.auth.signInWithPopup(provider).then(
       result =>{
         this.credentials = result;
-        console.log(this.credentials)
-        console.log(this.credentials["user"]["email"])
-        //console.log("Success... Google account Linked!")
+
+        console.log("Success... Google account Linked!");
+        
+      
       }).catch(err=> {
           console.log(err)
           console.log("Failed to do")

@@ -4,6 +4,9 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, map, startWith } from 'rxjs/operators';
 import { parse } from 'date-fns';
+import { UserSelection } from './materia';
+import { AuthService } from './auth.service';
+import { User } from './user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +18,8 @@ export class SgaLinkerService {
   url : string = "https://itbagw.itba.edu.ar/api/v1/courseCommissions/1wXxftFa4NTfsmOstgnQHDq55m7jZL1jq7r7gWlprbHg?level=GRADUATE&year=2019&period=SecondSemester";
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private authService: AuthService
   ) {
     this.AllSubjects = new BehaviorSubject<{ [id: string] : Subject; }>({});
     this.getDataFromApi();
@@ -64,7 +68,6 @@ export class SgaLinkerService {
     return this.http.get(this.url);
   }
   getCommissions(subject : Subject) : Commission[]{
-
     return this.AllSubjectsValue[subject.code].commissions;
   }
 
@@ -107,5 +110,12 @@ export class SgaLinkerService {
       //console.log(this.getCommissionInfo('Álgebra Lineal','A'))
     })
   }
+  
+  
+  /*private getUserObjectFromUserSelection(userSelection: UserSelection) : User{
+    
+
+    return user;
+  }*/
 }
 

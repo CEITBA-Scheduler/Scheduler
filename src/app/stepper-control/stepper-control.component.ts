@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { parse, set, format } from 'date-fns';
+import { Output, EventEmitter } from '@angular/core';
 
 /* Stepper control: handles the program highest level
 structure to different algoritm stages */
@@ -13,6 +14,7 @@ structure to different algoritm stages */
 })
 export class StepperControlComponent implements OnInit {
   // no ts code
+  @Output() onDone: EventEmitter<void> = new EventEmitter<void>();
 
   constructor() {
     var test : Date = parse("02:50", 'HH:mm', new Date());
@@ -24,5 +26,7 @@ export class StepperControlComponent implements OnInit {
   ngOnInit() {
 
   }
-
+  done(){
+    this.onDone.emit(null);
+  }
 }

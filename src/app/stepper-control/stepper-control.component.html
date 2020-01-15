@@ -13,9 +13,11 @@
       <app-configurations>
       </app-configurations>
     </mat-step>
-    <mat-step label="POSIBLES HORARIOS">
-      <button>Opcion 1</button>
-      <button>Opcion 2</button>
-      <button>Opcion 3</button>
+    <mat-step label="TERMINADO">
+      <mat-card>
+        <div fxLayoutAlign="center center" >
+          <button mat-raised-button color="primary" (click)="done()">Calcular combinaciones</button>
+        </div>
+      </mat-card>
     </mat-step>
 </mat-vertical-stepper>

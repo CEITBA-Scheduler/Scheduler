@@ -1,6 +1,9 @@
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
+import { User } from '../user.model'; // optional
+import { SgaLinkerService } from '../sga-linker.service';
+
 
 @Component({
   selector: 'app-login',
@@ -9,7 +12,7 @@ import { AuthService } from '../auth.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router, private linker: SgaLinkerService) { }
 
   ngOnInit() {
     if (this.authService.getLogged()){
@@ -18,6 +21,12 @@ export class LoginComponent implements OnInit {
     }else{
       console.log("El usuario no esta logeado");
     }
+
+    this.authService.getUserObservable().subscribe((user : User) => {
+      if (user != null){
+        this.router.navigate(['/combinadorDeHorarios']);
+      }
+    });
   }
 
   iniciarSesion() {
