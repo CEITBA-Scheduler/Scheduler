@@ -9,7 +9,8 @@ import {
   ISubjectSelection,
   PriorityTypes,
   Transform,
-  VerifierFunction
+  VerifierFunction,
+  Weekday
 } from './algorithm-interface';
 import {
   Combination,
@@ -182,20 +183,16 @@ export class AlgorithmService {
           break;
 
         case PriorityTypes.FREEDAY:
-          let isFreeDay = true; // All days are freeDays until proven otherwise
-          for (const currentCommission of combination.subjects) {
-            for (const currentTime of currentCommission.commissionTimes) {
-              if (currentTime.day === currentPriority.value) {
-                isFreeDay = false; // If we find a schedule on our freeday it is NOT a priority
-                break;
-              }
+          const freeDays: Weekday[] = combination.getFreeDays();
+          if (freeDays.length > 0) {
+            const freeDay = freeDays.find(element => element === currentPriority.value);
+            if (currentPriority.value === Weekday.ANY || freeDay) {
+              combination.priorities.push(Number(index));
             }
-            if (!isFreeDay) {
-              if (currentPriority.isExclusive()) {return false; } // Exclusive condition failed verify
-              break; } // This line is to optimize code. Not entirely necessary
-          }
-          if (isFreeDay) {
-            combination.priorities.push(Number(index));
+          } else {
+            if (currentPriority.isExclusive()) {
+              return false;
+            }
           }
           break;
 

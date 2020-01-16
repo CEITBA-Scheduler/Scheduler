@@ -9,6 +9,7 @@ export interface ICombination {
   priorities: number[];
   subjects: ICombinationSubject[];
 
+  getFreeDays(): Weekday[];
   hasPriorities(): boolean;
 }
 
@@ -20,6 +21,7 @@ export interface ICombinationSubject {
   commissionName: string;
   commissionTimes: ITimeblock[];
 
+  getFreeDays(): Weekday[];
   hasProfessors(): boolean;
   hasCommissionTimes(): boolean;
 }
@@ -53,6 +55,8 @@ export interface ICommission {
   subjectCode: string;
   professors: string[];
   schedule: ITimeblock[];
+
+  getFreeDays(): Weekday[];
 }
 
 /**

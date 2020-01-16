@@ -1,5 +1,16 @@
-import { ICombination, ICombinationSubject, ICommission, ITimeblock, ISubject, Weekday } from './algorithm-interface';
-import { ISubjectSelection, IPriority, PriorityTypes } from './algorithm-interface';
+import {
+  ICombination,
+  ICombinationSubject,
+  ICommission,
+  ITimeblock,
+   ISubject,
+   Weekday
+} from './algorithm-interface';
+import {
+  ISubjectSelection,
+  IPriority,
+  PriorityTypes
+} from './algorithm-interface';
 
 export class CombinationSubject implements ICombinationSubject {
   public name: string;
@@ -15,6 +26,27 @@ export class CombinationSubject implements ICombinationSubject {
     this.professors = professors;
     this.commissionName = commissionName;
     this.commissionTimes = commissionTimes;
+  }
+
+  /**
+   * Returns an array of weekdays containing the free days
+   * where the subject has no lectures.
+   */
+  getFreeDays(): Weekday[] {
+    const freeDays: Weekday[] = [
+      Weekday.MONDAY, Weekday.TUESDAY, Weekday.WEDNESDAY,
+      Weekday.THURSDAY, Weekday.FRIDAY
+    ];
+
+    for (const timeblock of this.commissionTimes) {
+      const freeDay = freeDays.find(element => element === timeblock.day);
+      if (freeDay) {
+        const index = freeDays.indexOf(freeDay);
+        freeDays.splice(index, 1);
+      }
+    }
+
+    return freeDays;
   }
 
   /**
@@ -41,6 +73,30 @@ export class Combination implements ICombination {
     this.weight = weight;
     this.priorities = priorities;
     this.subjects = subjects;
+  }
+
+  /**
+   * Returns an array of weekday with the free days where
+   * the combination has no lectures, by comparing the freedays
+   * of each subject.
+   */
+  getFreeDays(): Weekday[] {
+    const freeDays: Weekday[] = [
+      Weekday.MONDAY, Weekday.TUESDAY, Weekday.WEDNESDAY,
+      Weekday.THURSDAY, Weekday.FRIDAY
+    ];
+
+    for (const subject of this.subjects) {
+      const subjectFreeDays = subject.getFreeDays();
+      for (const subjectFreeDay of subjectFreeDays) {
+        const index = freeDays.indexOf(subjectFreeDay);
+        if (index > -1) {
+          freeDays.splice(index, 1);
+        }
+      }
+    }
+
+    return freeDays;
   }
 
   /**
@@ -102,6 +158,27 @@ export class Commission implements ICommission {
     this.subjectCode = subjectCode;
     this.professors = professors;
     this.schedule = schedule;
+  }
+
+  /**
+   * Returns an array of weekdays where the commission
+   * has no lectures. This is only for this commission.
+   */
+  getFreeDays(): Weekday[] {
+    const freeDays: Weekday[] = [
+      Weekday.MONDAY, Weekday.TUESDAY, Weekday.WEDNESDAY,
+      Weekday.THURSDAY, Weekday.FRIDAY
+    ];
+
+    for (const timeblock of this.schedule) {
+      const freeDay = freeDays.find(element => element === timeblock.day);
+      if (freeDay) {
+        const index = freeDays.indexOf(freeDay);
+        freeDays.splice(index, 1);
+      }
+    }
+
+    return freeDays;
   }
 }
 
