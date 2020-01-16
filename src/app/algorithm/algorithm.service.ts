@@ -156,25 +156,29 @@ export class AlgorithmService {
             } else if (currentPriority.isExclusive()) {
               return false;
             }
-          } else {
+          } else if (currentPriority.isExclusive()) {
             return false;
           }
           break;
 
         case PriorityTypes.PROFESSOR:
           let hasPriorityTeacher = false; // We assume there is no prioritized teacher to begin
-          for (const currentCommission of combination.subjects) {
-            if (currentCommission.code === currentPriority.relatedSubjectCode) {
-              for (const currentTeacher of currentCommission.professors) {
-                if (currentTeacher !== currentPriority.value) {
-                  continue;
-                }
+          const professorSubject = combination.subjects.find(subject => subject.code === currentPriority.relatedSubjectCode);
+          if (professorSubject && professorSubject.hasProfessors()) {
+            for (const currentTeacher of professorSubject.professors) {
+              if (currentTeacher === currentPriority.value) {
                 combination.priorities.push(Number(index));
                 hasPriorityTeacher = true;
+                break;
               }
             }
+          } else if (currentPriority.isExclusive()) {
+            return false;
           }
-          if (currentPriority.isExclusive() && !hasPriorityTeacher) {return false; } // Exclusive condition failed verify
+
+          if (currentPriority.isExclusive() && !hasPriorityTeacher) {
+            return false;
+          } // Exclusive condition failed verify
           break;
 
         case PriorityTypes.FREEDAY:
