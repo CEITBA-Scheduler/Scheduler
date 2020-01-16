@@ -31,6 +31,8 @@ import { firebaseConfig } from './secrets';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import { DragSubjectsComponent } from './drag-subjects/drag-subjects.component';
+import { SubjectCardComponent } from './subject-card/subject-card.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +50,9 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
     TestingModule2Component,
     TestingModule3Component,
     CombinerComponent,
-    LoginComponent
+    LoginComponent,
+    DragSubjectsComponent,
+    SubjectCardComponent
   ],
   imports: [
     BrowserModule,

@@ -1,13 +1,13 @@
-<mat-card class="example-card">
-    
-    <div>
-    <!--fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="20px"-->
-       <!-- <div fxFill> <b>Materias seleccionadas</b> </div> -->
-    
-        <app-subject-table (setData)="setData($event)" fxFill>
-        </app-subject-table>
-    
-    </div>
-</mat-card>
-<mat-divider>   
-</mat-divider>
+
+
+<app-subject-search (onOptionSelected)="addMateria($event)"></app-subject-search> 
+
+
+
+<!--app-drag-commissions [subjects]="materia" (setCommissionData)="setCommissionData(materia, $event)" (onDestroy)="removeCommissionData(materia)"-->
+<!--/app-drag-commissions-->
+
+<app-drag-subjects [subjects]="plainData" (setSubjectData)="setSubjectData(plainData, $event)" (onDestroy)="removeSubjectData(plainData)">
+    <div fxLayout="column" fxLayout="column wrap" fxLayoutGap="25px" ></div>
+</app-drag-subjects > 
+

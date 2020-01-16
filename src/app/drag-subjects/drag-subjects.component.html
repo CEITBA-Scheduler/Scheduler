@@ -1,0 +1,15 @@
+
+
+<div class="example-container">
+    <div
+        cdkDropList
+        [cdkDropListData]="subjects"
+        class="example-list"
+        (cdkDropListDropped)="drop($event)">
+        <div class="example-box" *ngFor="let item of subjects" cdkDrag>
+          <!--app-subject-card [commission]="item"></!--app-subject-card-->
+          <app-subject-card [subject]="item"></app-subject-card>
+        </div>
+      </div>
+    </div>
+
