@@ -16,6 +16,20 @@ export class CombinationSubject implements ICombinationSubject {
     this.commissionName = commissionName;
     this.commissionTimes = commissionTimes;
   }
+
+  /**
+   * Returns whether the combination has or not professors.
+   */
+  hasProfessors(): boolean {
+    return this.professors.length > 0;
+  }
+
+  /**
+   * Returns whether the combination has or not commission times.
+   */
+  hasCommissionTimes(): boolean {
+    return this.commissionTimes.length > 0;
+  }
 }
 
 export class Combination implements ICombination {

@@ -137,7 +137,9 @@ export class AlgorithmService {
               for (const firstTimeblock of combination.subjects[i].commissionTimes) {
                 for (const secondTimeblock of combination.subjects[j].commissionTimes) {
                   if (firstTimeblock.overlaps(secondTimeblock) > currentPriority.value) {
-                    return !currentPriority.isExclusive();
+                    if (currentPriority.isExclusive()) {
+                      return false;
+                    }
                   }
                 }
               }
@@ -147,17 +149,16 @@ export class AlgorithmService {
           break;
 
         case PriorityTypes.COMMISSION:
-          let hasPriorityCommission = false; // We assume there is no prioritized commission to start
-          for (const currentCommission of combination.subjects) {
-            if (currentCommission.code !== currentPriority.relatedSubjectCode ||
-              currentCommission.commissionName !== currentPriority.value) {
-            } else { // We found the prioritized commission in our combination
+          const prioritySubject = combination.subjects.find(subject => subject.code === currentPriority.relatedSubjectCode);
+          if (prioritySubject) {
+            if (prioritySubject.commissionName === currentPriority.value) {
               combination.priorities.push(Number(index));
-              hasPriorityCommission = true;
-              break;
+            } else if (currentPriority.isExclusive()) {
+              return false;
             }
+          } else {
+            return false;
           }
-          if (currentPriority.isExclusive() && !hasPriorityCommission) {return false; } // Exclusive condition failed verify
           break;
 
         case PriorityTypes.PROFESSOR:

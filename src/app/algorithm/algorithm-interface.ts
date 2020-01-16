@@ -19,6 +19,9 @@ export interface ICombinationSubject {
   professors: string[];
   commissionName: string;
   commissionTimes: ITimeblock[];
+
+  hasProfessors(): boolean;
+  hasCommissionTimes(): boolean;
 }
 
 /**
