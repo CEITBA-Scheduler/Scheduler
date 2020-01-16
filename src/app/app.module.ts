@@ -36,6 +36,7 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 
 import { MatIconModule, MatButtonModule } from '@angular/material';
+import { InfoSubjectInterestComponent } from './info-subject-interest/info-subject-interest.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { MatIconModule, MatButtonModule } from '@angular/material';
     TestingModule2Component,
     TestingModule3Component,
     CombinerComponent,
-    LoginComponent
+    LoginComponent,
+    InfoSubjectInterestComponent
   ],
   imports: [
     BrowserModule,
@@ -63,7 +65,8 @@ import { MatIconModule, MatButtonModule } from '@angular/material';
       { path: 'login', component: LoginComponent },
       { path: 'testingModule1', component: TestingModule1Component },
       { path: 'testingModule2', component: TestingModule2Component },
-      { path: 'testingModule3', component: TestingModule3Component }
+      { path: 'testingModule3', component: TestingModule3Component },
+      { path: 'infoSubject', component: InfoSubjectInterestComponent }
     ]),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule,

@@ -25,14 +25,16 @@ export class SgaLinkerService {
     this.getDataFromApi();
 
   }
-
+  removeTildes(word: string){
+    return word.replace("á","a").replace("é","e").replace("í","i").replace("ó","o").replace("ú","u");
+  }
   addToAllSubjects(name, commission, currCommission) {
     if(!this.AllSubjectsValue[commission.subjectCode]){
       // if such subject doesn't exist, we create it and then add it to the dictionary
       let currSubject : Subject = {
         name: commission.subjectName,
         code: commission.subjectCode,
-        search: (commission.subjectName + commission.subjectCode).toLowerCase(),
+        search: this.removeTildes((commission.subjectName + commission.subjectCode).toLowerCase()),
         commissions: [currCommission],
         priority: 0
       };
@@ -48,7 +50,6 @@ export class SgaLinkerService {
   }
 
   getAllSubjectsAsList() : Observable<Subject[]> {
-
     // Esta funcion consigue en una lista todos los valores de un diccionario
     let getValues = (dic : {[id: string] : Subject}) : Subject[] => {
       var ans : Subject[] = [];

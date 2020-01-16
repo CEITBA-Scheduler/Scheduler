@@ -29,7 +29,7 @@ export class SubjectSearchComponent implements OnInit {
 
   options: Observable<Subject[]>;
   filteredOptions: Observable<Subject[]>;
-  searchValue: string;
+  searchValue: string = "";
   myControl = new FormControl();
   displayedColumns: string[] = ['name', 'code'];
 
@@ -48,6 +48,9 @@ export class SubjectSearchComponent implements OnInit {
     );
     this.filteredOptions = this.getFilteredValues();
   }
+  removeTildes(word: string){
+    return word.replace("á","a").replace("é","e").replace("í","i").replace("ó","o").replace("ú","u");
+  }
   private updateWrittenValue(value){
     this.searchValue = value.toLowerCase();
     this.filteredOptions = this.getFilteredValues();
@@ -56,7 +59,7 @@ export class SubjectSearchComponent implements OnInit {
     /// filtramos acorde al input del usuario el observable
     return this.options.pipe(
       map(
-        (options: Subject[]) => options.filter((option: Subject) => option.search.includes(this.searchValue))
+        (options: Subject[]) => options.filter((option: Subject) => option.search.includes(this.removeTildes(this.searchValue)))
       )
     );
   }

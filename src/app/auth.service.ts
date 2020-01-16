@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 /*** Este es el servicio que se encarga de autentificar al usuario ***/
 
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { User, FirestoreCommissionSelection } from './user.model'; // optional
+import { User, FirestoreCommissionSelection, TickboxSelection } from './user.model'; // optional
 
 import { auth } from 'firebase/app';
 //import { AngularFireAuth } from '@angular/fire/auth';
@@ -46,12 +46,12 @@ export class AuthService implements CanActivate {
   generateUserDb(){
     console.log("Generating user db ...");
     this.afs.collection("users").doc(this.user.uid).set({
-      uid: this.user.uid,
-      email: this.user.email,
-      displayName: this.user.displayName
+      uid: this.user.uid
     });
   }
-  updateUserSelection(subjectCommissions: SubjectCommissions[]){
+  
+  /// actualizar en la información de usuario la información introducida en los formularios
+  updateUserSelection(subjectCommissions: SubjectCommissions[], tickboxSelection: TickboxSelection){
     this.user.userSelection = [];
 
     for (var item of subjectCommissions){
@@ -64,6 +64,7 @@ export class AuthService implements CanActivate {
       this.user.userSelection.push(
         {subjectCode: item.subject.code, subjectName: item.subject.name, commissions: comList}
       );
+      this.user.tickboxSelection = tickboxSelection;
     }
   }
   getUserObservable(): Observable<User>{

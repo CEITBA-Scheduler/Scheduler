@@ -8,13 +8,14 @@ import {MatCheckboxChange} from '@angular/material/checkbox';
 })
 export class CheckboxItemComponent implements OnInit {
   @Input() name: string;
+  @Input() storeName: string;
 
   constructor(private generalProgramService: GeneralProgramService) { }
 
   ngOnInit() {
-    this.generalProgramService.createCheckbox(this.name); // crea un nuevo checkbox con nuestro nombre en el servicio
+    this.generalProgramService.createCheckbox(this.storeName); // crea un nuevo checkbox con nuestro nombre en el servicio
   }
   changeStatus(checkStatus: MatCheckboxChange) { // esta funcion se llama cuando cambia de estado el checkbox, matCheckboxChange contiene el cambio de estado
-    this.generalProgramService.updateCheckbox(this.name, checkStatus.checked); // le aviso al servicio que cambio de estado el checkbox
+    this.generalProgramService.updateCheckbox(this.storeName, checkStatus.checked); // le aviso al servicio que cambio de estado el checkbox
   }
 }
