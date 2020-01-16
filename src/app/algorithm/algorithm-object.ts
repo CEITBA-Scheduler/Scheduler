@@ -28,6 +28,14 @@ export class Combination implements ICombination {
     this.priorities = priorities;
     this.subjects = subjects;
   }
+
+  /**
+   * Returns true if the combination fulfills any
+   * priority.
+   */
+  hasPriorities(): boolean {
+    return this.priorities.length > 0;
+  }
 }
 
 export class Subject implements ISubject {
@@ -109,6 +117,43 @@ export class Timeblock implements ITimeblock {
   }
 
   /**
+   * Returns the duration of the timeblock.
+   */
+  duration(): number {
+    return this.end - this.start;
+  }
+
+  /**
+   * Returns the amount of time in which both blocks overlap,
+   * if returns 0.0 then there is no overlapping between both
+   * blocks.
+   * @param other     The other timeblock
+   */
+  overlaps(other: ITimeblock): number {
+    let overlappingTime = 0.0;
+
+    if (this.day === other.day) {
+      if (this.start >= other.start && this.start <= other.end) {
+        if (this.end <= other.end && this.end >= other.start) {
+          overlappingTime = this.duration();
+        } else {
+          overlappingTime = other.end - this.start;
+        }
+      } else if (this.end <= other.end && this.end >= other.start) {
+        if (this.start >= other.start && this.start <= other.end) {
+          overlappingTime = this.duration();
+        } else {
+          overlappingTime = this.end - other.start;
+        }
+      } else if (this.start <= other.start && this.end >= other.end) {
+        overlappingTime = other.duration();
+      }
+    }
+
+    return overlappingTime;
+  }
+
+  /**
    * Sets the building field of the instance.
    * @param value   Building
    */
@@ -126,12 +171,18 @@ export class Timeblock implements ITimeblock {
     return this;
   }
 
+  /**
+   * Returns the end time as a formatted string.
+   */
   endToHHmm(): string {
     const minutes = Math.round(60 * (this.end - Math.floor(this.end)));
     const hours = Math.floor(this.end);
     return minutes < 10.0 / 60.0 ? hours + ':' + '0' + minutes : hours + ':' + minutes;
   }
 
+  /**
+   * Returns the start time as a formatted string.
+   */
   startToHHmm(): string {
     const minutes = Math.round(60 * (this.start - Math.floor(this.start)));
     const hours = Math.floor(this.start);
