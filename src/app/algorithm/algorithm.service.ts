@@ -212,19 +212,30 @@ export class AlgorithmService {
           break;
 
         case PriorityTypes.LOCATION:
-          let hasPriorityLocation = false; // We assume there is no prioritized teacher to begin
-          for (const currentCommission of combination.subjects) {
-            if (currentCommission.code === currentPriority.relatedSubjectCode) {
-              for (const currentTimeblock of currentCommission.commissionTimes) {
-                if (currentTimeblock.building !== currentPriority.value) {
-                  continue;
+          let failed = false;
+
+          for (let day = Weekday.MONDAY ; day <= Weekday.FRIDAY ; day++) {
+            const timeblocks = combination.getTimeblocksByDay(day);
+            const location = timeblocks[0].building;
+            for (let timeblockIndex = 1 ; timeblockIndex < timeblocks.length ; timeblockIndex++) {
+              if (location !== timeblocks[timeblockIndex].building) {
+                if (currentPriority.isExclusive()) {
+                  return false;
+                } else {
+                  failed = true;
+                  break;
                 }
-                combination.priorities.push(Number(index));
-                hasPriorityLocation = true;
               }
             }
+
+            if (failed) {
+              break;
+            }
           }
-          if (currentPriority.isExclusive() && !hasPriorityLocation) {return false; } // Exclusive condition failed verify
+
+          if (!failed) {
+            combination.priorities.push(Number(index));
+          }
           break;
 
         case PriorityTypes.TRAVEL:

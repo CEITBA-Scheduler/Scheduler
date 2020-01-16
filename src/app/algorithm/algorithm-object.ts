@@ -29,6 +29,22 @@ export class CombinationSubject implements ICombinationSubject {
   }
 
   /**
+   * Returns an array of timeblocks with the same day.
+   * @param day The field's value for the timeblock's day
+   */
+  getTimeblocksByDay(day: Weekday): ITimeblock[] {
+    const timeblocks: ITimeblock[] = [];
+
+    for (const commissionTime of this.commissionTimes) {
+      if (commissionTime.day === day) {
+        timeblocks.push(commissionTime);
+      }
+    }
+
+    return timeblocks;
+  }
+
+  /**
    * Returns an array of weekdays containing the free days
    * where the subject has no lectures.
    */
@@ -73,6 +89,23 @@ export class Combination implements ICombination {
     this.weight = weight;
     this.priorities = priorities;
     this.subjects = subjects;
+  }
+
+  /**
+   * Returns an array of all timeblocks with the same day field.
+   * @param day   The user's chosen day value.
+   */
+  getTimeblocksByDay(day: Weekday): ITimeblock[] {
+    let timeblocks: ITimeblock[] = [];
+
+    for (const subject of this.subjects) {
+      const subjectTimeblocks = subject.getTimeblocksByDay(day);
+      if (subjectTimeblocks.length > 0) {
+        timeblocks = timeblocks.concat(subjectTimeblocks);
+      }
+    }
+
+    return timeblocks;
   }
 
   /**
