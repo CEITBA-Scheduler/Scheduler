@@ -119,7 +119,7 @@ export class Combination implements ICombination {
   public static copy(combination: Combination): Combination {
     const newCombination = new Combination(
       combination.weight,
-      combination.priorities,
+      Object.assign([], combination.priorities),
       CombinationSubject.copyMany(combination.subjects)
     );
     return newCombination;
