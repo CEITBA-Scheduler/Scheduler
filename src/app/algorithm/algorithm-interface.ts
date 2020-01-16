@@ -8,6 +8,8 @@ export interface ICombination {
   weight: number;
   priorities: number[];
   subjects: ICombinationSubject[];
+
+  hasPriorities(): boolean;
 }
 
 export interface ICombinationSubject {
@@ -72,6 +74,13 @@ export interface ITimeblock {
   end: number;
   building?: string;
   classroom?: string;
+
+  setBuilding(value: string): ITimeblock;
+  setClassRoom(value: string): ITimeblock;
+  endToHHmm(): string;
+  startToHHmm(): string;
+  overlaps(other: ITimeblock): number;
+  duration(): number;
 }
 
 /**

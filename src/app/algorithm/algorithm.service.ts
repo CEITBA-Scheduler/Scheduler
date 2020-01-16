@@ -5,6 +5,7 @@ import {
   ICommission,
   IPriority,
   ISubject,
+  ITimeblock,
   ISubjectSelection,
   PriorityTypes,
   Transform,
@@ -124,39 +125,25 @@ export class AlgorithmService {
    * @param priorities  List of priorities and criteria set by the user
    */
   private verifiesPriorities(combination: ICombination, priorities: IPriority[]): boolean {
-    if (!combination.hasOwnProperty('priorities')) { combination.priorities = []; } // property check
-    // tslint:disable-next-line:forin
-    for (const index in priorities) {
+    for (let index = 0 ; index < priorities.length ; index++) {
       const currentPriority = priorities[index];
 
       switch (currentPriority.type) {
         // First verification is by superposition.
         // This is usually an exclusive condition.
         case PriorityTypes.SUPERPOSITION:
-          let tooSuperposed = false; // We assume our combination is not too superposed unless the contrary is proved
-          let totalSuperposition = 0.0;
-          let numberOfSuperpositions = 0;
           for (let i = 0; i < combination.subjects.length; i++) {
-            if (tooSuperposed) {break; } // optimization line. Can be removed.
             for (let j = i + 1; j < combination.subjects.length; j++) {
-              for (const currentTime1 of combination.subjects[i].commissionTimes) {
-                for (const currentTime2 of combination.subjects[j].commissionTimes) {
-                  const superposition = this.getSuperposition(currentTime1, currentTime2);
-                  if (superposition > 0.0) {
-                    totalSuperposition += superposition;
-                    numberOfSuperpositions++;
-                    if (superposition > currentPriority.value) {
-                      if (currentPriority.isExclusive()) { return false; } // Exclusive condition failed verify
-                      tooSuperposed = true;
-                    }
+              for (const firstTimeblock of combination.subjects[i].commissionTimes) {
+                for (const secondTimeblock of combination.subjects[j].commissionTimes) {
+                  if (firstTimeblock.overlaps(secondTimeblock) > currentPriority.value) {
+                    return !currentPriority.isExclusive();
                   }
                 }
               }
             }
           }
-          if (!tooSuperposed) {
-            combination.priorities.push(Number(index));
-          }
+          combination.priorities.push(Number(index));
           break;
 
         case PriorityTypes.COMMISSION:
@@ -274,21 +261,6 @@ export class AlgorithmService {
       return 0.0;
     }
     return 1.0; // TODO implement minimum travel time
-  }
-
-  private getSuperposition(schedule1, schedule2): number {
-    if (schedule1.day !== schedule2.day) {
-      return 0.0;
-    }
-    const duration1 = schedule1.hourTo - schedule1.hourFrom; // these variables shorten ternary expressions
-    const duration2 = schedule2.hourTo - schedule2.hourFrom;
-    if (schedule1.hourFrom >= schedule2.hourFrom && schedule1.hourFrom < schedule2.hourTo ) {
-      return schedule1.hourTo <= schedule2.hourTo ? duration1 : duration1 - schedule1.hourTo + schedule2.hourTo ;
-    }
-    if (schedule2.hourFrom >= schedule1.hourFrom && schedule2.hourFrom < schedule1.hourTo ) {
-      return schedule2.hourTo <= schedule1.hourTo ? duration2 : duration2 - schedule2.hourTo + schedule1.hourTo ;
-    }
-    return 0.0;
   }
 
   /**
