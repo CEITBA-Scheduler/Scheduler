@@ -243,19 +243,21 @@ export class AlgorithmService {
 
           for (let day = Weekday.MONDAY ; day <= Weekday.FRIDAY ; day++) {
             const timeblocks = combination.getTimeblocksByDay(day);
-            const location = timeblocks[0].building;
-            for (let timeblockIndex = 1 ; timeblockIndex < timeblocks.length ; timeblockIndex++) {
-              if (location !== timeblocks[timeblockIndex].building) {
-                if (currentPriority.isExclusive()) {
-                  return false;
-                } else {
-                  failedLocation = true;
-                  break;
+            if (timeblocks.length > 0) {
+              const location = timeblocks[0].building;
+              for (let timeblockIndex = 1 ; timeblockIndex < timeblocks.length ; timeblockIndex++) {
+                if (location !== timeblocks[timeblockIndex].building) {
+                  if (currentPriority.isExclusive()) {
+                    return false;
+                  } else {
+                    failedLocation = true;
+                    break;
+                  }
                 }
               }
-            }
-            if (failedLocation) {
-              break;
+              if (failedLocation) {
+                break;
+              }
             }
           }
           if (!failedLocation) {

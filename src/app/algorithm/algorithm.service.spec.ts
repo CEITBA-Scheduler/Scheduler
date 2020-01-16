@@ -49,9 +49,7 @@ fdescribe('AlgorithmService', () => {
       [
         FISICA_3,
         ELECTROTECNIA_1,
-        MATEMATICA_5,
-        LABORATORIO_DE_ELECTRONICA,
-        MATEMATICA_DISCRETA
+        MATEMATICA_5
       ]
     );
     console.log('User SubjectSelections');
@@ -59,9 +57,11 @@ fdescribe('AlgorithmService', () => {
 
     const priorities: Priority[] = Priority.generateWeightedPriorities(
       [
-        Priority.gpCommission('A', FISICA_3).setExclusive(true),
+        Priority.gpCommission('A', FISICA_3),
         Priority.gpFreeDay(Weekday.THURSDAY),
-        Priority.gpBusyTime([new Timeblock(Weekday.FRIDAY, 8, 12)])
+        Priority.gpBusyTime([new Timeblock(Weekday.FRIDAY, 8, 12)]),
+        Priority.gpLocation(),
+        Priority.gpSuperposition(3),
       ]
     );
     console.log('User Priorities');

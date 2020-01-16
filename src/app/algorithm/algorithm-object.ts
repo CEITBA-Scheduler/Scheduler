@@ -75,9 +75,8 @@ export class CombinationSubject implements ICombinationSubject {
     ];
 
     for (const timeblock of this.commissionTimes) {
-      const freeDay = freeDays.find(element => element === timeblock.day);
-      if (freeDay) {
-        const index = freeDays.indexOf(freeDay);
+      const index = freeDays.indexOf(timeblock.day);
+      if (index > -1) {
         freeDays.splice(index, 1);
       }
     }
@@ -148,18 +147,19 @@ export class Combination implements ICombination {
    * of each subject.
    */
   getFreeDays(): Weekday[] {
-    const freeDays: Weekday[] = [
-      Weekday.MONDAY, Weekday.TUESDAY, Weekday.WEDNESDAY,
-      Weekday.THURSDAY, Weekday.FRIDAY
-    ];
+    const freeDaysCount = [0, 0, 0, 0, 0, 0, 0];
+    const freeDays = [];
 
     for (const subject of this.subjects) {
       const subjectFreeDays = subject.getFreeDays();
       for (const subjectFreeDay of subjectFreeDays) {
-        const index = freeDays.indexOf(subjectFreeDay);
-        if (index > -1) {
-          freeDays.splice(index, 1);
-        }
+        freeDaysCount[subjectFreeDay]++;
+      }
+    }
+
+    for (let index = 0 ; index < freeDaysCount.length ; index++) {
+      if (freeDaysCount[index] >= this.subjects.length) {
+        freeDays.push(index);
       }
     }
 
