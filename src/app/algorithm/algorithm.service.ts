@@ -133,6 +133,7 @@ export class AlgorithmService {
       switch (currentPriority.type) {
 
         case PriorityTypes.SUPERPOSITION:
+          let failedSuperposition = false;
           for (let i = 0; i < combination.subjects.length; i++) {
             for (let j = i + 1; j < combination.subjects.length; j++) {
               for (const firstTimeblock of combination.subjects[i].commissionTimes) {
@@ -140,13 +141,27 @@ export class AlgorithmService {
                   if (firstTimeblock.overlaps(secondTimeblock) > currentPriority.value) {
                     if (currentPriority.isExclusive()) {
                       return false;
+                    } else {
+                      failedSuperposition = true;
+                      break;
                     }
                   }
                 }
+                if (failedSuperposition) {
+                  break;
+                }
+              }
+              if (failedSuperposition) {
+                break;
               }
             }
+            if (failedSuperposition) {
+              break;
+            }
           }
-          combination.priorities.push(Number(index));
+          if (!failedSuperposition) {
+            combination.priorities.push(Number(index));
+          }
           break;
 
         case PriorityTypes.COMMISSION:
@@ -197,22 +212,34 @@ export class AlgorithmService {
           break;
 
         case PriorityTypes.BUSYTIME:
+          let failedBusyTime = false;
           for (const currentSubject of combination.subjects) {
             for (const currentTime of currentSubject.commissionTimes) {
               for (const busyTime of currentPriority.value as ITimeblock[]) {
                 if (currentTime.overlaps(busyTime) > 0.0) {
                   if (currentPriority.isExclusive()) {
                     return false;
+                  } else {
+                    failedBusyTime = true;
+                    break;
                   }
                 }
               }
+              if (failedBusyTime) {
+                break;
+              }
+            }
+            if (failedBusyTime) {
+              break;
             }
           }
-          combination.priorities.push(Number(index));
+          if (!failedBusyTime) {
+            combination.priorities.push(Number(index));
+          }
           break;
 
         case PriorityTypes.LOCATION:
-          let failed = false;
+          let failedLocation = false;
 
           for (let day = Weekday.MONDAY ; day <= Weekday.FRIDAY ; day++) {
             const timeblocks = combination.getTimeblocksByDay(day);
@@ -222,18 +249,16 @@ export class AlgorithmService {
                 if (currentPriority.isExclusive()) {
                   return false;
                 } else {
-                  failed = true;
+                  failedLocation = true;
                   break;
                 }
               }
             }
-
-            if (failed) {
+            if (failedLocation) {
               break;
             }
           }
-
-          if (!failed) {
+          if (!failedLocation) {
             combination.priorities.push(Number(index));
           }
           break;
