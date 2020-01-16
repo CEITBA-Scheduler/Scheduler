@@ -197,23 +197,18 @@ export class AlgorithmService {
           break;
 
         case PriorityTypes.BUSYTIME:
-          let isBusyCombination = false; // All combinations comply with busyTime until proven otherwise
-          for (const currentCommission of combination.subjects) {
-            for (const currentTime of currentCommission.commissionTimes) {
-              const superposition = this.getSuperposition(currentTime, currentPriority.value);
-              if (superposition > 0.0) {
-                isBusyCombination = true; // Combination does not comply with priority
-                break;
+          for (const currentSubject of combination.subjects) {
+            for (const currentTime of currentSubject.commissionTimes) {
+              for (const busyTime of currentPriority.value as ITimeblock[]) {
+                if (currentTime.overlaps(busyTime) > 0.0) {
+                  if (currentPriority.isExclusive()) {
+                    return false;
+                  }
+                }
               }
             }
-            if (isBusyCombination) {
-              if (currentPriority.isExclusive()) {return false; } // Exclusive condition failed verify
-              break;
-            }
           }
-          if (!isBusyCombination) { // If we do not find commissions on busyTime, we add priority{
-            combination.priorities.push(Number(index));
-          }
+          combination.priorities.push(Number(index));
           break;
 
         case PriorityTypes.LOCATION:
