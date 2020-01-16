@@ -63,7 +63,31 @@ export class DbServicesService {
       }
     );
  }
- getSubjectInfo(subjects: Subject[]){ // obtener los anotados en cada comision de la materia
+ subscribeToSubjectInfo(subjects: {[code: string]: Subject}){ // obtener los anotados en cada comision de la materia
+
+  this.afs.collection("users").get().subscribe(data => {
+    for (let key in subjects){
+      for (var commission in subjects[key].commissions){
+        subjects[key].commissions[commission].people = [0, 0, 0]; // reseteamos personas de cada comision
+      }
+    }
+
+    for (let docName in data.docs){ // for each document
+      var doc = data.docs[docName].data();
+
+      for (let subject in doc.userSelection){
+        var subjectCode: string = doc.userSelection[subject].subjectCode;
+        var subjectData = doc.userSelection[subject];
+
+        if (subjectCode in subjects){
+          subjects[subjectCode].commissions[subjectData.commissions[0]].people[0] ++;
+          subjects[subjectCode].commissions[subjectData.commissions[1]].people[1] ++;
+          subjects[subjectCode].commissions[subjectData.commissions[2]].people[2] ++;
+        }
+      }
+
+    }
+  });
 
  }
 }

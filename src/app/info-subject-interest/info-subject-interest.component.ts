@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { SgaLinkerService } from '../sga-linker.service';
+import { DbServicesService } from '../db-services.service';
+import { Subject } from '../materia';
 
 @Component({
   selector: 'app-info-subject-interest',
@@ -7,9 +10,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InfoSubjectInterestComponent implements OnInit {
 
-  constructor() { }
+  targetSubject: Subject;
+
+  constructor(private sgaLinkerService: SgaLinkerService,
+    private dbService: DbServicesService) { }
 
   ngOnInit() {
+    this.sgaLinkerService.getAllSubjects().subscribe(data => {
+      this.dbService.subscribeToSubjectInfo(
+        data
+      );
+    });
+  }
+  addMateria(subject: Subject){
+    // select subject as target
+    this.targetSubject = subject;
+    
   }
 
 }
