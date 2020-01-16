@@ -33,7 +33,7 @@ export class AlgorithmService {
    * @returns All possible combinations of commissions of subjects
    */
   private searchCombinations(subjects: ISubject[], verifier: VerifierFunction, combination: ICombination = null)
-  : Combination[] {
+  : ICombination[] {
     // When the function is first called, no combination has been generated, so
     // I need to create a default instance of this object
     if (combination === null) {
@@ -50,7 +50,8 @@ export class AlgorithmService {
         const nodeCommissions: ICommission[] = nodeSubject.commissions;
 
         for (const nodeCommission of nodeCommissions) {
-            const newCombination = JSON.parse(JSON.stringify(combination));
+            const newCombination: Combination = Combination.copy(combination);
+
             const newSubject = new CombinationSubject(
               nodeSubject.name,
               nodeSubject.code,
@@ -130,8 +131,7 @@ export class AlgorithmService {
       const currentPriority = priorities[index];
 
       switch (currentPriority.type) {
-        // First verification is by superposition.
-        // This is usually an exclusive condition.
+
         case PriorityTypes.SUPERPOSITION:
           for (let i = 0; i < combination.subjects.length; i++) {
             for (let j = i + 1; j < combination.subjects.length; j++) {
@@ -183,7 +183,7 @@ export class AlgorithmService {
           break;
 
         case PriorityTypes.FREEDAY:
-          const freeDays: Weekday[] = combination.getFreeDays();
+          const freeDays = combination.getFreeDays();
           if (freeDays.length > 0) {
             const freeDay = freeDays.find(element => element === currentPriority.value);
             if (currentPriority.value === Weekday.ANY || freeDay) {

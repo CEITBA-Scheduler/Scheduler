@@ -28,6 +28,26 @@ export class CombinationSubject implements ICombinationSubject {
     this.commissionTimes = commissionTimes;
   }
 
+  public static copyMany(manyCombinationSubjects: CombinationSubject[]): CombinationSubject[] {
+    const newArray: CombinationSubject[] = [];
+    for (const combinationSubject of manyCombinationSubjects) {
+      newArray.push(CombinationSubject.copy(combinationSubject));
+    }
+    return newArray;
+  }
+
+  public static copy(combinationSubject: CombinationSubject): CombinationSubject {
+    const newCombinationSubject = new CombinationSubject(
+      combinationSubject.name,
+      combinationSubject.code,
+      combinationSubject.professors,
+      combinationSubject.commissionName,
+      combinationSubject.commissionTimes
+    );
+
+    return newCombinationSubject;
+  }
+
   /**
    * Returns an array of timeblocks with the same day.
    * @param day The field's value for the timeblock's day
@@ -89,6 +109,20 @@ export class Combination implements ICombination {
     this.weight = weight;
     this.priorities = priorities;
     this.subjects = subjects;
+  }
+
+  /**
+   * Creates a new combination as a copy of the given one,
+   * but it's reference independente from the other one.
+   * @param combination   Original combination
+   */
+  public static copy(combination: Combination): Combination {
+    const newCombination = new Combination(
+      combination.weight,
+      combination.priorities,
+      CombinationSubject.copyMany(combination.subjects)
+    );
+    return newCombination;
   }
 
   /**
