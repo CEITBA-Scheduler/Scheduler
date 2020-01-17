@@ -11,7 +11,7 @@
     <div class="day" *ngFor="let day of days">
       <h2 class="day-name">{{ day }}</h2>
       <div class="hour" *ngFor="let hour of hours">
-        <div class="subject" *ngFor="let subject of subjectOn(day, hour)" [style.background-color]="subject.color">
+        <div class="subject" *ngFor="let subject of this.mySubjectsObs[(day +' '+ hour)]" [style.background-color]="subject.color">
           {{ subject.name }} - {{ subject.commissionName }}
         </div>
       </div>

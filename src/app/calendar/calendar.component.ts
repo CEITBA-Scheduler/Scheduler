@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
 import { Time } from '@angular/common';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { Subject } from '../materia';
-import { Observable } from 'rxjs';
+import { SubjectCommissions, Subject, Commission } from '../materia';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 /* "Dummy" datatypes to simulate obtained data through the algorithm */
 interface possibleSchedules {
@@ -44,13 +44,11 @@ interface SubjectList {
 })
 
 export class CalendarComponent implements OnInit {
-  @Input() subjectsObservable: Observable<Subject[]>; // input de materias
+  @Input() subjectsComissions: Observable<SubjectCommissions[]>; // input de materias
 
-  constructor(private cd: ChangeDetectorRef) {
+  
 
-  }
-
-  schedules: possibleSchedules[] = [
+  /*schedules: possibleSchedules[] = [
     {
       subjects: [
         { name: 'Algebra', color: '#00fff7', commissionName: 'Comision 2',
@@ -63,13 +61,17 @@ export class CalendarComponent implements OnInit {
         commissionTimes: { day: "Viernes", initialHour: { hours:13, minutes:0 }, finalHour: { hours:16, minutes:30 }}}
       ]
     }
-  ]
+  ]*/
 
   // Contains the subject list displayed on the lateral bar. Subjects are shown on the calendar depending on its checkbox status
   subjectList: SubjectList[] = [];
   // Used to plot subjects when in between initialHour and finalHour on subjectOn()
-  currentSubjectIndex: number = -1;
+  currentSubjectIndex: number = -1; 
   // Contains all the subjects that can be taken minus the ones that have already been plotted. Using Logica as dummy datatype atm
+  
+  mySubjectsObs: {[id: string] : BehaviorSubject<MySubject[]>} = {};
+  mySubjects: {[id: string] : MySubject[]} = {};
+
   availableSubjects: MySubject[] = 
   [{ name: "Logica", color:"#FF8921", commissionName:"Comision 1", 
   commissionTimes: { day: "Jueves", initialHour: {hours:8, minutes:0}, finalHour: {hours: 11, minutes: 30} } }];
@@ -81,6 +83,14 @@ export class CalendarComponent implements OnInit {
   selectedStatus: boolean = true;
   subjectChooserDisabled: boolean = false;
 
+  constructor(private cd: ChangeDetectorRef) {
+    /*for (let day in this.days){
+      for (let hour in this.hours){
+        this.generateSubjectOn(day, hour);
+      }
+    }*/
+  }
+
   ngOnInit() {
     for (let x = 8; x < 22; x+=0.5) {
       if (x % 2 === 0 || x % 2 === 1)
@@ -88,45 +98,119 @@ export class CalendarComponent implements OnInit {
       else
         this.hours.push(`${Math.floor(x)}:30`);
     }
-    for (let i = 0; i < this.schedules[0].subjects.length ; i++ ) {
-      this.subjectList.push( {checked: true, subject: Object.assign({}, this.schedules[0].subjects[i])} );
-    }
+    
+    
 
-    this.subjectsObservable.subscribe((subject: Subject[]) => {
+
+    this.subjectsComissions.subscribe((subjectsComissions: SubjectCommissions[]) => {
+        console.log("Actualizando schedules ...");
+      
         /// actualizamos possibleSchedules
-        this.schedules = [];
+        var schedules = [];
 
+        var colors = [
+          '#00fff7',
+          '#f9ff33',
+          '#0051ff',
+          '#00ff13'
+        ];
+        var i = 0;
+
+        for (let subjectComission of subjectsComissions){
+
+          var times = [];
+
+          for (let schedule of subjectComission.commissions[0].schedule){
+            times.push({ 
+              day: schedule.day, 
+              initialHour: { 
+                hours:schedule.start.hours, 
+                minutes:schedule.start.minutes 
+              }, 
+              finalHour: { 
+                hours:schedule.end.hours, 
+                minutes:schedule.end.minutes 
+              }
+            });
+          }
+
+          schedules.push(
+            { 
+              name: subjectComission.subject.name, 
+              color: colors[i], 
+              commissionName: subjectComission.commissions[0].name,
+              commissionTimes: times
+            },
+          );
+          i++;
+        }
+        this.subjectList = [];
+        for (let i = 0; i < schedules.length ; i++ ) {
+          this.subjectList.push( 
+            {
+              checked: true, subject: Object.assign({}, schedules[i])
+            }
+          );
+        }
+        
+        for (let day in this.days){
+          for (let hour in this.hours){
+            this.updateSubjectOn(day, hour);
+          }
+        }
 
     });
-
   }
 
-  // Checks if there's a subject on the day and hour sent
-  subjectOn (day: string, hour: string): MySubject[] {
-  var subject : MySubject[];
-  var m: number;
-  for (m = 0 ; m < this.subjectList.length; m++) {
-    if (day === this.subjectList[m].subject.commissionTimes.day) {
-      if (hour === this.hourToString(this.subjectList[m].subject.commissionTimes.initialHour.hours, this.subjectList[m].subject.commissionTimes.initialHour.minutes) && this.subjectList[m].checked) {
-        subject = [this.subjectList[m].subject];
-        this.currentSubjectIndex = m;
-        break;
-      }
-      else if (hour === this.hourToString(this.subjectList[m].subject.commissionTimes.finalHour.hours, this.subjectList[m].subject.commissionTimes.finalHour.minutes) && this.subjectList[m].checked) {
-        subject = [{ name:"", color:"", commissionName:""}];
-        this.currentSubjectIndex = -1; // So that no subject have an index equal to currentSubjectIndex
-        break;
-      }
-      else if (m === this.currentSubjectIndex && this.subjectList[m].checked) {
-        subject = [this.subjectList[m].subject];
-        break;
+
+
+  updateSubjectOn(day: string, hour: string){
+    console.log("updated subject on ", (day +" "+ hour));
+
+    var subject : MySubject[];
+    var m: number;
+    for (m = 0 ; m < this.subjectList.length; m++) {
+      if (day === this.subjectList[m].subject.commissionTimes.day) {
+        if (hour === this.hourToString(this.subjectList[m].subject.commissionTimes.initialHour.hours, this.subjectList[m].subject.commissionTimes.initialHour.minutes) && this.subjectList[m].checked) {
+          subject = [this.subjectList[m].subject];
+          this.currentSubjectIndex = m;
+          break;
+        }
+        else if (hour === this.hourToString(this.subjectList[m].subject.commissionTimes.finalHour.hours, this.subjectList[m].subject.commissionTimes.finalHour.minutes) && this.subjectList[m].checked) {
+          subject = [{ name:"", color:"", commissionName:""}];
+          this.currentSubjectIndex = -1; // So that no subject have an index equal to currentSubjectIndex
+          break;
+        }
+        else if (m === this.currentSubjectIndex && this.subjectList[m].checked) {
+          subject = [this.subjectList[m].subject];
+          break;
+        }
       }
     }
+    if (m >= this.subjectList.length)          // >= used instead of == bc they do the same except when a bug makes m greater than expected
+      subject = [{ name:"", color:"", commissionName:""}];
+    
+    if (!((day + " " + hour) in this.mySubjects)){
+      this.generateSubjectOn(day, hour);
+    }
+
+    this.mySubjectsObs[(day +" "+ hour)].next(subject);
+    
   }
-  if (m >= this.subjectList.length)          // >= used instead of == bc they do the same except when a bug makes m greater than expected
-    subject = [{ name:"", color:"", commissionName:""}];
-  return subject;
-}
+  // Checks if there's a subject on the day and hour sent
+  subjectOn (day: string, hour: string): MySubject[] {
+    // usando this.subjectList calcula el valor de subject
+    if (!((day + " " + hour) in this.mySubjects)){
+      this.generateSubjectOn(day, hour);
+    }
+    return this.mySubjectsObs[(day +" "+ hour)].asObservable();
+    // sino lo generaemos
+
+  }
+  generateSubjectOn(day: string, hour: string){ // we generate al Subjects
+    this.mySubjectsObs[(day +" "+ hour)] = new BehaviorSubject([]);
+  }
+
 
   hourToString (hour: number, minutes: number): String {
     if (minutes.toString() !== "0")

@@ -91,7 +91,7 @@ export class SgaLinkerService {
           var endDate: Date = parse(commission.courseCommissionTimes[schedule]["hourTo"], 'HH:mm', new Date());
 
           let currTimeBlock : Timeblock = {
-            day: commission.courseCommissionTimes[schedule]["day"],
+            day: this.convertName(commission.courseCommissionTimes[schedule]["day"]),
             start: {hours:startDate.getHours(), minutes:startDate.getMinutes()},
             end: {hours:startDate.getHours(), minutes:startDate.getMinutes()}
           };
@@ -111,7 +111,20 @@ export class SgaLinkerService {
       //console.log(this.getCommissionInfo('Álgebra Lineal','A'))
     })
   }
-
+  convertName(name: string){
+    if (name == "MONDAY"){
+      return "Lunes";
+    }else if(name == "TUESDAY"){
+      return "Martes";
+    }else if(name == "WEDNESDAY"){
+      return "Miercoles";
+    }else if(name == "THURSDAY"){
+      return "Jueves";
+    }else if(name == "FRIDAY"){
+      return "Viernes";
+    }
+    return "Indefinido";
+  }
 
   /*private getUserObjectFromUserSelection(userSelection: UserSelection) : User{
 
