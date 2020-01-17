@@ -33,6 +33,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { DragSubjectsComponent } from './drag-subjects/drag-subjects.component';
 import { SubjectCardComponent } from './subject-card/subject-card.component';
+import { TrashCardComponent } from './trash-card/trash-card.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { SubjectCardComponent } from './subject-card/subject-card.component';
     CombinerComponent,
     LoginComponent,
     DragSubjectsComponent,
-    SubjectCardComponent
+    SubjectCardComponent,
+    TrashCardComponent
   ],
   imports: [
     BrowserModule,

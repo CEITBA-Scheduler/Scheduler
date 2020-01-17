@@ -7,7 +7,7 @@
 <!--app-drag-commissions [subjects]="materia" (setCommissionData)="setCommissionData(materia, $event)" (onDestroy)="removeCommissionData(materia)"-->
 <!--/app-drag-commissions-->
 
-<app-drag-subjects [subjects]="plainData" (setSubjectData)="setSubjectData(plainData, $event)" (onDestroy)="removeSubjectData(plainData)">
-    <div fxLayout="column" fxLayout="column wrap" fxLayoutGap="25px" ></div>
+<app-drag-subjects [subjects]="plainData" (setData)="setData($event)" (onDestroy)="removeSubjectData(plainData)">
 </app-drag-subjects > 
+
 

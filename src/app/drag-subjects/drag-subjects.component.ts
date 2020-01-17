@@ -9,10 +9,12 @@ import { Subject } from '../materia';
   styleUrls: ['./drag-subjects.component.css']
 })
 export class DragSubjectsComponent implements OnInit {
-  todo = [];
-
+  //todo = []; //en lugar de todo uso subjects
+  done = [];
   @Input() subjects:Subject[];
-  
+  selectedSubjects: BehaviorSubject<Subject[]> = new BehaviorSubject([]);
+
+  //@Output() setData: EventEmitter<Observable<Subject[]>> = new EventEmitter<Observable<Subject[]>>();
   @Output() setSubjectData: EventEmitter<Observable<Subject[]>> = new EventEmitter<Observable<Subject[]>>();
   @Output() onDestroy: EventEmitter<void> = new EventEmitter<void>();
 
@@ -26,17 +28,13 @@ export class DragSubjectsComponent implements OnInit {
                         event.container.data,
                         event.previousIndex,
                         event.currentIndex);
-        // if (this.done.length == 4){
-        //   transferArrayItem(event.previousContainer.data,
-        //     event.container.data,
-        //     event.previousIndex,
-        //     event.currentIndex);
-        // }
+
     }
-    //this.selectedCommissions.next(this.done);
+    this.selectedSubjects.next(this.done); //cambie subjects por done
   }
 
   ngOnInit() {
+    
   }
 
 }
