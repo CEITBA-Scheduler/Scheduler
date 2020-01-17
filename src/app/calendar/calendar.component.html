@@ -1,0 +1,72 @@
+<div class="calendar">
+  <div class="periods">
+    <div class="blank-space" *ngFor="let i of [a]">
+      <!-- This leaves a blank space at the start of the first column -->
+    </div>
+    <div class="period" *ngFor="let hour of hours" [style.font]="bold" >
+      {{ hour }}
+    </div>
+  </div>
+  <div class="days">
+    <div class="day" *ngFor="let day of days">
+      <h2 class="day-name">{{ day }}</h2>
+      <div class="hour" *ngFor="let hour of hours">
+        <div class="subject" *ngFor="let subject of subjectOn(day, hour)" [style.background-color]="subject.color">
+          {{ subject.name }} - {{ subject.commissionName }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="lateral-bar">
+    <h1>Materias</h1>
+    <div class="subject-list" *ngFor="let subj of subjectList"> 
+      <h3>
+        {{ subj.subject.name }}
+      </h3>
+      <mat-checkbox class="selected-comission" [(ngModel)]="subj.checked">
+        {{ subj.subject.commissionName }}
+      </mat-checkbox>
+      <button class="img-container" mat-button-toggle (click)="deleteComissionFromList(subj.subject)"><img class="delete" src="/assets/img/delete-icon.svg"></button>
+    </div>
+    <mat-form-field class="subject-chooser">
+      <input type="text" [disabled]="subjectChooserDisabled" placeholder="Agregar materia" matInput [matAutocomplete]="auto" (input)="onSubjectChooserChange($event)" [(ngModel)]="subjectChooserValue">
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="subjectSelected($event)">
+          <mat-option *ngFor="let option of filteredOptions" [value]="option">
+            {{ option.name }}
+          </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+  </div>
+</div>
+    <!-- Switch subjectList with selectedSchedule here to see its behaviour when adding/removing subjects -->
+    <!--
+      <mat-icon svgIcon="delete" aria-hidden="false">delete</mat-icon>
+      <div class="lateral-bar"> 
+  </div>
+    <div class="subject-list" *ngFor="let subject of subjectList"> 
+      {{ subject.name }}
+      <mat-checkbox class="selected-comission" [(ngModel)]="subject.checked" (change)="switchSubjectState(subject)">
+        {{ subject.commissionName }}
+      </mat-checkbox>
+    </div>
+    -->
+    <!--
+    <mat-form-field class="subject-chooser">
+      <input type="text" placeholder="Agregar materia" matInput [matAutocomplete]="auto" (input)="onSubjectChooserChange($event)" [(ngModel)]="subjectChooserValue">
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="subjectSelected($event)">
+        <mat-option *ngFor="let option of filteredOptions" [value]="option">
+          {{ option.name }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+        <div class="subject-chooser">
+      <mat-form-field>
+        <input type="text" placeholder="Agregar materia" matInput [matAutocomplete]="auto" (input)="onSubjectChooserChange($event)" [(ngModel)]="subjectChooserValue">
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="subjectSelected($event)">
+            <mat-option *ngFor="let option of filteredOptions" [value]="option">
+              {{ option.name }}
+            </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    -->

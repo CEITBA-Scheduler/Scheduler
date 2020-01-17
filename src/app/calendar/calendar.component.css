@@ -1,0 +1,112 @@
+h1 {
+  margin: 10px 0px 10px 53px; /* TOP RIGHT BOOTM LEFT */
+}
+
+h2 {
+  font: Arial, Helvetica, sans-serif;
+}
+
+h3 {
+  font: Arial, Helvetica, sans-serif;
+  font-weight: normal;
+  margin: 2px 0px;
+}
+
+.calendar {
+    width: 400px;
+    max-width: 100%;
+    display: inline-flex;            /* So that columns are displayed horizontally */
+    text-align: center;
+  }
+  
+  .day {
+    border: solid 1px #ccc;
+    min-height: 70px;
+    min-width: 130px;
+    background: white;
+    border-radius: 4px;
+    overflow: hidden;
+    display: block;
+  }
+  
+  .subject {
+    border: solid 1px #ccc;
+    min-height: 40px;
+    background: white;
+    border-radius: 4px;
+    overflow: hidden;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  .blank-space {
+    border: solid 1px #ccc;
+    min-height: 67px;
+    background: white;
+    border-radius: 4px;
+    overflow: hidden;
+    display: block;
+  }
+
+  .period {
+    box-sizing: border-box;
+    min-width: 45px;
+    padding: 11px;
+    border: solid 1px #ccc;
+    border-radius: 4px;
+    text-align: center;
+    background: white;
+    overflow: hidden;
+    display: block;
+  }
+  
+  .days {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .periods {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+  }
+
+  .lateral-bar {
+    border: solid 1px #ccc;
+    border-radius: 4px;
+    margin: 0px 30px;
+    padding: 5px 60px 5px 10px;
+    text-align: left;
+  }
+
+  .subject-list {
+    display: inline-block;
+    font-size: large;
+    font-family: Arial, Helvetica, sans-serif;
+    display: inline-block;
+  }
+
+  .selected-comission {
+    font-size: medium;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .subject-chooser {
+    float: left;
+    margin-top: 5px;
+  }
+
+  .delete {
+    border: solid 1px #ccc;
+    margin-left: 0px;
+    vertical-align: bottom;
+  }
+
+  .img-container {
+    padding: 0px 0px;
+    margin: 0px 15px;
+    /* Width/Height values were taken from img file*/
+    max-width: 20;
+    max-height: 20;
+  }

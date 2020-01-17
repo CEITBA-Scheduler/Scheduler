@@ -65,23 +65,27 @@ export class DbServicesService {
  }
  subscribeToSubjectInfo(subjects: {[code: string]: Subject}){ // obtener los anotados en cada comision de la materia
 
-  this.afs.collection("users").get().subscribe(data => {
+  this.afs.collection("users").valueChanges().subscribe(data => {
+    console.log(data);
+  });
+
+  this.afs.collection("users").valueChanges().subscribe(data => {
     console.log("data recibida");
     console.log(data);
-
+    
     for (let key in subjects){
       for (var commission in subjects[key].commissions){
         subjects[key].commissions[commission].people = [0, 0, 0]; // reseteamos personas de cada comision
       }
     }
-
-    for (let docName in data.docs){ // for each document
-      var doc = data.docs[docName].data();
+      //si es con get(), iria data.doc
+    for (let docName in data){ // for each document
+      var doc = data[docName]; // y aca .data()
       console.log("doc data");
       console.log(doc);
-      for (let subject in doc.userSelection){
-        var subjectCode: string = doc.userSelection[subject].subjectCode;
-        var subjectData = doc.userSelection[subject];
+      for (let subject in doc["userSelection"]){
+        var subjectCode: string = doc["userSelection"][subject].subjectCode;
+        var subjectData = doc["userSelection"][subject];
         console.log("subject data");
         console.log(subjectData);
 

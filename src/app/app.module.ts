@@ -20,6 +20,8 @@ import { ComissionCardComponent } from './comission-card/comission-card.componen
 import { SubjectTableComponent } from './subject-table/subject-table.component';
 import { CheckboxItemComponent } from './checkbox-item/checkbox-item.component';
 import { ConfigurationsComponent } from './configurations/configurations.component';
+import { CalendarComponent } from './calendar/calendar.component';
+
 
 import { TestingModule1Component } from './testing-module1/testing-module1.component';
 import { TestingModule2Component } from './testing-module2/testing-module2.component';
@@ -55,7 +57,8 @@ import { InfoSubjectInterestComponent } from './info-subject-interest/info-subje
     TestingModule3Component,
     CombinerComponent,
     LoginComponent,
-    InfoSubjectInterestComponent
+    InfoSubjectInterestComponent,
+    CalendarComponent,
   ],
   imports: [
     BrowserModule,

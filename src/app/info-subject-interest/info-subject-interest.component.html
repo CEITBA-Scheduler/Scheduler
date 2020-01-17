@@ -2,8 +2,8 @@
 <app-subject-search fxLayoutAlign="center center" (onOptionSelected)="addMateria($event)"></app-subject-search>
 <div *ngIf="targetSubject">
   <h1 fxLayoutAlign="center center"> {{targetSubject.name}} - {{targetSubject.code}} </h1>
-  <div fxLayoutAlign="center center" fxLayout="row wrap" fxLayoutGap="10px grid" >
-      <mat-card *ngFor="let commission of targetSubject.commissions">
+  <div fxLayoutAlign="center center" fxLayout="row wrap" >
+      <mat-card style="padding: 5px;margin: 1em" *ngFor="let commission of targetSubject.commissions">
         <mat-card-title fxLayoutAlign="center center" fxLayoutAlign="space-around center">
           Comisión {{commission.name}}
         </mat-card-title>
