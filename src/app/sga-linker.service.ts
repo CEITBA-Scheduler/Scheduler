@@ -12,8 +12,8 @@ import { User } from './user.model';
   providedIn: 'root'
 })
 export class SgaLinkerService {
-  AllSubjects: BehaviorSubject<{ [id: string] : Subject; }>;
-  AllSubjectsValue : { [id: string] : Subject; };
+  AllSubjects: BehaviorSubject<{ [id: string]: Subject; }>;
+  AllSubjectsValue: { [id: string]: Subject; };
   AllCommissions;
   url : string = "https://itbagw.itba.edu.ar/api/v1/courseCommissions/1wXxftFa4NTfsmOstgnQHDq55m7jZL1jq7r7gWlprbHg?level=GRADUATE&year=2019&period=SecondSemester";
 
@@ -45,7 +45,7 @@ export class SgaLinkerService {
     }
   }
 
-  getAllSubjects() : Observable<{ [id: string] : Subject; }>{
+  getAllSubjects() : Observable<{ [id: string]: Subject; }>{
     return this.AllSubjects.asObservable();
   }
 
@@ -111,10 +111,10 @@ export class SgaLinkerService {
       //console.log(this.getCommissionInfo('Álgebra Lineal','A'))
     })
   }
-  
-  
+
+
   /*private getUserObjectFromUserSelection(userSelection: UserSelection) : User{
-    
+
 
     return user;
   }*/

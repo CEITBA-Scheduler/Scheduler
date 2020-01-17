@@ -26,7 +26,7 @@ export class DbServicesService {
     private combinacionDeHorarioService: CombinacionDeHorarioService,
     private generalProgramService: GeneralProgramService){ // servicio de firestore (base de datos)) { }
   }
-  
+
   storeUserPreAlgorithmSelection(){
 
     ///primero actualizamos informacion del usuario
@@ -34,9 +34,9 @@ export class DbServicesService {
       this.combinacionDeHorarioService.getSelectedData(),
       this.generalProgramService.getAllCheckboxStatus()
     );
-    
+
     // luego esos valores los publicamos en la base de datos
-    
+
     //this.firestore.collection("users).set("userSelection", this.getUserObjectFromUserSelection(userSelection));
     console.log("Updating user db ...");
     const user: User = this.auth.getUser();
@@ -58,7 +58,7 @@ export class DbServicesService {
 
     this.afs.collection("users").doc(user.uid).update(
       {
-        userSelection: userSelectionData,
+        userSelection: user.userSelection,
         tickboxSelection: tickboxData
       }
     );
@@ -66,6 +66,9 @@ export class DbServicesService {
  subscribeToSubjectInfo(subjects: {[code: string]: Subject}){ // obtener los anotados en cada comision de la materia
 
   this.afs.collection("users").get().subscribe(data => {
+    console.log("data recibida");
+    console.log(data);
+
     for (let key in subjects){
       for (var commission in subjects[key].commissions){
         subjects[key].commissions[commission].people = [0, 0, 0]; // reseteamos personas de cada comision
@@ -74,15 +77,31 @@ export class DbServicesService {
 
     for (let docName in data.docs){ // for each document
       var doc = data.docs[docName].data();
-
+      console.log("doc data");
+      console.log(doc);
       for (let subject in doc.userSelection){
         var subjectCode: string = doc.userSelection[subject].subjectCode;
         var subjectData = doc.userSelection[subject];
+        console.log("subject data");
+        console.log(subjectData);
 
         if (subjectCode in subjects){
-          subjects[subjectCode].commissions[subjectData.commissions[0]].people[0] ++;
-          subjects[subjectCode].commissions[subjectData.commissions[1]].people[1] ++;
-          subjects[subjectCode].commissions[subjectData.commissions[2]].people[2] ++;
+
+          for (let commission in subjects[subjectCode].commissions){
+            console.log("analizando ");
+            console.log(commission);
+
+            if (subjects[subjectCode].commissions[commission].name == subjectData.commissions[0]){
+              subjects[subjectCode].commissions[commission].people[0] ++;
+            }
+            if (subjects[subjectCode].commissions[commission].name == subjectData.commissions[1]){
+              subjects[subjectCode].commissions[commission].people[1] ++;
+            }
+            if (subjects[subjectCode].commissions[commission].name == subjectData.commissions[2]){
+              subjects[subjectCode].commissions[commission].people[2] ++;
+            }
+
+          }
         }
       }
 

@@ -45,17 +45,24 @@ export class AuthService implements CanActivate {
   }
   generateUserDb(){
     console.log("Generating user db ...");
-    this.afs.collection("users").doc(this.user.uid).set({
-      uid: this.user.uid
+
+    this.afs.collection("users").doc(this.user.uid).get().subscribe(data => {
+      if (!data.exists){
+        // si no existe la db del usuario la creamos
+        this.afs.collection("users").doc(this.user.uid).set({
+          uid: this.user.uid
+        });
+      }
     });
+
   }
-  
+
   /// actualizar en la información de usuario la información introducida en los formularios
   updateUserSelection(subjectCommissions: SubjectCommissions[], tickboxSelection: TickboxSelection){
     this.user.userSelection = [];
 
     for (var item of subjectCommissions){
-      var comList: string[] = []; 
+      var comList: string[] = [];
 
       for (var com of item.commissions){
         comList.push(com.name);
@@ -114,7 +121,7 @@ export class AuthService implements CanActivate {
     await this.afAuth.auth.signOut();
     //this.router.navigate(['/login']);
   }
-  
+
   signInWithGoogle() {
     const provider = new auth.GoogleAuthProvider();
     this.afAuth.auth.signInWithPopup(provider).then(
@@ -122,8 +129,8 @@ export class AuthService implements CanActivate {
         this.credentials = result;
 
         console.log("Success... Google account Linked!");
-        
-      
+
+
       }).catch(err=> {
           console.log(err)
           console.log("Failed to do")

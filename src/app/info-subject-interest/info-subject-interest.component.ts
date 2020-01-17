@@ -10,7 +10,7 @@ import { Subject } from '../materia';
 })
 export class InfoSubjectInterestComponent implements OnInit {
 
-  targetSubject: Subject;
+  targetSubject: Subject = null;
 
   constructor(private sgaLinkerService: SgaLinkerService,
     private dbService: DbServicesService) { }
@@ -25,7 +25,7 @@ export class InfoSubjectInterestComponent implements OnInit {
   addMateria(subject: Subject){
     // select subject as target
     this.targetSubject = subject;
-    
+
   }
 
 }

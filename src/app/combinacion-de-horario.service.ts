@@ -57,7 +57,6 @@ export class CombinacionDeHorarioService {
     });
   }
   setSubjectSelectedCommissions(subject: Subject, commissions: Observable<Commission[]>) {
-
     // se recibe un observable de comisiones que refleja las comisiones elegidas para una materia dada
     commissions.subscribe((coms: Commission[]) => {
       this.subjectCommissions[subject.code] = {
@@ -66,10 +65,8 @@ export class CombinacionDeHorarioService {
       }
       this.subjectCommissionsBehavioural.next(this.subjectCommissions);
     });
-
-    
   }
-  removeSubject(subject: Subject){
+  removeSubject(subject: Subject) {
    delete this.subjectCommissions[subject.code];
    this.subjectCommissionsBehavioural.next(this.subjectCommissions);
   }
@@ -77,7 +74,7 @@ export class CombinacionDeHorarioService {
   getCommissionsSelectedData(): Observable<{[id: string]: SubjectCommissions}> {
     return this.subjectCommissionsBehavioural.asObservable();
   }
-  getSelectedData() : SubjectCommissions[]{
+  getSelectedData(): SubjectCommissions[]{
     var ans : SubjectCommissions[] = [];
 
     for (var item of this.subjects){

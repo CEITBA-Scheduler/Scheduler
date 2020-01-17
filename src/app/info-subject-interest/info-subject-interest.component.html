@@ -1,2 +1,27 @@
-<h1>SELECCIONAR MATERIA </h1>
-<app-subject-search (onOptionSelected)="addMateria($event)"></app-subject-search> 
+<h1 fxLayoutAlign="center center" > SELECCIONAR MATERIA </h1>
+<app-subject-search fxLayoutAlign="center center" (onOptionSelected)="addMateria($event)"></app-subject-search>
+<div *ngIf="targetSubject">
+  <h1 fxLayoutAlign="center center"> {{targetSubject.name}} - {{targetSubject.code}} </h1>
+  <div fxLayoutAlign="center center" fxLayout="row wrap" fxLayoutGap="10px grid" >
+      <mat-card *ngFor="let commission of targetSubject.commissions">
+        <mat-card-title fxLayoutAlign="center center" fxLayoutAlign="space-around center">
+          Comisión {{commission.name}}
+        </mat-card-title>
+        <mat-card-content fxFill fxLayout="row">
+          <div fxLayout="column" fxLayoutAlign="center center" class="optionClass">
+            Primera opción
+            <h2>{{commission.people[0]}}</h2>
+          </div>
+          <div fxLayout="column" fxLayoutAlign="center center" class="optionClass">
+            Segunda opción
+            <h2>{{commission.people[1]}}</h2>
+          </div>
+          <div fxLayout="column" fxLayoutAlign="center center" class="optionClass">
+            Tercera opción
+            <h2>{{commission.people[2]}}</h2>
+          </div>
+        </mat-card-content>
+      </mat-card>
+  </div>
+
+</div>
