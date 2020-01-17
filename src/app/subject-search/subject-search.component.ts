@@ -6,7 +6,7 @@
  */
 
 
-import { Component, OnInit, ValueProvider, EventEmitter, Output  } from '@angular/core';
+import { Component, OnInit, ValueProvider, EventEmitter, Input, Output  } from '@angular/core';
 import { Observable, BehaviorSubject, Subject as SubjectRXJS } from 'rxjs';
 import { pipe } from 'rxjs';
 import { filter, map, startWith } from 'rxjs/operators';
@@ -17,6 +17,7 @@ import { MateriasService } from '../materias.service'
 import { MatTableDataSource} from '@angular/material/table';
 import { SgaLinkerService } from '../sga-linker.service';
 
+
 @Component({
   selector: 'app-subject-search',
   templateUrl: './subject-search.component.html',
@@ -25,6 +26,8 @@ import { SgaLinkerService } from '../sga-linker.service';
 
 export class SubjectSearchComponent implements OnInit {
   // onOptionSelected es la acción a ejecutarse cuando se elije una opción
+  //@Input() subjectsSelected:Subject[]; //AGREGO1
+  @Input() subjects:Subject[]; //AGREGO1
   @Output() onOptionSelected : EventEmitter<Subject> = new EventEmitter<Subject>();
 
   options: Observable<Subject[]>;
@@ -56,8 +59,8 @@ export class SubjectSearchComponent implements OnInit {
     /// filtramos acorde al input del usuario el observable
     return this.options.pipe(
       map(
-        (options: Subject[]) => options.filter((option: Subject) => option.search.includes(this.searchValue))
-      )
+        (options: Subject[]) => options.filter((option: Subject) => 
+        (option.search.includes(this.searchValue) && !(this.areEqual(option,this.subjects)))))
     );
   }
   optionSelected(value: Subject) {
@@ -66,4 +69,15 @@ export class SubjectSearchComponent implements OnInit {
 
     this.myControl.setValue('');
   }
+
+  private areEqual(subject_: Subject, subjects_: Subject[]){
+    for(var i=0; i<subjects_.length ;i++){
+      if(subject_.code == subjects_[i].code)
+      {
+        return true;
+      }
+    }
+    return false;
+  }
+
 }
