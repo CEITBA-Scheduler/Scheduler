@@ -1,13 +1,13 @@
-<mat-card class="example-card">
-    
-    <div>
-    <!--fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="20px"-->
-       <!-- <div fxFill> <b>Materias seleccionadas</b> </div> -->
-    
-        <app-subject-table (setData)="setData($event)" fxFill>
-        </app-subject-table>
-    
-    </div>
-</mat-card>
-<mat-divider>   
-</mat-divider>
+
+
+<app-subject-search [subjects]="plainData" (onOptionSelected)="addMateria($event)"></app-subject-search> <!-- AGREGO2: [subjects]="plainData"-->
+
+
+
+<!--app-drag-commissions [subjects]="materia" (setCommissionData)="setCommissionData(materia, $event)" (onDestroy)="removeCommissionData(materia)"-->
+<!--/app-drag-commissions-->
+
+<app-drag-subjects [subjects]="plainData" (setData)="setData($event)" (onDestroy)="removeSubjectData(plainData)">
+</app-drag-subjects > 
+
+
