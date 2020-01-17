@@ -39,6 +39,9 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 
 import { MatIconModule, MatButtonModule } from '@angular/material';
 import { InfoSubjectInterestComponent } from './info-subject-interest/info-subject-interest.component';
+import { DragSubjectsComponent } from './drag-subjects/drag-subjects.component';
+import { SubjectCardComponent } from './subject-card/subject-card.component';
+import { TrashCardComponent } from './trash-card/trash-card.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +62,9 @@ import { InfoSubjectInterestComponent } from './info-subject-interest/info-subje
     LoginComponent,
     InfoSubjectInterestComponent,
     CalendarComponent,
+    DragSubjectsComponent,
+    SubjectCardComponent,
+    TrashCardComponent
   ],
   imports: [
     BrowserModule,
