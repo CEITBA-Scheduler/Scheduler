@@ -3,11 +3,24 @@
     <!--mat-card-->
       <div fxLayoutAlign="center center">
         <figure>
-          <img src="../../assets/img/loginLogoC.jpg" alt="Login Logo" width=600 height=500>
+          <img src="../../assets/img/loginLogoC.jpg" alt="Login Logo" width=900 height=600>
         </figure>
       </div>
       <div fxLayoutAlign="center center" >
-        <button mat-raised-button color="primary" (click)="iniciarSesion()">Login with Google</button>
+        <button mat-raised-button color="primary" (click)="iniciarSesion()">
+          
+          
+          <div cdkDropListGroup fxLayout="row">
+
+          </div>
+          
+          <div>Login with Google </div>
+          <div>
+            <figure>
+              <img src="../../assets/img/googleLogo.jpg" alt="Google Logo" width=20 height=20>
+            </figure>
+          </div>
+        </button>
       </div>    
       <div fxLayoutAlign="center center" >
         <br> <br>
