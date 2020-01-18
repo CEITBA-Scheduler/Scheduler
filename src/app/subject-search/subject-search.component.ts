@@ -27,7 +27,7 @@ import { SgaLinkerService } from '../sga-linker.service';
 export class SubjectSearchComponent implements OnInit {
   // onOptionSelected es la acción a ejecutarse cuando se elije una opción
   //@Input() subjectsSelected:Subject[]; //AGREGO1
-  @Input() subjects:Subject[]; //AGREGO1
+  @Input() subjects:Subject[] = []; //AGREGO1
   @Output() onOptionSelected : EventEmitter<Subject> = new EventEmitter<Subject>();
 
   options: Observable<Subject[]>;

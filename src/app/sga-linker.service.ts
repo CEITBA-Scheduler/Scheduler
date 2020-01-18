@@ -93,7 +93,7 @@ export class SgaLinkerService {
           let currTimeBlock : Timeblock = {
             day: this.convertName(commission.courseCommissionTimes[schedule]["day"]),
             start: {hours:startDate.getHours(), minutes:startDate.getMinutes()},
-            end: {hours:startDate.getHours(), minutes:startDate.getMinutes()}
+            end: {hours:endDate.getHours(), minutes:endDate.getMinutes()}
           };
 
           timeBlockArr.push(currTimeBlock);

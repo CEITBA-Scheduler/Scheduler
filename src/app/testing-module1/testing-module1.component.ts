@@ -17,7 +17,7 @@ export class TestingModule1Component implements OnInit {
 
   ngOnInit() {
     this.subjects = this.subjectsBehavioural.asObservable();
-
+    
     this.sgaLinkerService.getDataFromApi();
     //var subjectsData: Subject[] = 
     this.sgaLinkerService.getAllSubjects().subscribe(

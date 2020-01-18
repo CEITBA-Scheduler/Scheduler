@@ -21,7 +21,7 @@ interface MySubject {
   teachers?: string;        // Same as above
   commissionName: string;
   color: string;
-  commissionTimes?: CommissionTime;
+  commissionTimes?: CommissionTime[];
 }
 
 interface CommissionTime {
@@ -72,9 +72,9 @@ export class CalendarComponent implements OnInit {
   mySubjectsObs: {[id: string] : BehaviorSubject<MySubject[]>} = {};
   mySubjects: {[id: string] : MySubject[]} = {};
 
-  availableSubjects: MySubject[] = 
-  [{ name: "Logica", color:"#FF8921", commissionName:"Comision 1", 
-  commissionTimes: { day: "Jueves", initialHour: {hours:8, minutes:0}, finalHour: {hours: 11, minutes: 30} } }];
+  availableSubjects: MySubject[] = [];
+  //[{ name: "Logica", color:"#FF8921", commissionName:"Comision 1", 
+  //commissionTimes: { day: "Jueves", initialHour: {hours:8, minutes:0}, finalHour: {hours: 11, minutes: 30} } }];
 
   days = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes'];
   hours: string[] = [];
@@ -155,7 +155,7 @@ export class CalendarComponent implements OnInit {
         
         for (let day in this.days){
           for (let hour in this.hours){
-            this.updateSubjectOn(day, hour);
+            this.updateSubjectOn(this.days[day], this.hours[hour]);
           }
         }
 
@@ -165,50 +165,84 @@ export class CalendarComponent implements OnInit {
 
 
   updateSubjectOn(day: string, hour: string){
-    console.log("updated subject on ", (day +" "+ hour));
+    //console.log("updated subject on ", (day +" "+ hour));
 
     var subject : MySubject[];
+
+    //console.log(this.subjectList);
     var m: number;
+    //console.log(day + " " + hour);
+    subject = [{ name:"", color:"", commissionName:""}];
+
     for (m = 0 ; m < this.subjectList.length; m++) {
-      if (day === this.subjectList[m].subject.commissionTimes.day) {
-        if (hour === this.hourToString(this.subjectList[m].subject.commissionTimes.initialHour.hours, this.subjectList[m].subject.commissionTimes.initialHour.minutes) && this.subjectList[m].checked) {
-          subject = [this.subjectList[m].subject];
-          this.currentSubjectIndex = m;
-          break;
-        }
-        else if (hour === this.hourToString(this.subjectList[m].subject.commissionTimes.finalHour.hours, this.subjectList[m].subject.commissionTimes.finalHour.minutes) && this.subjectList[m].checked) {
-          subject = [{ name:"", color:"", commissionName:""}];
-          this.currentSubjectIndex = -1; // So that no subject have an index equal to currentSubjectIndex
-          break;
-        }
-        else if (m === this.currentSubjectIndex && this.subjectList[m].checked) {
-          subject = [this.subjectList[m].subject];
-          break;
+      for (let i = 0;i < this.subjectList[m].subject.commissionTimes.length;i++){
+        //console.log( hour, this.subjectList[m].subject.commissionTimes);
+        /*console.log(this.hourToString(
+          this.subjectList[m].subject.commissionTimes[i].finalHour.hours, 
+          this.subjectList[m].subject.commissionTimes[i].finalHour.minutes) );*/
+        if (day === this.subjectList[m].subject.commissionTimes[i].day) {
+          if (hour === 
+            this.hourToString(this.subjectList[m].subject.commissionTimes[i].initialHour.hours, 
+              this.subjectList[m].subject.commissionTimes[i].initialHour.minutes) 
+              && this.subjectList[m].checked
+              ) {
+            
+            subject = [this.subjectList[m].subject];
+            this.currentSubjectIndex = m;
+                //console.log("start");
+            break;
+          }
+          else if (
+            hour === this.hourToString(
+              this.subjectList[m].subject.commissionTimes[i].finalHour.hours, 
+              this.subjectList[m].subject.commissionTimes[i].finalHour.minutes) 
+            && this.subjectList[m].checked
+            ) {
+              //console.log("end");
+            subject = [{ name:"", color:"", commissionName:""}];
+            this.currentSubjectIndex = -1; // So that no subject have an index equal to currentSubjectIndex
+            break;
+          }
+          else if (m === this.currentSubjectIndex && this.subjectList[m].checked) {
+            subject = [this.subjectList[m].subject];
+            break;
+          }
         }
       }
     }
-    if (m >= this.subjectList.length)          // >= used instead of == bc they do the same except when a bug makes m greater than expected
-      subject = [{ name:"", color:"", commissionName:""}];
-    
-    if (!((day + " " + hour) in this.mySubjects)){
+
+    if (!((day + " " + hour) in this.mySubjectsObs)){
       this.generateSubjectOn(day, hour);
     }
+    
 
     this.mySubjectsObs[(day +" "+ hour)].next(subject);
     
   }
   // Checks if there's a subject on the day and hour sent
-  subjectOn (day: string, hour: string): MySubject[] {
+  subjectOn (day: string, hour: string): Observable<MySubject[]> {
     // usando this.subjectList calcula el valor de subject
     if (!((day + " " + hour) in this.mySubjects)){
       this.generateSubjectOn(day, hour);
     }
-    return this.mySubjectsObs[(day +" "+ hour)].asObservable();
+    return this.mySubjectsObs[(day + " " + hour)].asObservable();
     // sino lo generaemos
 
   }
   generateSubjectOn(day: string, hour: string){ // we generate al Subjects
-    this.mySubjectsObs[(day +" "+ hour)] = new BehaviorSubject([]);
+    this.mySubjectsObs[(day +" "+ hour)] = new BehaviorSubject([{ name:"", color:"", commissionName:""}]);
+    /*this.mySubjectsObs[(day +" "+ hour)].asObservable().subscribe(
+      data =>
+        { 
+          if (data[0].name != ""){
+            console.log("data no nula");
+            console.log(data);
+          }else{
+           //console.log("data nula");
+          }
+        }
+      
+    )*/
   }
 
 
