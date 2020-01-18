@@ -120,7 +120,7 @@ export class CalendarComponent implements OnInit {
       },
       {
         height: 170, 
-        color: "#00ff04", 
+        color: "#ff0004", 
         name: "Matematica II", 
         commission: "A"
       }
@@ -199,6 +199,18 @@ export class CalendarComponent implements OnInit {
     });
   }
 
+  updateSubjectOnv2(){ // segunda version de esta funcion, la idea es que en
+    //una sola pasada actualize todo
+
+    for (let m = 0 ; m < this.subjectList.length; m++) {
+      // por cada materia
+      for (let i = 0;i < this.subjectList[m].subject.commissionTimes.length;i++){
+        // por cada horario de la materia
+        
+
+      }
+    }
+  }
 
 
   updateSubjectOn(day: string, hour: string){
