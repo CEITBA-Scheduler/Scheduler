@@ -25,6 +25,13 @@ h3 {
   background: white;
   display: block;
 }
+.hour-name {
+  border: solid 1px #ccc;
+  height: 70px;
+  width: 100px;
+  background: white;
+  display: block;
+}
 .periods {
   display: flex;
   flex-direction: column;
@@ -32,11 +39,7 @@ h3 {
 }
 
 .day {
-  border: solid 1px #ccc;
-  min-height: 70px;
-  width: 120px;
   background: white;
-  border-radius: 4px;
   overflow: hidden;
   display: block;
 }
@@ -51,6 +54,14 @@ h3 {
   vertical-align: middle;
 }
 
+.subject-hour {
+  border: solid 1px #ccc;
+  height: 40px;
+  width: 100px;
+  background: white;
+  vertical-align: middle;
+}
+
 .blank-space {
   border: solid 1px #ccc;
   min-height: 67px;
@@ -58,7 +69,10 @@ h3 {
   overflow: hidden;
   display: block;
 }
-
+.hourText{
+  text-align: center;
+  vertical-align: middle;
+}
 .period {
   box-sizing: border-box;
   height: 40px;

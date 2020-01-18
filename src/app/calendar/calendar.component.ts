@@ -31,6 +31,15 @@ interface CommissionTime {
   finalHour: Time | null;
 }
 
+interface SubjectBlock{ // graphical subject block
+  width: number;
+  startTime: number;
+  endTime: number;
+  color: string;
+  name: string;
+  commission: string;
+}
+
 // Uses to list data on the lateral bar (needed checked as extra property so each subject has its own functional checkbox)
 interface SubjectList {
   checked: boolean;
@@ -76,12 +85,17 @@ export class CalendarComponent implements OnInit {
   //[{ name: "Logica", color:"#FF8921", commissionName:"Comision 1", 
   //commissionTimes: { day: "Jueves", initialHour: {hours:8, minutes:0}, finalHour: {hours: 11, minutes: 30} } }];
 
-  days = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes'];
+  days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
   hours: string[] = [];
+  
+  hoursInteger: string[] = [];
+  nextHoursInteger: string[] = [];
+
   filteredOptions: MySubject[] = [];
   subjectChooserValue: string = '';
   selectedStatus: boolean = true;
   subjectChooserDisabled: boolean = false;
+  subjectsOfDay: SubjectBlock[];
 
   constructor(private cd: ChangeDetectorRef) {
     /*for (let day in this.days){
@@ -93,10 +107,13 @@ export class CalendarComponent implements OnInit {
 
   ngOnInit() {
     for (let x = 8; x < 22; x+=0.5) {
-      if (x % 2 === 0 || x % 2 === 1)
+      if (x % 2 === 0 || x % 2 === 1){
         this.hours.push(`${x}:00`);
-      else
+        this.hoursInteger.push(`${x}:00`);
+        this.nextHoursInteger.push(`${x+1}:00`);
+      }else{
         this.hours.push(`${Math.floor(x)}:30`);
+      }
     }
     
     

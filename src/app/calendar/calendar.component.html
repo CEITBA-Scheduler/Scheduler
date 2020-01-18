@@ -1,21 +1,37 @@
 <div class="calendar">
-  <div class="periods">
+  <div class="days">
+    <div class="day">
   <!--<div class="blank-space" *ngFor="let i of [a]">-->
     <!-- This leaves a blank space at the start of the first column -->
-    <h2 class="day-name">#</h2>
-  
-    <div class="period" *ngFor="let hour of hours" [style.font]="bold" >
-      {{ hour }}
+    <div class="hour-name" fxLayoutAlign="center center">
+      <h2>#</h2>
+    </div>
+
+    <div 
+      class="subject-hour" 
+      fxLayoutAlign="center center" 
+      *ngFor="let hour of hours; 
+      let i = index" 
+      [style.font]="bold" >
+      <div class="hourText">{{ hour }}</div>
     </div>
   </div>
   
-  <div class="days">
-    <div class="day" *ngFor="let day of days">
-      <h2 class="day-name">{{ day }}</h2>
-      <div class="hour" *ngFor="let hour of hours">
-        <div class="subject" *ngFor="let subject of mySubjectsObs[(day +' '+ hour)] | async" [style.background-color]="subject.color">
-          {{ subject.name }}  {{ subject.commissionName }}
+  
+    <div class="day" *ngFor="let day of days; let i = index">
+      <div class="day-name" fxLayoutAlign="center center"><h2>{{ day }}</h2></div>
+      <div *ngFor="let hour of hours">
+        <div class="subject" fxLayoutAlign="center center" *ngFor="let subject of mySubjectsObs[(day +' '+ hour)] | async" [style.background-color]="subject.color">
+          <div *ngIf="subject.name != ''">
+            {{ subject.name }} <br> Comisión {{ subject.commissionName }}
+          </div>
         </div>
+        <!--<div class="subject" fxLayoutAlign="center center" *ngFor="let subject of subjectsOfDay[i] | async" [style.background-color]="subject.color" [style.width.px]="subject.width">
+          por cada subject del día
+          <div *ngIf="subject.name != ''">
+            {{ subject.name }} <br> Comisión {{ subject.commissionName }}
+          </div>
+        </div>-->
       </div>
     </div>
   </div>
