@@ -32,9 +32,7 @@ interface CommissionTime {
 }
 
 interface SubjectBlock{ // graphical subject block
-  width: number;
-  startTime: number;
-  endTime: number;
+  height: number;
   color: string;
   name: string;
   commission: string;
@@ -95,7 +93,13 @@ export class CalendarComponent implements OnInit {
   subjectChooserValue: string = '';
   selectedStatus: boolean = true;
   subjectChooserDisabled: boolean = false;
-  subjectsOfDay: SubjectBlock[];
+  subjectsOfDay: {[id: string] : SubjectBlock[]} = {
+    "Lunes": [],
+    "Martes": [],
+    "Miercoles": [],
+    "Jueves": [],
+    "Viernes": []
+  };
 
   constructor(private cd: ChangeDetectorRef) {
     /*for (let day in this.days){
@@ -106,6 +110,22 @@ export class CalendarComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.subjectsOfDay["Lunes"].push(
+      {
+        height: 70, 
+        color: "#00ff04", 
+        name: "Matematica I", 
+        commission: "A"
+      },
+      {
+        height: 170, 
+        color: "#00ff04", 
+        name: "Matematica II", 
+        commission: "A"
+      }
+    );
+
     for (let x = 8; x < 22; x+=0.5) {
       if (x % 2 === 0 || x % 2 === 1){
         this.hours.push(`${x}:00`);
