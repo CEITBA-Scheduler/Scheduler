@@ -26,7 +26,7 @@ export class StepperControlComponent implements OnInit {
   ngOnInit() {
 
   }
-  done(){
+  schedulerAlgorithm(){
     this.onDone.emit(null);
   }
 }
