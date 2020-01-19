@@ -42,6 +42,7 @@ import { InfoSubjectInterestComponent } from './info-subject-interest/info-subje
 import { DragSubjectsComponent } from './drag-subjects/drag-subjects.component';
 import { SubjectCardComponent } from './subject-card/subject-card.component';
 import { TrashCardComponent } from './trash-card/trash-card.component';
+import { MyCarouselComponent } from './my-carousel/my-carousel.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { TrashCardComponent } from './trash-card/trash-card.component';
     CalendarComponent,
     DragSubjectsComponent,
     SubjectCardComponent,
-    TrashCardComponent
+    TrashCardComponent,
+    MyCarouselComponent
   ],
   imports: [
     BrowserModule,
