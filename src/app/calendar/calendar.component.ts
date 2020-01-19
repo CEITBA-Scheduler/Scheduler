@@ -32,9 +32,8 @@ interface CommissionTime {
 }
 
 interface SubjectBlock{ // graphical subject block
-  width: number;
-  startTime: number;
-  endTime: number;
+  startPos: number;
+  height: number;
   color: string;
   name: string;
   commission: string;
@@ -86,8 +85,8 @@ export class CalendarComponent implements OnInit {
   //commissionTimes: { day: "Jueves", initialHour: {hours:8, minutes:0}, finalHour: {hours: 11, minutes: 30} } }];
 
   days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
+
   hours: string[] = [];
-  
   hoursInteger: string[] = [];
   nextHoursInteger: string[] = [];
 
@@ -95,7 +94,13 @@ export class CalendarComponent implements OnInit {
   subjectChooserValue: string = '';
   selectedStatus: boolean = true;
   subjectChooserDisabled: boolean = false;
-  subjectsOfDay: SubjectBlock[];
+  subjectsOfDay: {[id: string] : SubjectBlock[] } = {
+    "Lunes": [],
+    "Martes": [],
+    "Miércoles": [],
+    "Jueves": [],
+    "Viernes": [],
+  };
 
   constructor(private cd: ChangeDetectorRef) {
     /*for (let day in this.days){
@@ -115,10 +120,6 @@ export class CalendarComponent implements OnInit {
         this.hours.push(`${Math.floor(x)}:30`);
       }
     }
-    
-    
-
-
     this.subjectsComissions.subscribe((subjectsComissions: SubjectCommissions[]) => {
         console.log("Actualizando schedules ...");
       
@@ -126,10 +127,10 @@ export class CalendarComponent implements OnInit {
         var schedules = [];
 
         var colors = [
-          '#00fff7',
-          '#f9ff33',
-          '#0051ff',
-          '#00ff13'
+          'rgba(200,0,0,0.5)',
+          'rgba(0,200,200,0.5)',
+          'rgba(0,0,200,0.5)',
+          'rgba(0,200,0,0.5)'
         ];
         var i = 0;
 
@@ -170,16 +171,68 @@ export class CalendarComponent implements OnInit {
           );
         }
         
-        for (let day in this.days){
+        /*for (let day in this.days){
           for (let hour in this.hours){
             this.updateSubjectOn(this.days[day], this.hours[hour]);
           }
-        }
+        }*/
+        this.updateSubjectOnv2();
 
     });
   }
+  isSubjectsOfDay(day: string, hour: string){
+    return (this.subjectsOfDay[day][hour]);
+  }
+  updateSubjectOnv2(){ // segunda version de esta funcion, la idea es que en
+    //una sola pasada actualize todo
 
+    this.subjectsOfDay = { // borramos todo
+      "Lunes": [],
+      "Martes": [],
+      "Miércoles": [],
+      "Jueves": [],
+      "Viernes": [],
+    };
 
+    var colors = [
+      'rgba(200,0,0,0.6)',
+      'rgba(0,200,200,0.6)',
+      'rgba(0,0,200,0.6)',
+      'rgba(0,200,0,0.6)'
+    ];
+    var u = 0;
+
+    for (let m = 0 ; m < this.subjectList.length; m++) {
+      // por cada materia
+      for (let i = 0;i < this.subjectList[m].subject.commissionTimes.length;i++){
+
+        var startHour: Time = this.subjectList[m].subject.commissionTimes[i].initialHour;
+        var finalHour: Time = this.subjectList[m].subject.commissionTimes[i].finalHour;
+
+        var startPos: number = this.getPos(startHour);
+        var endPos: number = this.getPos(finalHour);
+
+        var subjectName: string = this.subjectList[m].subject.name;
+        var subjectCommission: string = this.subjectList[m].subject.commissionName;
+        //console.log(this.subjectList[m].subject.commissionTimes[i].day);
+        // por cada horario de la materia
+
+        this.subjectsOfDay[this.subjectList[m].subject.commissionTimes[i].day].push(
+          {
+            startPos: 70 + startPos,
+            height: endPos - startPos,
+            color: colors[u],
+            name: subjectName,
+            commission: subjectCommission
+          }
+        )
+      }
+      u = (u + 1) % 4;
+    }
+  }
+  getPos(time: Time){ // obtenemos la distancia acorde a la hora
+    return (time.hours-8) * 40 + time.minutes * 40 / 60; 
+  }
 
   updateSubjectOn(day: string, hour: string){
     //console.log("updated subject on ", (day +" "+ hour));
