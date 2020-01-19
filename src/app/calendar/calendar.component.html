@@ -16,6 +16,7 @@
       <div class="hourText">{{ hour }} - {{nextHoursInteger[i]}}</div>
     </div>
   </div>
+  
   <!-- absolute https://dzone.com/articles/css-position-relative-vs-position-absolute -->
   <div class="day" *ngFor="let day of days; let i = index">
     <div class="day-name" fxLayoutAlign="center center">
@@ -29,7 +30,7 @@
         <div class="subjectRelative" fxLayoutAlign="center center" [style.background-color]="subject.color" [style.height.px]="subject.height" [style.top.px] = "subject.startPos">
           {{subject.name }} <br> Comisión {{ subject.commissionName }}
         </div>
-      <div>
+      </div>
     </div>
       <!--<div *ngFor="let hour of this.hours">
       <div *ngIf="isSubjectsOfDay(day, hour)">
@@ -38,6 +39,9 @@
         </div>
       </div>
     </div>-->
+    <div *ngIf="isLoading">
+      <mat-spinner class="loadingIcon"></mat-spinner>
+    </div>
   </div>
 </div>
  <!-- <div class="lateral-bar">

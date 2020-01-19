@@ -22,8 +22,8 @@ export class TestingModule1Component implements OnInit {
     //var subjectsData: Subject[] = 
     this.sgaLinkerService.getAllSubjects().subscribe(
       (data: { [id: string]: Subject; }) => {
-        console.log("data = ");
-        console.log(data);
+        //console.log("data = ");
+        //console.log(data);
 
         var subjectCommissionsTest: SubjectCommissions[] = [];
 

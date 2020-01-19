@@ -13,10 +13,11 @@ h3 {
 }
 
 .calendar {
-    width: 400px;
-    max-width: 100%;
-    display: inline-flex;            /* So that columns are displayed horizontally */
-    text-align: center;
+  position: relative; 
+  width: 400px;
+  max-width: 100%;
+  display: inline-flex;            /* So that columns are displayed horizontally */
+  text-align: center;
 }
 .day-name {
   border: solid 1px #ccc;
@@ -100,6 +101,7 @@ h3 {
 .days {
   display: flex;
   flex-direction: row;
+  position: relative;
 }
 
 
@@ -141,4 +143,10 @@ h3 {
   /* Width/Height values were taken from img file*/
   max-width: 20;
   max-height: 20;
+}
+.loadingIcon{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
