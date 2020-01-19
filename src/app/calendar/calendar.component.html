@@ -16,21 +16,28 @@
       <div class="hourText">{{ hour }} - {{nextHoursInteger[i]}}</div>
     </div>
   </div>
-  
-  
-    <div class="day" *ngFor="let day of days; let i = index">
-      <div class="day-name" fxLayoutAlign="center center"><h2>{{ day }}</h2></div>
-        <!--<div class="subject" fxLayoutAlign="center center" *ngFor="let subject of mySubjectsObs[(day +' '+ hour)] | async" [style.background-color]="subject.color">
-          <div *ngIf="subject.name != ''">
-            {{ subject.name }} <br> Comisión {{ subject.commissionName }}
-          </div>
-        </div>-->
-        <div class="subject" fxLayoutAlign="center center" *ngFor="let subject of subjectsOfDay[day]" [style.background-color]="subject.color" [style.height.px]="subject.height">
-          <div *ngIf="subject.name != ''">
-            {{ subject.name }} <br> Comisión {{ subject.commissionName }}
-          </div>
-        </div>
+  <!-- absolute https://dzone.com/articles/css-position-relative-vs-position-absolute -->
+  <div class="day" *ngFor="let day of days; let i = index">
+    <div class="day-name" fxLayoutAlign="center center">
+      <h2>{{ day }}</h2>
     </div>
+     <div class="timeblockArea">
+      <div class="subject" *ngFor="let hour of this.hoursInteger" fxLayoutAlign="center center">
+      </div>
+
+      <div *ngFor="let subject of this.subjectsOfDay[day]">
+        <div class="subjectRelative" fxLayoutAlign="center center" [style.background-color]="subject.color" [style.height.px]="subject.height" [style.top.px] = "subject.startPos">
+          {{subject.name }} <br> Comisión {{ subject.commissionName }}
+        </div>
+      <div>
+    </div>
+      <!--<div *ngFor="let hour of this.hours">
+      <div *ngIf="isSubjectsOfDay(day, hour)">
+        <div class="subject" fxLayoutAlign="center center" [style.background-color]="subjectsOfDay[day][hour].color" [style.height.px]="subjectsOfDay[day][hour].height">
+          {{subjectsOfDay[day][hour].name }} <br> Comisión {{ subjectsOfDay[day][hour].commissionName }}
+        </div>
+      </div>
+    </div>-->
   </div>
 </div>
  <!-- <div class="lateral-bar">

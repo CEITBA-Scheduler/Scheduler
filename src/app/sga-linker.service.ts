@@ -117,7 +117,7 @@ export class SgaLinkerService {
     }else if(name == "TUESDAY"){
       return "Martes";
     }else if(name == "WEDNESDAY"){
-      return "Miercoles";
+      return "Miércoles";
     }else if(name == "THURSDAY"){
       return "Jueves";
     }else if(name == "FRIDAY"){
