@@ -1,0 +1,19 @@
+.mat-card-header{
+    width: 100%;
+    background: white;
+    padding: 5px;
+    color:black;
+   /* margin-top: 50%;*/
+}
+
+mat-card-content{
+padding: 10px;
+}
+
+mat-card{
+padding:50px;
+margin-top: 5%;
+margin-left: 5%;
+margin-right: 5%;
+margin-bottom: 5%;
+}
