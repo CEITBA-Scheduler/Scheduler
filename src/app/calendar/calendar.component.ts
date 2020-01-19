@@ -94,6 +94,8 @@ export class CalendarComponent implements OnInit {
   subjectChooserValue: string = '';
   selectedStatus: boolean = true;
   subjectChooserDisabled: boolean = false;
+  isLoading: boolean = false;
+
   subjectsOfDay: {[id: string] : SubjectBlock[] } = {
     "Lunes": [],
     "Martes": [],
@@ -111,6 +113,8 @@ export class CalendarComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.setLoading();
+    
     for (let x = 8; x < 22; x+=0.5) {
       if (x % 2 === 0 || x % 2 === 1){
         this.hours.push(`${x}:00`);
@@ -177,8 +181,13 @@ export class CalendarComponent implements OnInit {
           }
         }*/
         this.updateSubjectOnv2();
-
+        if (subjectsComissions.length > 0){
+          this.isLoading = false; // erase loading icon
+        }
     });
+  }
+  setLoading(){
+    this.isLoading = true;
   }
   isSubjectsOfDay(day: string, hour: string){
     return (this.subjectsOfDay[day][hour]);
@@ -337,7 +346,7 @@ export class CalendarComponent implements OnInit {
     const selectedSubject: MySubject = event.option.value;
     this.subjectList.push( {checked: true, subject: Object.assign({}, selectedSubject)} );
     this.availableSubjects.splice(this.availableSubjects.indexOf(selectedSubject), 1);
-    console.log(this.availableSubjects.length);
+    //console.log(this.availableSubjects.length);
     this.subjectChooserValue = "";
     this.onSubjectChooserChange();
     if (this.availableSubjects.length == 0) 
