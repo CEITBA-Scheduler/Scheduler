@@ -42,12 +42,7 @@ import { InfoSubjectInterestComponent } from './info-subject-interest/info-subje
 import { DragSubjectsComponent } from './drag-subjects/drag-subjects.component';
 import { SubjectCardComponent } from './subject-card/subject-card.component';
 import { TrashCardComponent } from './trash-card/trash-card.component';
-<<<<<<< HEAD
-import { MyCarouselComponent } from './my-carousel/my-carousel.component';
-=======
-import { CalendarCarouselComponent } from './calendar-carousel/calendar-carousel.component';
->>>>>>> 63e6057d8e52ef72661a63ce8f72a5d51961c629
-
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
 @NgModule({
   declarations: [
     AppComponent,
@@ -69,9 +64,7 @@ import { CalendarCarouselComponent } from './calendar-carousel/calendar-carousel
     CalendarComponent,
     DragSubjectsComponent,
     SubjectCardComponent,
-    TrashCardComponent,
-    MyCarouselComponent
-    CalendarCarouselComponent
+    TrashCardComponent
   ],
   imports: [
     BrowserModule,
@@ -97,7 +90,8 @@ import { CalendarCarouselComponent } from './calendar-carousel/calendar-carousel
     MatButtonModule,
     DemoMaterialModule,
     HttpClientModule,
-    MatIconModule
+    MatIconModule,
+    MDBBootstrapModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
