@@ -91,7 +91,7 @@ export class CombinerComponent implements OnInit {
     // Then, we need to build a list of SubjectSelection to be used as the
     // user's choice of subjects for the algorithm
     this.scheduleCombinerServices.getMaterias()
-    .subscribe( (subjects: Subject[]) => {
+    .subscribe( (subjects) => {
       this.subjectSelections = SubjectSelection.generateSelectionByArray(
         subjects.map(subject => subject.code)
       );
@@ -156,5 +156,14 @@ export class CombinerComponent implements OnInit {
       this.priorities,          // User's priorities
       'quicksort'               // Available sorting algorithm
     );
+
+    // console.log('=== Subjects ===');
+    // console.log(this.subjects);
+    // console.log('=== Subjects Selected ===');
+    // console.log(this.subjectSelections);
+    // console.log('=== Priorities ===');
+    // console.log(this.priorities);
+    // console.log('=== Combinations ===');
+    // console.log(this.combinations);
   }
 }
