@@ -53,7 +53,7 @@ interface SubjectList {
 
 export class CalendarComponent implements OnInit {
   @Input() subjectsComissions: Observable<SubjectCommissions[]>; // input de materias
-
+  @Input() mode: boolean;
   
 
   /*schedules: possibleSchedules[] = [

@@ -43,6 +43,7 @@ import { DragSubjectsComponent } from './drag-subjects/drag-subjects.component';
 import { SubjectCardComponent } from './subject-card/subject-card.component';
 import { TrashCardComponent } from './trash-card/trash-card.component';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
+
 @NgModule({
   declarations: [
     AppComponent,
