@@ -305,7 +305,8 @@ export class AlgorithmService {
    * @param selectedSubjects  List of subjects selected
    * @param priorities        List of user's priorities
    */
-  public schedulerAlgorithm(subjects: ISubject[], selectedSubjects: ISubjectSelection[], priorities: IPriority[], sort: string = 'sort') {
+  public schedulerAlgorithm(subjects: ISubject[], selectedSubjects: ISubjectSelection[], priorities: IPriority[], sort: string = 'sort')
+  : Combination[] {
         // 1°, run the combination algorithm to obtain all possible schedules and classify them by the criteria and priorities
         const chosenSubjects: ISubject[] = [];
         for (const selectedSubject of selectedSubjects) {
