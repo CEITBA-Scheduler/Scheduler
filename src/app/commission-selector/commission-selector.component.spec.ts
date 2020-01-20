@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CommissionSelectorComponent } from './seleccionador-de-comisiones.component';
+import { CommissionSelectorComponent } from './commission-selector.component';
 
 describe('CommissionSelectorComponent', () => {
   let component: CommissionSelectorComponent;
