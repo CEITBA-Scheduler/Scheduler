@@ -28,8 +28,8 @@ export class CombinacionDeHorarioService {
     private authService: AuthService
   ) {
     this.getCommissionsSelectedData().subscribe((data: {[id: string]: SubjectCommissions}) => {
-        console.log("data of commissions selected updated: ");
-        console.log(data);
+        //console.log("data of commissions selected updated: ");
+        //console.log(data);
       }
     );
   }

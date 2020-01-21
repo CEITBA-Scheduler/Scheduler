@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject, Commission, Timeblock } from './materia'
+import { Subject, Commission, Timeblock } from './materia';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, map, startWith } from 'rxjs/operators';
@@ -7,6 +7,7 @@ import { parse } from 'date-fns';
 import { UserSelection } from './materia';
 import { AuthService } from './auth.service';
 import { User } from './user.model';
+import { token } from './secrets';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class SgaLinkerService {
   AllSubjects: BehaviorSubject<{ [id: string]: Subject; }>;
   AllSubjectsValue: { [id: string]: Subject; };
   AllCommissions;
-  url : string = "https://itbagw.itba.edu.ar/api/v1/courseCommissions/1wXxftFa4NTfsmOstgnQHDq55m7jZL1jq7r7gWlprbHg?level=GRADUATE&year=2019&period=SecondSemester";
+  url : string = "https://itbagw.itba.edu.ar/api/v1/courseCommissions/"+token.CEITBA+"?level=GRADUATE&year=2020&period=FirstSemester";
 
   constructor(
     private http: HttpClient,
@@ -74,8 +75,8 @@ export class SgaLinkerService {
 
   getDataFromApi(){
     this.getAllComissions().subscribe(data => {
-      console.log("data recibida ...");
-      console.log(data);
+      //console.log("data recibida ...");
+      //console.log(data);
 
       // here I set what happens when I receive something from get (asynchronous)
       this.AllCommissions = data["courseCommissions"].courseCommission;

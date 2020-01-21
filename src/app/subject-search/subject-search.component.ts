@@ -42,9 +42,9 @@ export class SubjectSearchComponent implements OnInit {
   ngOnInit() {
     this.options = this.sgaLinkerService.getAllSubjectsAsList();
 
-    this.options.subscribe(
+    /*this.options.subscribe(
       (materias: Subject[]) => (console.log(materias) )
-    );
+    );*/
 
     this.myControl.valueChanges.subscribe(
       val => this.updateWrittenValue(val)
@@ -67,7 +67,7 @@ export class SubjectSearchComponent implements OnInit {
     );
   }
   optionSelected(value: Subject) {
-    console.log("Materia seleccionada", value);
+    //console.log("Materia seleccionada", value);
     this.onOptionSelected.emit(value);
 
     this.myControl.setValue('');

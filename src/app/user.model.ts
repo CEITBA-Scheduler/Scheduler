@@ -6,6 +6,8 @@ export interface User {
   displayName: string;
   userSelection?: FirestoreCommissionSelection[];
   tickboxSelection?: TickboxSelection;
+  plan?: string;
+  career?: string;
 }
 
 export interface FirestoreCommissionSelection{

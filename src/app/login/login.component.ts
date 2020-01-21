@@ -16,10 +16,10 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     if (this.authService.getLogged()){
-      console.log("El usuario esta logeado...");
+      //console.log("El usuario esta logeado...");
       this.router.navigate(["combinadorDeHorarios"]);
     }else{
-      console.log("El usuario no esta logeado");
+      //console.log("El usuario no esta logeado");
     }
 
     this.authService.getUserObservable().subscribe((user : User) => {

@@ -1,6 +1,9 @@
 <mat-toolbar color="primary">
   COMBINADOR DE HORARIOS
   <span class="example-spacer"></span>
+  <div *ngIf="authService.getUser()">
+   &nbsp; {{authService.getUser().career}} &nbsp; {{authService.getUser().plan}} &nbsp; {{authService.getUser().displayName}} &nbsp; 
+  </div>
   <button class="example-icon" aria-hidden="false" aria-label="Example user verified icon" (click)="logOut()">
     <mat-icon>exit_to_app</mat-icon>
   </button>

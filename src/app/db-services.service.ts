@@ -38,7 +38,7 @@ export class DbServicesService {
     // luego esos valores los publicamos en la base de datos
 
     //this.firestore.collection("users).set("userSelection", this.getUserObjectFromUserSelection(userSelection));
-    console.log("Updating user db ...");
+    //console.log("Updating user db ...");
     const user: User = this.auth.getUser();
 
     var userSelectionData = [];
@@ -65,13 +65,13 @@ export class DbServicesService {
  }
  subscribeToSubjectInfo(subjects: {[code: string]: Subject}){ // obtener los anotados en cada comision de la materia
 
-  this.afs.collection("users").valueChanges().subscribe(data => {
-    console.log(data);
-  });
+  /*this.afs.collection("users").valueChanges().subscribe(data => {
+    //console.log(data);
+  });*/
 
   this.afs.collection("users").valueChanges().subscribe(data => {
-    console.log("data recibida");
-    console.log(data);
+    //console.log("data recibida");
+    //console.log(data);
     
     for (let key in subjects){
       for (var commission in subjects[key].commissions){
@@ -81,19 +81,19 @@ export class DbServicesService {
       //si es con get(), iria data.doc
     for (let docName in data){ // for each document
       var doc = data[docName]; // y aca .data()
-      console.log("doc data");
-      console.log(doc);
+      //console.log("doc data");
+      //console.log(doc);
       for (let subject in doc["userSelection"]){
         var subjectCode: string = doc["userSelection"][subject].subjectCode;
         var subjectData = doc["userSelection"][subject];
-        console.log("subject data");
-        console.log(subjectData);
+        //console.log("subject data");
+        //console.log(subjectData);
 
         if (subjectCode in subjects){
 
           for (let commission in subjects[subjectCode].commissions){
-            console.log("analizando ");
-            console.log(commission);
+            //console.log("analizando ");
+            //console.log(commission);
 
             if (subjects[subjectCode].commissions[commission].name == subjectData.commissions[0]){
               subjects[subjectCode].commissions[commission].people[0] ++;
