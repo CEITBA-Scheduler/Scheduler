@@ -54,7 +54,7 @@ interface SubjectList {
 export class CalendarComponent implements OnInit {
   @Input() subjectsComissions: Observable<SubjectCommissions[]>; // input de materias
   @Input() mode: boolean;
-  
+
 
   /*schedules: possibleSchedules[] = [
     {
@@ -74,14 +74,14 @@ export class CalendarComponent implements OnInit {
   // Contains the subject list displayed on the lateral bar. Subjects are shown on the calendar depending on its checkbox status
   subjectList: SubjectList[] = [];
   // Used to plot subjects when in between initialHour and finalHour on subjectOn()
-  currentSubjectIndex: number = -1; 
+  currentSubjectIndex: number = -1;
   // Contains all the subjects that can be taken minus the ones that have already been plotted. Using Logica as dummy datatype atm
-  
+
   mySubjectsObs: {[id: string] : BehaviorSubject<MySubject[]>} = {};
   mySubjects: {[id: string] : MySubject[]} = {};
 
   availableSubjects: MySubject[] = [];
-  //[{ name: "Logica", color:"#FF8921", commissionName:"Comision 1", 
+  //[{ name: "Logica", color:"#FF8921", commissionName:"Comision 1",
   //commissionTimes: { day: "Jueves", initialHour: {hours:8, minutes:0}, finalHour: {hours: 11, minutes: 30} } }];
 
   days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
@@ -114,7 +114,7 @@ export class CalendarComponent implements OnInit {
 
   ngOnInit() {
     this.setLoading();
-    
+
     for (let x = 8; x < 22; x+=0.5) {
       if (x % 2 === 0 || x % 2 === 1){
         this.hours.push(`${x}:00`);
@@ -126,7 +126,7 @@ export class CalendarComponent implements OnInit {
     }
     this.subjectsComissions.subscribe((subjectsComissions: SubjectCommissions[]) => {
         console.log("Actualizando schedules ...");
-      
+
         /// actualizamos possibleSchedules
         var schedules = [];
 
@@ -143,23 +143,23 @@ export class CalendarComponent implements OnInit {
           var times = [];
 
           for (let schedule of subjectComission.commissions[0].schedule){
-            times.push({ 
-              day: schedule.day, 
-              initialHour: { 
-                hours:schedule.start.hours, 
-                minutes:schedule.start.minutes 
-              }, 
-              finalHour: { 
-                hours:schedule.end.hours, 
-                minutes:schedule.end.minutes 
+            times.push({
+              day: schedule.day,
+              initialHour: {
+                hours:schedule.start.hours,
+                minutes:schedule.start.minutes
+              },
+              finalHour: {
+                hours:schedule.end.hours,
+                minutes:schedule.end.minutes
               }
             });
           }
 
           schedules.push(
-            { 
-              name: subjectComission.subject.name, 
-              color: colors[i], 
+            {
+              name: subjectComission.subject.name,
+              color: colors[i],
               commissionName: subjectComission.commissions[0].name,
               commissionTimes: times
             },
@@ -168,13 +168,13 @@ export class CalendarComponent implements OnInit {
         }
         this.subjectList = [];
         for (let i = 0; i < schedules.length ; i++ ) {
-          this.subjectList.push( 
+          this.subjectList.push(
             {
               checked: true, subject: Object.assign({}, schedules[i])
             }
           );
         }
-        
+
         /*for (let day in this.days){
           for (let hour in this.hours){
             this.updateSubjectOn(this.days[day], this.hours[hour]);
@@ -184,6 +184,7 @@ export class CalendarComponent implements OnInit {
         if (subjectsComissions.length > 0){
           this.isLoading = false; // erase loading icon
         }
+        this.isLoading = false;
     });
   }
   setLoading(){
@@ -240,7 +241,7 @@ export class CalendarComponent implements OnInit {
     }
   }
   getPos(time: Time){ // obtenemos la distancia acorde a la hora
-    return (time.hours-8) * 40 + time.minutes * 40 / 60; 
+    return (time.hours-8) * 40 + time.minutes * 40 / 60;
   }
 
   updateSubjectOn(day: string, hour: string){
@@ -257,15 +258,15 @@ export class CalendarComponent implements OnInit {
       for (let i = 0;i < this.subjectList[m].subject.commissionTimes.length;i++){
         //console.log( hour, this.subjectList[m].subject.commissionTimes);
         /*console.log(this.hourToString(
-          this.subjectList[m].subject.commissionTimes[i].finalHour.hours, 
+          this.subjectList[m].subject.commissionTimes[i].finalHour.hours,
           this.subjectList[m].subject.commissionTimes[i].finalHour.minutes) );*/
         if (day === this.subjectList[m].subject.commissionTimes[i].day) {
-          if (hour === 
-            this.hourToString(this.subjectList[m].subject.commissionTimes[i].initialHour.hours, 
-              this.subjectList[m].subject.commissionTimes[i].initialHour.minutes) 
+          if (hour ===
+            this.hourToString(this.subjectList[m].subject.commissionTimes[i].initialHour.hours,
+              this.subjectList[m].subject.commissionTimes[i].initialHour.minutes)
               && this.subjectList[m].checked
               ) {
-            
+
             subject = [this.subjectList[m].subject];
             this.currentSubjectIndex = m;
                 //console.log("start");
@@ -273,8 +274,8 @@ export class CalendarComponent implements OnInit {
           }
           else if (
             hour === this.hourToString(
-              this.subjectList[m].subject.commissionTimes[i].finalHour.hours, 
-              this.subjectList[m].subject.commissionTimes[i].finalHour.minutes) 
+              this.subjectList[m].subject.commissionTimes[i].finalHour.hours,
+              this.subjectList[m].subject.commissionTimes[i].finalHour.minutes)
             && this.subjectList[m].checked
             ) {
               //console.log("end");
@@ -293,10 +294,10 @@ export class CalendarComponent implements OnInit {
     if (!((day + " " + hour) in this.mySubjectsObs)){
       this.generateSubjectOn(day, hour);
     }
-    
+
 
     this.mySubjectsObs[(day +" "+ hour)].next(subject);
-    
+
   }
   // Checks if there's a subject on the day and hour sent
   subjectOn (day: string, hour: string): Observable<MySubject[]> {
@@ -312,7 +313,7 @@ export class CalendarComponent implements OnInit {
     this.mySubjectsObs[(day +" "+ hour)] = new BehaviorSubject([{ name:"", color:"", commissionName:""}]);
     /*this.mySubjectsObs[(day +" "+ hour)].asObservable().subscribe(
       data =>
-        { 
+        {
           if (data[0].name != ""){
             console.log("data no nula");
             console.log(data);
@@ -320,7 +321,7 @@ export class CalendarComponent implements OnInit {
            //console.log("data nula");
           }
         }
-      
+
     )*/
   }
 
@@ -349,7 +350,7 @@ export class CalendarComponent implements OnInit {
     //console.log(this.availableSubjects.length);
     this.subjectChooserValue = "";
     this.onSubjectChooserChange();
-    if (this.availableSubjects.length == 0) 
+    if (this.availableSubjects.length == 0)
       this.subjectChooserDisabled = true;
     this.cd.detectChanges();
   }

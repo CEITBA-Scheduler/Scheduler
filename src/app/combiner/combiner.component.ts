@@ -157,6 +157,8 @@ export class CombinerComponent implements OnInit {
       'quicksort'               // Available sorting algorithm
     );
 
+    this.router.navigate(["/resultados"]);
+
     // console.log('=== Subjects ===');
     // console.log(this.subjects);
     // console.log('=== Subjects Selected ===');

@@ -7,20 +7,19 @@
       <h2>#</h2>
     </div>
 
-    <div 
-      class="subject-hour" 
-      fxLayoutAlign="center center" 
-      *ngFor="let hour of hoursInteger; 
-      let i = index" 
-      [style.font]="bold" >
+    <div
+      class="subject-hour"
+      fxLayoutAlign="center center"
+      *ngFor="let hour of hoursInteger;
+      let i = index">
       <div class="hourText">{{ hour }} - {{nextHoursInteger[i]}}</div>
     </div>
   </div>
-  
+
   <!-- absolute https://dzone.com/articles/css-position-relative-vs-position-absolute -->
   <div class="day" *ngFor="let day of days; let i = index">
     <div class="day-name" fxLayoutAlign="center center">
-      <h2>{{ day }}</h2>
+      <h4>{{ day }}</h4>
     </div>
      <div class="timeblockArea">
       <div class="subject" *ngFor="let hour of this.hoursInteger" fxLayoutAlign="center center">
@@ -46,7 +45,7 @@
 </div>
  <!-- <div class="lateral-bar">
     <h1>Materias</h1>
-    <div class="subject-list" *ngFor="let subj of subjectList"> 
+    <div class="subject-list" *ngFor="let subj of subjectList">
       <h3>
         {{ subj.subject.name }}
       </h3>
@@ -68,9 +67,9 @@
     <!-- Switch subjectList with selectedSchedule here to see its behaviour when adding/removing subjects -->
     <!--
       <mat-icon svgIcon="delete" aria-hidden="false">delete</mat-icon>
-      <div class="lateral-bar"> 
+      <div class="lateral-bar">
   </div>
-    <div class="subject-list" *ngFor="let subject of subjectList"> 
+    <div class="subject-list" *ngFor="let subject of subjectList">
       {{ subject.name }}
       <mat-checkbox class="selected-comission" [(ngModel)]="subject.checked" (change)="switchSubjectState(subject)">
         {{ subject.commissionName }}

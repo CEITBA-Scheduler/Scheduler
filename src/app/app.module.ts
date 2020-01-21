@@ -43,6 +43,7 @@ import { DragSubjectsComponent } from './drag-subjects/drag-subjects.component';
 import { SubjectCardComponent } from './subject-card/subject-card.component';
 import { TrashCardComponent } from './trash-card/trash-card.component';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
+import { ResultsComponent } from './results/results.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
     CalendarComponent,
     DragSubjectsComponent,
     SubjectCardComponent,
-    TrashCardComponent
+    TrashCardComponent,
+    ResultsComponent
   ],
   imports: [
     BrowserModule,
@@ -76,7 +78,8 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
       { path: 'testingModule1', component: TestingModule1Component },
       { path: 'testingModule2', component: TestingModule2Component },
       { path: 'testingModule3', component: TestingModule3Component },
-      { path: 'infoSubject', component: InfoSubjectInterestComponent }
+      { path: 'infoSubject', component: InfoSubjectInterestComponent },
+      { path: 'results', component: ResultsComponent }
     ]),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule,
