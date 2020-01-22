@@ -31,7 +31,7 @@ interface CommissionTime {
   finalHour: Time | null;
 }
 
-interface SubjectBlock{ // graphical subject block
+interface SubjectBlock { // graphical subject block
   startPos: number;
   height: number;
   color: string;
@@ -86,9 +86,23 @@ export class CalendarComponent implements OnInit {
 
   days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
 
+  rojo: string = "warn";
   hours: string[] = [];
   hoursInteger: string[] = [];
   nextHoursInteger: string[] = [];
+
+  displaySubjectStatus: boolean = true;
+  isMouseClicked: boolean = false;
+  calendarButtonText: string = "OFF";
+  buttonColor: string = "none";
+  // Contains color of each button displayed on calendar when choosing free periods
+  periodButtonsColor: {[id: string]: String[] } = {
+    "Lunes": [],
+    "Martes": [],
+    "Miércoles": [],
+    "Jueves": [],
+    "Viernes": []
+  }
 
   filteredOptions: MySubject[] = [];
   subjectChooserValue: string = '';
@@ -99,7 +113,7 @@ export class CalendarComponent implements OnInit {
     "Martes": [],
     "Miércoles": [],
     "Jueves": [],
-    "Viernes": [],
+    "Viernes": []
   };
 
   constructor(private cd: ChangeDetectorRef) {
@@ -116,8 +130,14 @@ export class CalendarComponent implements OnInit {
         this.hours.push(`${x}:00`);
         this.hoursInteger.push(`${x}:00`);
         this.nextHoursInteger.push(`${x+1}:00`);
-      }else{
+      }
+      else {
         this.hours.push(`${Math.floor(x)}:30`);
+      }
+    }
+    for (let day of this.days) {
+      for (let hour of this.hours) {
+        this.periodButtonsColor[day].push("none");
       }
     }
     this.subjectsComissions.subscribe((subjectsComissions: SubjectCommissions[]) => {
@@ -180,9 +200,11 @@ export class CalendarComponent implements OnInit {
 
     });
   }
-  isSubjectsOfDay(day: string, hour: string){
+
+  isSubjectsOfDay(day: string, hour: string) {
     return (this.subjectsOfDay[day][hour]);
   }
+
   updateSubjectOnv2(){ // segunda version de esta funcion, la idea es que en
     //una sola pasada actualize todo
 
@@ -204,7 +226,7 @@ export class CalendarComponent implements OnInit {
 
     for (let m = 0 ; m < this.subjectList.length; m++) {
       // por cada materia
-      for (let i = 0;i < this.subjectList[m].subject.commissionTimes.length;i++){
+      for (let i = 0; i < this.subjectList[m].subject.commissionTimes.length ; i++) {
 
         var startHour: Time = this.subjectList[m].subject.commissionTimes[i].initialHour;
         var finalHour: Time = this.subjectList[m].subject.commissionTimes[i].finalHour;
@@ -216,7 +238,6 @@ export class CalendarComponent implements OnInit {
         var subjectCommission: string = this.subjectList[m].subject.commissionName;
         //console.log(this.subjectList[m].subject.commissionTimes[i].day);
         // por cada horario de la materia
-
         this.subjectsOfDay[this.subjectList[m].subject.commissionTimes[i].day].push(
           {
             startPos: 70 + startPos,
@@ -226,14 +247,17 @@ export class CalendarComponent implements OnInit {
             commission: subjectCommission
           }
         )
+        console.log(this.subjectsOfDay[this.subjectList[m].subject.commissionTimes[i].day]);
       }
       u = (u + 1) % 4;
     }
   }
+
   getPos(time: Time){ // obtenemos la distancia acorde a la hora
     return (time.hours-8) * 40 + time.minutes * 40 / 60; 
   }
 
+  // NOT USED ATM
   updateSubjectOn(day: string, hour: string){
     //console.log("updated subject on ", (day +" "+ hour));
 
@@ -289,6 +313,7 @@ export class CalendarComponent implements OnInit {
     this.mySubjectsObs[(day +" "+ hour)].next(subject);
     
   }
+
   // Checks if there's a subject on the day and hour sent
   subjectOn (day: string, hour: string): Observable<MySubject[]> {
     // usando this.subjectList calcula el valor de subject
@@ -299,7 +324,8 @@ export class CalendarComponent implements OnInit {
     // sino lo generaemos
 
   }
-  generateSubjectOn(day: string, hour: string){ // we generate al Subjects
+
+  generateSubjectOn(day: string, hour: string) { // we generate all Subjects
     this.mySubjectsObs[(day +" "+ hour)] = new BehaviorSubject([{ name:"", color:"", commissionName:""}]);
     /*this.mySubjectsObs[(day +" "+ hour)].asObservable().subscribe(
       data =>
@@ -311,7 +337,6 @@ export class CalendarComponent implements OnInit {
            //console.log("data nula");
           }
         }
-      
     )*/
   }
 
@@ -364,6 +389,72 @@ export class CalendarComponent implements OnInit {
       return true;
     else
       return false;
+  }
+
+  toggleCalendarState() {
+    // Toggles displayed text & button color
+    if (this.calendarButtonText === "OFF") {
+      this.calendarButtonText = "ON";
+      this.buttonColor = "warn";
+    }
+    else {
+      this.calendarButtonText = "OFF";
+      this.buttonColor = "none";
+    }
+    // Changes whether subjects are displayed or not (look up *ngIf on .html)
+    if (this.displaySubjectStatus)
+      this.displaySubjectStatus = false;
+    else
+      this.displaySubjectStatus = true;
+  }
+
+  // Checks if there´s a subject on the day and hour sent. If that´s the case, it´s removed
+  togglePeriodState(day: string, indexHour: number) {
+    // Using block index to determine hour
+    var hour = indexHour + 8;
+    for (let subj of this.subjectList) {
+      for (let i = 0; i < subj.subject.commissionTimes.length ; i++) {
+        if (day === subj.subject.commissionTimes[i].day &&
+          hour >= subj.subject.commissionTimes[i].initialHour.hours &&
+          hour < subj.subject.commissionTimes[i].finalHour.hours ) {
+          for (let d of this.days) {
+            for (let a = 0; a < this.subjectsOfDay[d].length ; a++) {
+              if (subj.subject.name === this.subjectsOfDay[d][a].name) {
+                this.subjectsOfDay[d].splice(a,1);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  startTogglePeriodMarker(day: string, indexHour: number) {
+    this.isMouseClicked = true;
+    if (this.periodButtonsColor[day][indexHour] === "none")
+      this.periodButtonsColor[day][indexHour] = "warn";
+    else
+      this.periodButtonsColor[day][indexHour] = "none";
+    this.togglePeriodState(day, indexHour);
+  }
+
+  inTogglePeriodMarker(day: string, indexHour: number) {
+    if (this.isMouseClicked) {
+      if (this.periodButtonsColor[day][indexHour] === "none")
+        this.periodButtonsColor[day][indexHour] = "warn";
+      else
+        this.periodButtonsColor[day][indexHour] = "none";
+    this.togglePeriodState(day, indexHour);
+    }
+  }
+
+  endTogglePeriodMarker(day: string, indexHour: number) {
+    this.isMouseClicked = false;
+    this.togglePeriodState(day, indexHour);
+  }
+
+  mouseIsNotOnCalendar() {
+    this.isMouseClicked = false;
   }
 
 }
