@@ -148,7 +148,6 @@ export class CombinerComponent implements OnInit {
       'quicksort'               // Available sorting algorithm
     );
 
-<<<<<<< HEAD
 
     this.scheduleCombinerServices.setAlgorithmResults(
       this.combinations.slice(0, 20)
@@ -159,10 +158,6 @@ export class CombinerComponent implements OnInit {
 
     this.router.navigate(['/results']);
 
-=======
-    this.router.navigate(['/resultados']);
-
->>>>>>> 3b24848c4159fcbf2a11f19479c4c25ed6a8277f
     console.log('=== Subjects ===');
     console.log(this.subjects);
     console.log('=== Subjects Selected ===');

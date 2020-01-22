@@ -76,16 +76,11 @@ export class SgaLinkerService {
     return null;
   }
 
-<<<<<<< HEAD
-  getAllSubjects() : Observable<{ [id: string]: Subject; }> {
-    return this.AllSubjects.asObservable();
-=======
   /**
    * Returns the raw response of the HTTP request made
    */
   getRawResponse(): any {
     return this.rawHttpResponse;
->>>>>>> 3b24848c4159fcbf2a11f19479c4c25ed6a8277f
   }
 
   /**
