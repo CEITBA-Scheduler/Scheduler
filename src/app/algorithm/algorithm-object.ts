@@ -65,6 +65,19 @@ export class CombinationSubject implements ICombinationSubject {
   }
 
   /**
+   * Returns an array of timeblocks
+   */
+  getAllTimeblock(): ITimeblock[] {
+    const timeblocks: ITimeblock[] = [];
+
+    for (const commissionTime of this.commissionTimes) {
+      timeblocks.push(commissionTime);
+    }
+
+    return timeblocks;
+  }
+
+  /**
    * Returns an array of weekdays containing the free days
    * where the subject has no lectures.
    */
@@ -140,7 +153,6 @@ export class Combination implements ICombination {
 
     return timeblocks;
   }
-
   /**
    * Returns an array of weekday with the free days where
    * the combination has no lectures, by comparing the freedays
@@ -354,6 +366,34 @@ export class Timeblock implements ITimeblock {
    */
   intervalToHHmm(): string {
     return this.startToHHmm() + '-' + this.endToHHmm();
+  }
+
+  /**
+   * Return the start minutes
+   */
+  getStartMinutes(): number {
+    return Math.round(60 * (this.start - Math.floor(this.start)));
+  }
+
+  /**
+   * Return the start hours
+   */
+  getStartHours(): number {
+    return Math.floor(this.start);
+  }
+
+  /**
+   * Return the end minutes
+   */
+  getEndMinutes(): number {
+    return Math.round(60 * (this.end - Math.floor(this.end)));
+  }
+
+  /**
+   * Return the end hours
+   */
+  getEndHours(): number {
+    return Math.floor(this.end);
   }
 }
 

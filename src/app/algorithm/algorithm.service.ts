@@ -126,166 +126,190 @@ export class AlgorithmService {
    * @param combination Combination to be verified
    * @param priorities  List of priorities and criteria set by the user
    */
-  private verifiesPriorities(combination: ICombination, priorities: IPriority[]): boolean {
-    for (let index = 0 ; index < priorities.length ; index++) {
-      const currentPriority = priorities[index];
-
-      switch (currentPriority.type) {
-
-        case PriorityTypes.SUPERPOSITION:
-          let failedSuperposition = false;
-          for (let i = 0; i < combination.subjects.length; i++) {
-            for (let j = i + 1; j < combination.subjects.length; j++) {
-              for (const firstTimeblock of combination.subjects[i].commissionTimes) {
-                for (const secondTimeblock of combination.subjects[j].commissionTimes) {
-                  if (firstTimeblock.overlaps(secondTimeblock) > currentPriority.value) {
-                    if (currentPriority.isExclusive()) {
-                      return false;
-                    } else {
-                      failedSuperposition = true;
-                      break;
-                    }
-                  }
-                }
-                if (failedSuperposition) {
-                  break;
-                }
-              }
-              if (failedSuperposition) {
+  private verifySuperposition(combination: ICombination, currentPriority: IPriority, index: number): boolean {
+    let failedSuperposition = false;
+    for (let i = 0; i < combination.subjects.length; i++) {
+      for (let j = i + 1; j < combination.subjects.length; j++) {
+        for (const firstTimeblock of combination.subjects[i].commissionTimes) {
+          for (const secondTimeblock of combination.subjects[j].commissionTimes) {
+            if (firstTimeblock.overlaps(secondTimeblock) > currentPriority.value) {
+              if (currentPriority.isExclusive()) {
+                return false;
+              } else {
+                failedSuperposition = true;
                 break;
               }
             }
-            if (failedSuperposition) {
-              break;
-            }
           }
-          if (!failedSuperposition) {
-            combination.priorities.push(Number(index));
+          if (failedSuperposition) {
+            break;
           }
+        }
+        if (failedSuperposition) {
           break;
+        }
+      }
+      if (failedSuperposition) {
+        break;
+      }
+    }
+    if (!failedSuperposition) {
+      combination.priorities.push(Number(index));
+    }
+    return true;
+  }
 
-        case PriorityTypes.COMMISSION:
-          const prioritySubject = combination.subjects.find(subject => subject.code === currentPriority.relatedSubjectCode);
-          if (prioritySubject) {
-            if (prioritySubject.commissionName === currentPriority.value) {
-              combination.priorities.push(Number(index));
-            } else if (currentPriority.isExclusive()) {
-              return false;
-            }
-          } else if (currentPriority.isExclusive()) {
-            return false;
-          }
+  private verifyCommission(combination: ICombination, currentPriority: IPriority, index: number): boolean {
+    const prioritySubject = combination.subjects.find(subject => subject.code === currentPriority.relatedSubjectCode);
+    if (prioritySubject) {
+      if (prioritySubject.commissionName === currentPriority.value) {
+        combination.priorities.push(Number(index));
+      } else if (currentPriority.isExclusive()) {
+        return false;
+      }
+    } else if (currentPriority.isExclusive()) {
+      return false;
+    }
+
+    return true;
+  }
+
+  private verifyProfessor(combination: ICombination, currentPriority: IPriority, index: number): boolean {
+    let hasPriorityTeacher = false; // We assume there is no prioritized teacher to begin
+    const professorSubject = combination.subjects.find(subject => subject.code === currentPriority.relatedSubjectCode);
+    if (professorSubject && professorSubject.hasProfessors()) {
+      for (const currentTeacher of professorSubject.professors) {
+        if (currentTeacher === currentPriority.value) {
+          combination.priorities.push(Number(index));
+          hasPriorityTeacher = true;
           break;
+        }
+      }
+    } else if (currentPriority.isExclusive()) {
+      return false;
+    }
 
-        case PriorityTypes.PROFESSOR:
-          let hasPriorityTeacher = false; // We assume there is no prioritized teacher to begin
-          const professorSubject = combination.subjects.find(subject => subject.code === currentPriority.relatedSubjectCode);
-          if (professorSubject && professorSubject.hasProfessors()) {
-            for (const currentTeacher of professorSubject.professors) {
-              if (currentTeacher === currentPriority.value) {
-                combination.priorities.push(Number(index));
-                hasPriorityTeacher = true;
-                break;
-              }
-            }
-          } else if (currentPriority.isExclusive()) {
-            return false;
-          }
+    if (currentPriority.isExclusive() && !hasPriorityTeacher) {
+      return false;
+    } // Exclusive condition failed verify
 
-          if (currentPriority.isExclusive() && !hasPriorityTeacher) {
-            return false;
-          } // Exclusive condition failed verify
-          break;
+    return true;
+  }
 
-        case PriorityTypes.FREEDAY:
-          const freeDays = combination.getFreeDays();
-          if (freeDays.length > 0) {
-            const freeDay = freeDays.find(element => element === currentPriority.value);
-            if (currentPriority.value === Weekday.ANY || freeDay) {
-              combination.priorities.push(Number(index));
-            }
-          } else {
+  private verifyFreeDay(combination: ICombination, currentPriority: IPriority, index: number): boolean {
+    const freeDays = combination.getFreeDays();
+    if (freeDays.length > 0) {
+      const freeDay = freeDays.find(element => element === currentPriority.value);
+      if (currentPriority.value === Weekday.ANY || freeDay) {
+        combination.priorities.push(Number(index));
+      }
+    } else {
+      if (currentPriority.isExclusive()) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private verifyBusyTime(combination: ICombination, currentPriority: IPriority, index: number): boolean {
+    let failedBusyTime = false;
+    for (const currentSubject of combination.subjects) {
+      for (const currentTime of currentSubject.commissionTimes) {
+        for (const busyTime of currentPriority.value as ITimeblock[]) {
+          if (currentTime.overlaps(busyTime) > 0.0) {
             if (currentPriority.isExclusive()) {
               return false;
-            }
-          }
-          break;
-
-        case PriorityTypes.BUSYTIME:
-          let failedBusyTime = false;
-          for (const currentSubject of combination.subjects) {
-            for (const currentTime of currentSubject.commissionTimes) {
-              for (const busyTime of currentPriority.value as ITimeblock[]) {
-                if (currentTime.overlaps(busyTime) > 0.0) {
-                  if (currentPriority.isExclusive()) {
-                    return false;
-                  } else {
-                    failedBusyTime = true;
-                    break;
-                  }
-                }
-              }
-              if (failedBusyTime) {
-                break;
-              }
-            }
-            if (failedBusyTime) {
+            } else {
+              failedBusyTime = true;
               break;
             }
           }
-          if (!failedBusyTime) {
-            combination.priorities.push(Number(index));
-          }
+        }
+        if (failedBusyTime) {
           break;
+        }
+      }
+      if (failedBusyTime) {
+        break;
+      }
+    }
+    if (!failedBusyTime) {
+      combination.priorities.push(Number(index));
+    }
+    return true;
+  }
 
-        case PriorityTypes.LOCATION:
-          let failedLocation = false;
+  private verifyLocation(combination: ICombination, currentPriority: IPriority, index: number): boolean {
+    let failedLocation = false;
 
-          for (let day = Weekday.MONDAY ; day <= Weekday.FRIDAY ; day++) {
-            const timeblocks = combination.getTimeblocksByDay(day);
-            if (timeblocks.length > 0) {
-              const location = timeblocks[0].building;
-              for (let timeblockIndex = 1 ; timeblockIndex < timeblocks.length ; timeblockIndex++) {
-                if (location !== timeblocks[timeblockIndex].building) {
-                  if (currentPriority.isExclusive()) {
-                    return false;
-                  } else {
-                    failedLocation = true;
-                    break;
-                  }
-                }
-              }
-              if (failedLocation) {
-                break;
+    for (let day = Weekday.MONDAY ; day <= Weekday.FRIDAY ; day++) {
+      const timeblocks = combination.getTimeblocksByDay(day);
+      if (timeblocks.length > 0) {
+        const location = timeblocks[0].building;
+        for (let timeblockIndex = 1 ; timeblockIndex < timeblocks.length ; timeblockIndex++) {
+          if (location !== timeblocks[timeblockIndex].building) {
+            if (currentPriority.isExclusive()) {
+              return false;
+            } else {
+              failedLocation = true;
+              break;
+            }
+          }
+        }
+        if (failedLocation) {
+          break;
+        }
+      }
+    }
+    if (!failedLocation) {
+      combination.priorities.push(Number(index));
+    }
+
+    return true;
+  }
+
+  private verifyTravelTime(combination: ICombination, currentPriority: IPriority, index: number): boolean {
+    let tooFar = false; // We assume our combination works with realistic time-distances until the contrary is proved
+    for (let i = 0; i < combination.subjects.length; i++) {
+      if (tooFar) {break; } // optimization line. Can be removed.
+      for (let j = i + 1; j < combination.subjects.length; j++) {
+        for (const currentTime1 of combination.subjects[i].commissionTimes) {
+          for (const currentTime2 of combination.subjects[j].commissionTimes) {
+            if (currentTime1.building !== currentTime2.building) { // Classes are in different buildings... can i get there in time?
+              const travelTime = this.getTravelTime(currentTime1, currentTime2);
+              if (travelTime > currentPriority.value) { // I don't want to travel from Parque patricios to Madero 6PM in 1 hour
+                tooFar = true; // TODO: implement calculator for travel time between two buildings
               }
             }
           }
-          if (!failedLocation) {
-            combination.priorities.push(Number(index));
-          }
-          break;
+        }
+      }
+    }
+    if (!tooFar) {
+      combination.priorities.push(Number(index));
+    }
 
-        case PriorityTypes.TRAVEL:
-          let tooFar = false; // We assume our combination works with realistic time-distances until the contrary is proved
-          for (let i = 0; i < combination.subjects.length; i++) {
-            if (tooFar) {break; } // optimization line. Can be removed.
-            for (let j = i + 1; j < combination.subjects.length; j++) {
-              for (const currentTime1 of combination.subjects[i].commissionTimes) {
-                for (const currentTime2 of combination.subjects[j].commissionTimes) {
-                  if (currentTime1.building !== currentTime2.building) { // Classes are in different buildings... can i get there in time?
-                    const travelTime = this.getTravelTime(currentTime1, currentTime2);
-                    if (travelTime > currentPriority.value) { // I don't want to travel from Parque patricios to Madero 6PM in 1 hour
-                      tooFar = true; // TODO: implement calculator for travel time between two buildings
-                    }
-                  }
-                }
-              }
-            }
-          }
-          if (!tooFar) {
-            combination.priorities.push(Number(index));
-          }
-          break;
+    return true;
+  }
+
+  private verifiesPriorities(combination: ICombination, priorities: IPriority[]): boolean {
+    const verifiers = {
+      [PriorityTypes.SUPERPOSITION]: this.verifySuperposition,
+      [PriorityTypes.COMMISSION]: this.verifyCommission,
+      [PriorityTypes.PROFESSOR]: this.verifyProfessor,
+      [PriorityTypes.LOCATION]: this.verifyLocation,
+      [PriorityTypes.FREEDAY]: this.verifyFreeDay,
+      [PriorityTypes.TRAVEL]: this.verifyTravelTime,
+      [PriorityTypes.BUSYTIME]: this.verifyBusyTime
+    };
+
+    for (let index = 0 ; index < priorities.length ; index++) {
+      const currentPriority = priorities[index];
+      if (verifiers.hasOwnProperty(currentPriority.type)) {
+        const verifierResult = verifiers[currentPriority.type](combination, currentPriority, index);
+        if (verifierResult === false) {
+          return false;
+        }
       }
     }
     return true;

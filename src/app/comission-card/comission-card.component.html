@@ -8,8 +8,15 @@
                 {{timeblock.day}} {{myFunc(timeblock.start.minutes, timeblock.start.hours)}} - {{myFunc(timeblock.end.minutes,timeblock.end.hours)}}
             </div>
           </div>
+        </div>
     </mat-grid-tile>
-    <mat-grid-tile Align="center">profesores</mat-grid-tile>
+    <mat-grid-tile Align="center">
+        <div>
+          <div *ngFor="let professor of commission.professors">
+            {{professor}}
+          </div>
+       </div>
+    </mat-grid-tile>
 </mat-grid-list>
 
 

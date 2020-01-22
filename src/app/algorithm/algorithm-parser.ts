@@ -52,7 +52,8 @@ export function parseSubjects(data: any): Subject[] {
       const newCommission: Commission = new Commission(
         subjectCommission.commissionName,
         subjectCommission.subjectCode,
-        timeblocks
+        timeblocks,
+        subjectCommission.professors
       );
 
       // Adding the new commission

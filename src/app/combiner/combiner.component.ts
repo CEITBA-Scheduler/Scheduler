@@ -78,13 +78,7 @@ export class CombinerComponent implements OnInit {
     // When building the singleton instance of SgaLinkerService,
     // the raw response of the http request made to the sga endpoint
     // is saved, so we use and parse that data
-    this.subjects = parseSubjects(
-      {
-        courseCommissions: {
-          courseCommission: this.sgaLinkerServices.AllCommissions
-        }
-      }
-    );
+    this.subjects = parseSubjects(this.sgaLinkerServices.getRawResponse());
 
     // Then, we need to build a list of SubjectSelection to be used as the
     // user's choice of subjects for the algorithm
@@ -125,29 +119,32 @@ export class CombinerComponent implements OnInit {
     const userPreferences = this.generalProgramService.getAllCheckboxStatus();
     if (userPreferences.superposition) {
       this.priorities.push(
-        Priority.gpSuperposition(DEFAULT_SUPERPOSITION)
+        Priority.gpSuperposition(DEFAULT_SUPERPOSITION).setExclusive(true)
+      );
+    } else {
+      this.priorities.push(
+        Priority.gpSuperposition(0.0).setExclusive(true)
       );
     }
     if (userPreferences.freeday) {
       this.priorities.push(
-        Priority.gpFreeDay(DEFAULT_FREEDAY)
+        Priority.gpFreeDay(DEFAULT_FREEDAY).setExclusive(true)
       );
     }
     if (userPreferences.buildingChange) {
       this.priorities.push(
-        Priority.gpLocation()
+        Priority.gpLocation().setExclusive(true)
       );
     }
     if (userPreferences.travelTime) {
       this.priorities.push(
-        Priority.gpTravel(DEFAULT_TRAVEL)
+        Priority.gpTravel(DEFAULT_TRAVEL).setExclusive(true)
       );
     }
 
     // Then, we set the priority weights
     this.priorities = Priority.generateWeightedPriorities(this.priorities);
 
-    // Using the algorithm... Let's run it!
     this.combinations = this.algorithmServices.schedulerAlgorithm(
       this.subjects,            // All the possible subjects
       this.subjectSelections,   // User's selected subjects
@@ -155,15 +152,21 @@ export class CombinerComponent implements OnInit {
       'quicksort'               // Available sorting algorithm
     );
 
-    this.router.navigate(["/resultados"]);
+    this.scheduleCombinerServices.setAlgorithmResults(
+      this.combinations.slice(0, 20)
+    );
 
-    // console.log('=== Subjects ===');
-    // console.log(this.subjects);
-    // console.log('=== Subjects Selected ===');
-    // console.log(this.subjectSelections);
-    // console.log('=== Priorities ===');
-    // console.log(this.priorities);
-    // console.log('=== Combinations ===');
-    // console.log(this.combinations);
+    // Using the algorithm... Let's run it!
+
+    this.router.navigate(['/results']);
+
+    console.log('=== Subjects ===');
+    console.log(this.subjects);
+    console.log('=== Subjects Selected ===');
+    console.log(this.subjectSelections);
+    console.log('=== Priorities ===');
+    console.log(this.priorities);
+    console.log('=== Combinations ===');
+    console.log(this.combinations);
   }
 }
