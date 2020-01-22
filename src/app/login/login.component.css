@@ -17,3 +17,9 @@ mat-card{
     margin-right: 5%;
     margin-bottom: 5%;
 }
+
+img.center {
+    display: block;
+    margin-left: 0;
+    
+}
