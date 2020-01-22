@@ -46,7 +46,7 @@ export class SgaLinkerService {
     }
   }
 
-  getAllSubjects() : Observable<{ [id: string]: Subject; }>{
+  getAllSubjects() : Observable<{ [id: string]: Subject; }> {
     return this.AllSubjects.asObservable();
   }
 

@@ -13,13 +13,10 @@ structure to different algoritm stages */
   styleUrls: ['./stepper-control.component.css']
 })
 export class StepperControlComponent implements OnInit {
-  // no ts code
+
   @Output() onDone: EventEmitter<void> = new EventEmitter<void>();
 
   constructor() {
-    var test : Date = parse("02:50", 'HH:mm', new Date());
-
-    console.log(format(test, "HH:mm") );
 
   }
 

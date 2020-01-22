@@ -24,10 +24,10 @@
      <div class="timeblockArea">
       <div class="subject" *ngFor="let hour of this.hoursInteger" fxLayoutAlign="center center">
       </div>
-      
+
       <div *ngFor="let subject of this.subjectsOfDay[day]">
         <div class="subjectRelative" fxLayoutAlign="center center" [style.background-color]="subject.color" [style.height.px]="subject.height" [style.top.px] = "subject.startPos">
-          {{subject.name }} <br> Comisión {{ subject.commissionName }}
+          {{subject.name }} <br> Comisión {{ subject.commission }}
         </div>
       </div>
     </div>

@@ -147,7 +147,6 @@ export class CombinerComponent implements OnInit {
     // Then, we set the priority weights
     this.priorities = Priority.generateWeightedPriorities(this.priorities);
 
-    // Using the algorithm... Let's run it!
     this.combinations = this.algorithmServices.schedulerAlgorithm(
       this.subjects,            // All the possible subjects
       this.subjectSelections,   // User's selected subjects
@@ -155,15 +154,23 @@ export class CombinerComponent implements OnInit {
       'quicksort'               // Available sorting algorithm
     );
 
-    this.router.navigate(["/resultados"]);
 
-    // console.log('=== Subjects ===');
-    // console.log(this.subjects);
-    // console.log('=== Subjects Selected ===');
-    // console.log(this.subjectSelections);
-    // console.log('=== Priorities ===');
-    // console.log(this.priorities);
-    // console.log('=== Combinations ===');
-    // console.log(this.combinations);
+    this.scheduleCombinerServices.setAlgorithmResults(
+      this.combinations.slice(0, 20)
+    );
+
+    // Using the algorithm... Let's run it!
+    //comthis.combinations =
+
+    this.router.navigate(['/results']);
+
+    console.log('=== Subjects ===');
+    console.log(this.subjects);
+    console.log('=== Subjects Selected ===');
+    console.log(this.subjectSelections);
+    console.log('=== Priorities ===');
+    console.log(this.priorities);
+    console.log('=== Combinations ===');
+    console.log(this.combinations);
   }
 }

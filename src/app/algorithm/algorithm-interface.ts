@@ -1,3 +1,4 @@
+
 /**
  * Contains information for a single combination. This object should
  * be graphable in Calendar component if the SUBJECTS object is at hand.
@@ -23,9 +24,11 @@ export interface ICombinationSubject {
   commissionTimes: ITimeblock[];
 
   getTimeblocksByDay(day: Weekday): ITimeblock[];
+  getAllTimeblock(): ITimeblock[];
   getFreeDays(): Weekday[];
   hasProfessors(): boolean;
   hasCommissionTimes(): boolean;
+
 }
 
 /**
@@ -90,6 +93,10 @@ export interface ITimeblock {
   startToHHmm(): string;
   overlaps(other: ITimeblock): number;
   duration(): number;
+  getStartMinutes(): number;
+  getStartHours(): number;
+  getEndMinutes(): number;
+  getEndHours(): number;
 }
 
 /**

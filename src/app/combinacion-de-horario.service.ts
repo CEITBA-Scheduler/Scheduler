@@ -1,9 +1,15 @@
+import { AlgorithmService } from './algorithm/algorithm.service';
 import { Injectable } from '@angular/core';
 import { Subject, SubjectCommissions, UserSelection, Commission } from './materia';
 import { MateriaComisiones} from './materia-comisiones'
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { SgaLinkerService } from './sga-linker.service';
 import { AuthService } from './auth.service';
+import {
+  SubjectSelection,
+  Priority,
+  Combination
+} from './algorithm/algorithm-object';
 
 /**
 Este servicio administra la información común llenada
@@ -22,6 +28,8 @@ export class CombinacionDeHorarioService {
   // arreglo con las comisiones elegidas para cada materia
   subjectCommissions: { [id: string]: SubjectCommissions} = {}; // has all subjects
   subjectCommissionsBehavioural: BehaviorSubject<{ [id: string]: SubjectCommissions}> = new BehaviorSubject({});
+
+  algorithmResults: Combination[];
 
   constructor(
     private sgaLinkerService: SgaLinkerService,
@@ -66,6 +74,13 @@ export class CombinacionDeHorarioService {
       this.subjectCommissionsBehavioural.next(this.subjectCommissions);
     });
   }
+  setAlgorithmResults(results: Combination[]){
+    this.algorithmResults = results;
+  }
+  getAlgorithmResults(): Combination[]{
+    return this.algorithmResults;
+  }
+
   removeSubject(subject: Subject) {
    delete this.subjectCommissions[subject.code];
    this.subjectCommissionsBehavioural.next(this.subjectCommissions);
@@ -74,7 +89,7 @@ export class CombinacionDeHorarioService {
   getCommissionsSelectedData(): Observable<{[id: string]: SubjectCommissions}> {
     return this.subjectCommissionsBehavioural.asObservable();
   }
-  getSelectedData(): SubjectCommissions[]{
+  getSelectedData(): SubjectCommissions[] {
     var ans : SubjectCommissions[] = [];
 
     for (var item of this.subjects){
