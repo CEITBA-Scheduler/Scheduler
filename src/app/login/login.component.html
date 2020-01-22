@@ -1,30 +1,35 @@
 <div class="wrapper">
-  <!--div class="box e" fxLayoutAlign="center center"-->
-    <!--mat-card-->
-      <div fxLayoutAlign="center center">
-        <figure>
-          <img src="../../assets/img/loginLogoC.jpg" alt="Login Logo" width=800 height=500>
-        </figure>
+  <div fxLayoutAlign="center center">
+    <figure>
+      <img src="../../assets/img/loginLogo.jpg" alt="Login Logo" width=300 height=327>
+    </figure>
+  </div>
+  <div fxLayoutAlign="center center" > 
+    <button mat-raised-button color="primary" (click)="iniciarSesion()">
+      <!--This is a comment
+        
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+        <div>
+          <img src="../../assets/img/googleLogo.jpg" alt="Google Logo" width=20 height=20>
+        </div>
+        <div>
+          Acceder con Google
+        </div>
       </div>
-      <div fxLayoutAlign="center center" > 
-        <button mat-raised-button color="primary" (click)="iniciarSesion()">
-          <div fxLayout="row" fxLayoutAlign="center center">
+        . Comments are not displayed in the browser-->
+        
 
-              <div  fxLayoutAlign="center center">Login with Google</div>
-            <div fxLayoutAlign="center center">
-              &nbsp;
-              &nbsp;
-              &nbsp;
-            </div>
-            <div fxLayoutAlign="center center">
-                <img src="../../assets/img/googleLogo.jpg" alt="Google Logo" width=20 height=20>
-            </div>
-          </div>
-        </button>
-      </div>    
-      <br>
-      <br>
-      <br>
-    <!--/mat-card-->
-  <!--/div-->     
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <span>
+
+          <img class="center" src="../../assets/img/googleLogo.jpg" alt="Google Logo" width=20 height=20>
+        </span>
+        &nbsp;
+        &nbsp;
+        <span class="label" data-analytics-event="clickedLoginWithGmailButton"> 
+          Acceder con Google 
+        </span>
+      </div>
+    </button>
+  </div>     
 </div>

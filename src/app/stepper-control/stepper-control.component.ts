@@ -13,6 +13,7 @@ structure to different algoritm stages */
   styleUrls: ['./stepper-control.component.css']
 })
 export class StepperControlComponent implements OnInit {
+<<<<<<< HEAD
 
   @Output() onDone: EventEmitter<void> = new EventEmitter<void>();
 
@@ -23,6 +24,13 @@ export class StepperControlComponent implements OnInit {
   ngOnInit() {
 
   }
+=======
+  @Output() onDone: EventEmitter<void> = new EventEmitter<void>();
+
+  constructor() { }
+
+  ngOnInit() { }
+>>>>>>> 3b24848c4159fcbf2a11f19479c4c25ed6a8277f
 
   done() {
     this.onDone.emit(null);
