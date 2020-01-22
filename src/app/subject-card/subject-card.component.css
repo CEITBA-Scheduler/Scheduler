@@ -3,10 +3,13 @@
     background: white;
     padding: 5px;
     color:black;
+    text-align: center;
+    font-size: 15px;
 }
 
 mat-card-content{
 /*padding: 0px;*/
+
 }
 
 mat-card{
