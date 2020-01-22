@@ -1,38 +1,33 @@
 <div class="calendar">
-  <div class="days" (mouseleave)="mouseIsNotOnCalendar()">
+  <div class="days">
     <div class="day">
       <!-- This leaves a blank space at the start of the first column -->
       <div class="hour-name" fxLayoutAlign="center center">
-        <h2>#</h2>
+        #
       </div>
       <div 
         class="subject-hour" 
         fxLayoutAlign="center center" 
         *ngFor="let hour of hoursInteger; 
-<<<<<<< HEAD
         let i = index">
-=======
-        let i = index" 
-        [style.font]="bold" >
->>>>>>> 164b799943152c161d3b602058860f9409a327cf
         <div class="hourText">{{ hour }} - {{nextHoursInteger[i]}}</div>
       </div>
     </div>
     <!-- absolute https://dzone.com/articles/css-position-relative-vs-position-absolute -->
     <div class="day" *ngFor="let day of days; let i = index">
       <div class="day-name" fxLayoutAlign="center center">
-        <h2>{{ day }}</h2>
+        {{ day }}
       </div>
       <div class="timeblockArea" (mouseleave)="mouseIsNotOnCalendar()">
         <div class="subject" *ngFor="let hour of this.hoursInteger, let a = index" fxLayoutAlign="center center">
-          <div *ngIf="!displaySubjectStatus">
+          <div *ngIf="!areSubjectsShown">
             <!-- Using a*2 as index for periodButtons bc not only are integerHours taken into account, but also hours such as 18:30, so the amount of hours in the array are doubled -->
-            <button mat-raised-button class="period-button" (mousedown)="startTogglePeriodMarker(day, a)" (mouseenter)="inTogglePeriodMarker(day, a)" (mouseup)="endTogglePeriodMarker(day, a)" [color]="periodButtonsColor[day][a]">
+            <button mat-raised-button class="period-button" (mousedown)="startTogglePeriodMarker(day, a)" (mouseenter)="inTogglePeriodMarker(day, a)" (mouseup)="endTogglePeriodMarker(day, a)" [color]="getButtonColor(day, a)">
               
             </button>
           </div>
         </div>
-        <div *ngIf="displaySubjectStatus">
+        <div *ngIf="areSubjectsShown">
           <div *ngFor="let subject of this.subjectsOfDay[day]">
             <div class="subjectRelative" fxLayoutAlign="center center" [style.background-color]="subject.color" [style.height.px]="subject.height" [style.top.px]="subject.startPos">
               {{ subject.name }} <br> Comisión {{ subject.commission }}
@@ -42,6 +37,7 @@
       </div>
     </div>
   </div>
+  <!--
   <div class="lateral-bar">
     <div class="free-period-marker" >
       <button mat-raised-button (click)="toggleCalendarState()" [color]="buttonColor" >
@@ -50,7 +46,8 @@
     </div>
   </div>
 </div>
- <!-- <div class="lateral-bar">
+TERMINA ACAAAA
+ <div class="lateral-bar">
     <h1>Materias</h1>
     <div class="subject-list" *ngFor="let subj of subjectList">
       <h3>

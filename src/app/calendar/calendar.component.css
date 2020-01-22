@@ -1,9 +1,12 @@
+/* 20px = 1em */
+
 h1 {
   margin: 10px 0px 10px 53px; /* TOP RIGHT BOOTM LEFT */
 }
 
 h2 {
-  font: Arial, Helvetica, sans-serif;
+  font: Arial, Helvetica, sans-serif, bold;
+  font-size: small;
 }
 
 h3 {
@@ -17,21 +20,25 @@ h3 {
   max-width: 100%;
   display: inline-flex;            /* So that columns are displayed horizontally */
   text-align: center;
+  font-size: x-small;
 }
+
 .day-name {
   border: solid 1px #ccc;
-  height: 70px;
-  width: 140px;
+  height: 4em;
+  width: 8em;
   background: white;
   display: block;
 }
+
 .hour-name {
   border: solid 1px #ccc;
-  height: 70px;
-  width: 160px;
+  height: 4em;
+  width: 8em;
   background: white;
   display: block;
 }
+
 .periods {
   display: flex;
   flex-direction: column;
@@ -46,13 +53,14 @@ h3 {
 
 .subject {
   border: solid 1px rgba(200, 200, 200, 0.2);
-  width: 140px;
-  height: 40px;
+  width: 8em;
+  height: 2em;
   background: white;
   overflow: hidden;
   text-align: center;
   vertical-align: middle;
 }
+
 .subjectRelative{
   position: absolute;
   top: 60px;
@@ -64,33 +72,28 @@ h3 {
   text-align: center;
   vertical-align: middle;
 }
+
 .subjectRelative:hover{
   z-index: 3000;
 }
 
 .subject-hour {
   border: solid 1px #ccc;
-  height: 40px;
-  width: 160px;
+  height: 2em;
+  width: 8em;
   background: white;
   vertical-align: middle;
 }
 
-.blank-space {
-  border: solid 1px #ccc;
-  min-height: 67px;
-  background: white;
-  overflow: hidden;
-  display: block;
-}
-.hourText{
+.hourText {
   text-align: center;
   vertical-align: middle;
 }
+
 .period {
   box-sizing: border-box;
-  height: 40px;
-  width: 120px;
+  height: 2em;
+  width: 6em;
   border: solid 1px #ccc;
   text-align: center;
   background: white;
@@ -102,8 +105,6 @@ h3 {
   flex-direction: row;
   position: relative;
 }
-
-
 
 .lateral-bar {
   border: solid 1px #ccc;
@@ -143,25 +144,19 @@ h3 {
   max-width: 20;
   max-height: 20;
 }
-<<<<<<< HEAD
-.loadingIcon{
+
+.loadingIcon {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
-=======
->>>>>>> 164b799943152c161d3b602058860f9409a327cf
 
 .period-button {
   border: solid 1px rgba(200, 200, 200, 0.2);
-  width: 120px;
-  height: 40px;
+  width: 6em;
+  height: 2em;
   overflow: hidden;
   text-align: center;
   vertical-align: middle;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 164b799943152c161d3b602058860f9409a327cf

@@ -3,8 +3,8 @@ import {
   ICombinationSubject,
   ICommission,
   ITimeblock,
-   ISubject,
-   Weekday
+  ISubject,
+  Weekday
 } from './algorithm-interface';
 import {
   ISubjectSelection,

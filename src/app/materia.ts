@@ -3,7 +3,8 @@ import { Observable, of, BehaviorSubject } from 'rxjs';
 
 export interface Subject {
     name: string;
-    code: string;    search: string;
+    code: string;    
+    search: string;
     commissions?: Commission[];
     priority?: number;
 }

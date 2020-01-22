@@ -4,10 +4,11 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem, CdkDropList } from '@a
 import { Observable } from 'rxjs';
 */
 import { MatAutocompleteSelectedEvent } from '@angular/material';
-import { Time } from '@angular/common';
+import { Time, WeekDay } from '@angular/common';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { SubjectCommissions, Subject, Commission } from '../materia';
 import { Observable, BehaviorSubject } from 'rxjs';
+import { Timeblock } from '../algorithm/algorithm-object';
 
 /* "Dummy" datatypes to simulate obtained data through the algorithm */
 interface possibleSchedules {
@@ -53,7 +54,7 @@ interface SubjectList {
 
 export class CalendarComponent implements OnInit {
   @Input() subjectsComissions: Observable<SubjectCommissions[]>; // input de materias
-  @Input() mode: boolean;
+  @Input() areSubjectsShown: boolean;
 
 
   /*schedules: possibleSchedules[] = [
@@ -96,13 +97,14 @@ export class CalendarComponent implements OnInit {
   calendarButtonText: string = "OFF";
   buttonColor: string = "none";
   // Contains color of each button displayed on calendar when choosing free periods
-  periodButtonsColor: {[id: string]: String[] } = {
+  periodButtonsColorState: { [id: string]: boolean[] } = {
     "Lunes": [],
     "Martes": [],
     "Miércoles": [],
     "Jueves": [],
     "Viernes": []
   }
+  periodBlocks: Timeblock[] = [];
 
   filteredOptions: MySubject[] = [];
   subjectChooserValue: string = '';
@@ -140,8 +142,8 @@ export class CalendarComponent implements OnInit {
       }
     }
     for (let day of this.days) {
-      for (let hour of this.hours) {
-        this.periodButtonsColor[day].push("none");
+      for (let hour of this.hoursInteger) {
+        this.periodButtonsColorState[day].push(false);
       }
     }
     this.subjectsComissions.subscribe((subjectsComissions: SubjectCommissions[]) => {
@@ -207,15 +209,10 @@ export class CalendarComponent implements OnInit {
         this.isLoading = false;
     });
   }
-<<<<<<< HEAD
   setLoading(){
     this.isLoading = true;
   }
   isSubjectsOfDay(day: string, hour: string){
-=======
-
-  isSubjectsOfDay(day: string, hour: string) {
->>>>>>> 164b799943152c161d3b602058860f9409a327cf
     return (this.subjectsOfDay[day][hour]);
   }
 
@@ -405,6 +402,7 @@ export class CalendarComponent implements OnInit {
       return false;
   }
 
+  /*
   toggleCalendarState() {
     // Toggles displayed text & button color
     if (this.calendarButtonText === "OFF") {
@@ -421,7 +419,7 @@ export class CalendarComponent implements OnInit {
     else
       this.displaySubjectStatus = true;
   }
-
+  */
   // Checks if there´s a subject on the day and hour sent. If that´s the case, it´s removed
   togglePeriodState(day: string, indexHour: number) {
     // Using block index to determine hour
@@ -443,32 +441,62 @@ export class CalendarComponent implements OnInit {
     }
   }
 
+  getButtonColor(day: string, indexHour: number):string {
+    if(this.periodButtonsColorState[day][indexHour])
+      return "warn";
+    else
+      return "none";
+  }
+
   startTogglePeriodMarker(day: string, indexHour: number) {
     this.isMouseClicked = true;
-    if (this.periodButtonsColor[day][indexHour] === "none")
-      this.periodButtonsColor[day][indexHour] = "warn";
+    if (this.periodButtonsColorState[day][indexHour] === false)
+      this.periodButtonsColorState[day][indexHour] = true;
     else
-      this.periodButtonsColor[day][indexHour] = "none";
-    this.togglePeriodState(day, indexHour);
+      this.periodButtonsColorState[day][indexHour] = false;
+    // this.updatePeriodBlocks();
   }
 
   inTogglePeriodMarker(day: string, indexHour: number) {
     if (this.isMouseClicked) {
-      if (this.periodButtonsColor[day][indexHour] === "none")
-        this.periodButtonsColor[day][indexHour] = "warn";
+      if (this.periodButtonsColorState[day][indexHour] === false)
+        this.periodButtonsColorState[day][indexHour] = true;
       else
-        this.periodButtonsColor[day][indexHour] = "none";
-    this.togglePeriodState(day, indexHour);
+        this.periodButtonsColorState[day][indexHour] = false;
     }
+    // this.updatePeriodBlocks();
   }
 
   endTogglePeriodMarker(day: string, indexHour: number) {
     this.isMouseClicked = false;
-    this.togglePeriodState(day, indexHour);
+    // this.updatePeriodBlocks();
+    // console.log(this.periodBlocks); // Used to track this.periodBlocks content
   }
 
   mouseIsNotOnCalendar() {
     this.isMouseClicked = false;
   }
 
+  // Not working yet
+  /*
+  updatePeriodBlocks() {
+    var startHour: number = parseInt(this.hoursInteger[0]); // Bc its the minimum value possible
+    var endHour: number = parseInt(this.hoursInteger[0]);
+    var timeBlockGenetator: boolean = false;
+    // TODO: Add Timeblock
+    for (let i=0; i < this.days.length ; i++) {
+      for (let j=0; j < this.hoursInteger.length ; j++) {
+        if (this.periodButtonsColorState[this.days[i]][j] && timeBlockGenetator === false) {
+          startHour += j;
+          timeBlockGenetator = true;
+        }
+        if (!this.periodButtonsColorState[this.days[i]][j] && timeBlockGenetator === true) {
+          endHour += j;
+          timeBlockGenetator = false;
+          this.periodBlocks.push(new Timeblock(i, startHour, endHour));
+        }
+      }
+    }
+  }
+  */
 }
