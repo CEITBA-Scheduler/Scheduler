@@ -151,13 +151,13 @@ export class CombinerComponent implements OnInit {
 
     this.router.navigate(['/resultados']);
 
-    // console.log('=== Subjects ===');
-    // console.log(this.subjects);
-    // console.log('=== Subjects Selected ===');
-    // console.log(this.subjectSelections);
-    // console.log('=== Priorities ===');
-    // console.log(this.priorities);
-    // console.log('=== Combinations ===');
-    // console.log(this.combinations);
+    console.log('=== Subjects ===');
+    console.log(this.subjects);
+    console.log('=== Subjects Selected ===');
+    console.log(this.subjectSelections);
+    console.log('=== Priorities ===');
+    console.log(this.priorities);
+    console.log('=== Combinations ===');
+    console.log(this.combinations);
   }
 }

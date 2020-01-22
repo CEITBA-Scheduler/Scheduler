@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject, Commission, Timeblock } from './materia';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { filter, map, startWith } from 'rxjs/operators';
+import { filter, map, startWith, shareReplay } from 'rxjs/operators';
 import { parse } from 'date-fns';
 import { UserSelection } from './materia';
 import { AuthService } from './auth.service';
@@ -42,7 +42,7 @@ export class SgaLinkerService {
       resource += `${resourceKey}=${params[resourceKey]}&`;
     }
     if (resource.charAt(resource.length - 1) === '&') {
-      resource = resource.slice(resource.length - 1);
+      resource = resource.slice(0, resource.length - 1);
     }
     return resource;
   }
@@ -90,10 +90,14 @@ export class SgaLinkerService {
   getAllComissions(): Observable<any> {
     // Parameters for the HTTP Request are created
     // with the current corresponding data...
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth();
+
     const params = {
       level: 'GRADUATE',
-      year: 2020,
-      period: 'FirstSemester'
+      year: currentYear,
+      period: currentMonth === 0 || currentMonth === 1 || currentMonth > 6 ? 'FirstSemester' : 'SecondSemester'
     };
 
     // Generating the url for the HTTP Request and
@@ -103,10 +107,9 @@ export class SgaLinkerService {
       SgaLinkerService.endpoint,
       params
     );
-    this.http.get(url)
-    .subscribe( (rawData) => this.rawHttpResponse = rawData );
-
-    return of(this.rawHttpResponse);
+    return this.http
+      .get(url)
+      .pipe(shareReplay(1));
   }
 
   /**
@@ -116,6 +119,7 @@ export class SgaLinkerService {
   getDataFromApi(): void {
     this.getAllComissions().subscribe(data => {
       // Here I set what happens when I receive something from get (asynchronous)
+      this.rawHttpResponse = data;
       this.allCommissions = data.courseCommissions.courseCommission;
       this.allSubjectsValue = {};
 
