@@ -119,22 +119,26 @@ export class CombinerComponent implements OnInit {
     const userPreferences = this.generalProgramService.getAllCheckboxStatus();
     if (userPreferences.superposition) {
       this.priorities.push(
-        Priority.gpSuperposition(DEFAULT_SUPERPOSITION)
+        Priority.gpSuperposition(DEFAULT_SUPERPOSITION).setExclusive(true)
+      );
+    } else {
+      this.priorities.push(
+        Priority.gpSuperposition(0.0).setExclusive(true)
       );
     }
     if (userPreferences.freeday) {
       this.priorities.push(
-        Priority.gpFreeDay(DEFAULT_FREEDAY)
+        Priority.gpFreeDay(DEFAULT_FREEDAY).setExclusive(true)
       );
     }
     if (userPreferences.buildingChange) {
       this.priorities.push(
-        Priority.gpLocation()
+        Priority.gpLocation().setExclusive(true)
       );
     }
     if (userPreferences.travelTime) {
       this.priorities.push(
-        Priority.gpTravel(DEFAULT_TRAVEL)
+        Priority.gpTravel(DEFAULT_TRAVEL).setExclusive(true)
       );
     }
 
@@ -148,21 +152,14 @@ export class CombinerComponent implements OnInit {
       'quicksort'               // Available sorting algorithm
     );
 
-<<<<<<< HEAD
-
     this.scheduleCombinerServices.setAlgorithmResults(
       this.combinations.slice(0, 20)
     );
 
     // Using the algorithm... Let's run it!
-    //comthis.combinations =
 
     this.router.navigate(['/results']);
 
-=======
-    this.router.navigate(['/resultados']);
-
->>>>>>> 3b24848c4159fcbf2a11f19479c4c25ed6a8277f
     console.log('=== Subjects ===');
     console.log(this.subjects);
     console.log('=== Subjects Selected ===');

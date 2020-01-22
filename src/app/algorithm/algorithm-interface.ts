@@ -28,7 +28,6 @@ export interface ICombinationSubject {
   getFreeDays(): Weekday[];
   hasProfessors(): boolean;
   hasCommissionTimes(): boolean;
-
 }
 
 /**
