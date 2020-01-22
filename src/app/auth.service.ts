@@ -40,7 +40,8 @@ export class AuthService implements CanActivate {
         this.user = {
           uid: user.uid,
           email: user.email,
-          displayName: user.displayName
+          displayName: user.displayName,
+          imageUrl: user.photoURL
         };
         console.log("user logged in");
         console.log(this.user);

@@ -58,9 +58,7 @@ export class CombinerComponent implements OnInit {
   /**
    * Callback for login out the current user session.
    */
-  logOut() {
-    this.authService.signOut();
-  }
+
 
   /**
    * Callback for running the combiner algorithm when

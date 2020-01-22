@@ -1,0 +1,55 @@
+<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark purple lighten-1" [containerInside]="false">
+
+    <!-- Navbar brand -->
+    <mdb-navbar-brand><a class="navbar-brand" href="#">Combinador de horarios</a></mdb-navbar-brand>
+  
+    <!-- Collapsible content -->
+    <links>
+  
+      <!-- Links -->
+      <ul class="navbar-nav mr-auto">
+  
+        <!-- Dropdown -->
+        <li class="nav-item dropdown" dropdown>
+        </li>
+  
+      </ul>
+      <!-- Links -->
+      <div *ngIf="authService.getUser()">
+        <ul class="navbar-nav ml-auto nav-flex-icons">
+          
+          <li class="nav-item avatar dropdown" dropdown>
+            <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
+              <img width=20 height=20 src="{{authService.getUser().imageUrl}}" alt="" class="img-fluid rounded-circle z-depth-0">
+            </a>
+            <div *dropdownMenu class="dropdown-menu dropdown-menu-right dropdown dropdown-primary" role="menu">
+                <!--Card image-->
+                <div fxLayoutAlign="center center"  fxLayout="column">
+                  
+                <!--Card content-->
+                  <div class="col-xl-5 col-md-4 mb-3 text-center">
+                    <img width=50 height=50 src="{{authService.getUser().imageUrl}}" class="img-fluid z-depth-1 rounded-circle" alt="Responsive image">
+                  </div>
+                  <!--Title-->
+                  <h4>{{authService.getUser().displayName}}</h4>
+              
+                  <!--Text-->
+                  <div> 
+                    {{authService.getUser().career}} - {{authService.getUser().plan}} 
+                  </div>
+  
+                  <button (click)="logOut()"  mdbBtn type="button" color="primary" outline="true" mdbWavesEffect>Log out</button>
+                </div>
+              </div>
+            <!--<div class="dropdown-item waves-light" mdbWavesEffect > 
+              {{authService.getUser().displayName}} <br>
+              {{authService.getUser().career}} <br>
+              {{authService.getUser().plan}} 
+            </div>-->
+          </li>
+        </ul>
+      </div>
+    </links>
+    <!-- Collapsible content -->
+  
+  </mdb-navbar>

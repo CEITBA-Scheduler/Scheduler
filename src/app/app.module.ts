@@ -44,6 +44,7 @@ import { SubjectCardComponent } from './subject-card/subject-card.component';
 import { TrashCardComponent } from './trash-card/trash-card.component';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { ResultsComponent } from './results/results.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { ResultsComponent } from './results/results.component';
     DragSubjectsComponent,
     SubjectCardComponent,
     TrashCardComponent,
-    ResultsComponent
+    ResultsComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,

@@ -5,6 +5,7 @@ export interface User {
   email: string;
   displayName: string;
   userSelection?: FirestoreCommissionSelection[];
+  imageUrl?: string;
   tickboxSelection?: TickboxSelection;
   plan?: string;
   career?: string;
