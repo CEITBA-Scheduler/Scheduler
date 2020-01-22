@@ -78,13 +78,7 @@ export class CombinerComponent implements OnInit {
     // When building the singleton instance of SgaLinkerService,
     // the raw response of the http request made to the sga endpoint
     // is saved, so we use and parse that data
-    this.subjects = parseSubjects(
-      {
-        courseCommissions: {
-          courseCommission: this.sgaLinkerServices.AllCommissions
-        }
-      }
-    );
+    this.subjects = parseSubjects(this.sgaLinkerServices.getRawResponse());
 
     // Then, we need to build a list of SubjectSelection to be used as the
     // user's choice of subjects for the algorithm
@@ -155,15 +149,15 @@ export class CombinerComponent implements OnInit {
       'quicksort'               // Available sorting algorithm
     );
 
-    this.router.navigate(["/resultados"]);
+    this.router.navigate(['/resultados']);
 
-    // console.log('=== Subjects ===');
-    // console.log(this.subjects);
-    // console.log('=== Subjects Selected ===');
-    // console.log(this.subjectSelections);
-    // console.log('=== Priorities ===');
-    // console.log(this.priorities);
-    // console.log('=== Combinations ===');
-    // console.log(this.combinations);
+    console.log('=== Subjects ===');
+    console.log(this.subjects);
+    console.log('=== Subjects Selected ===');
+    console.log(this.subjectSelections);
+    console.log('=== Priorities ===');
+    console.log(this.priorities);
+    console.log('=== Combinations ===');
+    console.log(this.combinations);
   }
 }
