@@ -9,7 +9,12 @@
         class="subject-hour" 
         fxLayoutAlign="center center" 
         *ngFor="let hour of hoursInteger; 
+<<<<<<< HEAD
         let i = index">
+=======
+        let i = index" 
+        [style.font]="bold" >
+>>>>>>> 164b799943152c161d3b602058860f9409a327cf
         <div class="hourText">{{ hour }} - {{nextHoursInteger[i]}}</div>
       </div>
     </div>

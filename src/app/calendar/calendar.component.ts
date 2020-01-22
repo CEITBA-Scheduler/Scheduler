@@ -207,10 +207,15 @@ export class CalendarComponent implements OnInit {
         this.isLoading = false;
     });
   }
+<<<<<<< HEAD
   setLoading(){
     this.isLoading = true;
   }
   isSubjectsOfDay(day: string, hour: string){
+=======
+
+  isSubjectsOfDay(day: string, hour: string) {
+>>>>>>> 164b799943152c161d3b602058860f9409a327cf
     return (this.subjectsOfDay[day][hour]);
   }
 
