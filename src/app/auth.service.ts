@@ -21,6 +21,7 @@ import { HttpClient } from '@angular/common/http';
 export class AuthService implements CanActivate {
 
   user?: User = null;
+  notreg = false;
   behaviourUser: BehaviorSubject<User> = new BehaviorSubject<User>(null);
   urlGetDni : string = "https://itbagw.itba.edu.ar/api/v1/people/"+token.CEITBA+"?email="; // email url
   urlGetPlan: string = "https://itbagw.itba.edu.ar/api/v1/students/"+token.CEITBA+"/"
@@ -105,10 +106,10 @@ export class AuthService implements CanActivate {
                 career: udata.career
               });
               this.behaviourUser.next(this.user); // avisamos al resto del programa que el login fue exitoso
-
+              this.notreg = false;
             }else{
               console.log("El mail no esta registrado en el itba");
-              
+              this.notreg = true;
             }
           }
         });
@@ -199,6 +200,7 @@ export class AuthService implements CanActivate {
 
   async signOut() {
     await this.afAuth.auth.signOut();
+    this.notreg = false;
     //this.router.navigate(['/login']);
   }
 

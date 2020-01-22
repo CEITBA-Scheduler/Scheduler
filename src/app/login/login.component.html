@@ -1,27 +1,13 @@
 <div class="wrapper">
   <div fxLayoutAlign="center center">
     <figure>
-      <img src="../../assets/img/loginLogo.jpg" alt="Login Logo" width=300 height=327>
+      <img src="../../assets/img/Imagen3.bmp" alt="Login Logo" width=400 height=400>
     </figure>
   </div>
-  <div fxLayoutAlign="center center" > 
-    <button mat-raised-button color="primary" (click)="iniciarSesion()">
-      <!--This is a comment
-        
-        <div fxLayout="row" fxLayoutAlign="space-between center">
-        <div>
-          <img src="../../assets/img/googleLogo.jpg" alt="Google Logo" width=20 height=20>
-        </div>
-        <div>
-          Acceder con Google
-        </div>
-      </div>
-        . Comments are not displayed in the browser-->
-        
-
+  <div fxLayout="column" fxLayoutAlign="center center" > 
+    <button mat-raised-button color="primary" (click)="iniciarSesion()" style="background-color: #01579b ">
       <div fxLayout="row" fxLayoutAlign="space-between center">
         <span>
-
           <img class="center" src="../../assets/img/googleLogo.jpg" alt="Google Logo" width=20 height=20>
         </span>
         &nbsp;
@@ -31,5 +17,15 @@
         </span>
       </div>
     </button>
-  </div>     
+
+    
+  </div>   
+  <br>
+  <div *ngIf="this.authService.notreg"> 
+    <div class="noreg">
+      Cuenta no registrada en el ITBA. 
+      <br>
+      Por favor, intente de nuevo.
+    </div>
+  </div>  
 </div>
