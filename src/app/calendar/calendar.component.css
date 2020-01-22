@@ -149,3 +149,12 @@ h3 {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+.period-button {
+  border: solid 1px rgba(200, 200, 200, 0.2);
+  width: 120px;
+  height: 40px;
+  overflow: hidden;
+  text-align: center;
+  vertical-align: middle;
+}
