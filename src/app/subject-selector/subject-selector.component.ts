@@ -32,7 +32,7 @@ export class SubjectSelectorComponent implements OnInit {
     //console.log(this.data);
   }
 
-  removeMateria(materia){
+  removeSubjectData(materia){
 
     this.plainData.splice(this.plainData.findIndex((item : Subject) => item.code == materia.code),1);
     for (var i = 0;i < this.plainData.length;i++){

@@ -61,8 +61,10 @@ export class AuthService implements CanActivate {
     // obtener primero dni y con el dni obtener el plan
     this.http.get(this.urlGetDni + this.user.email).subscribe(
       data => {
+      
         this.http.get(this.urlGetPlan + data["dni"]).subscribe(
           data => {
+
             obs.next(
               {
                 success: "true",
@@ -91,9 +93,11 @@ export class AuthService implements CanActivate {
         console.log("First user login")
         console.log("Generating user db ...");
         this.getSgaInfo().subscribe((udata: {[id: string] : string}) => {
-          console.log("udata = ", udata);
+          console.log("udata = ");
+          console.log(udata);
+
           if (Object.keys(udata).length != 0){
-            if (udata.sucess == "true"){
+            if (udata.success == "true"){
             // si no existe la db del usuario la creamos
               this.afs.collection("users").doc(this.user.uid).set({
                 uid: this.user.uid,
