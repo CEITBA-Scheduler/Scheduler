@@ -8,6 +8,7 @@ import { UserSelection } from './materia';
 import { AuthService } from './auth.service';
 import { User } from './user.model';
 import { token } from './secrets';
+import { PROFESSORS } from '../assets/professors';
 
 @Injectable({
   providedIn: 'root'
@@ -36,7 +37,7 @@ export class SgaLinkerService {
    *  @param  endpoint    The resource endpoint
    *  @param  params      The request parameters
    */
-  public static httpRequestUrlFormat(url: string, endpoint: string, params): string {
+  private static httpRequestUrlFormat(url: string, endpoint: string, params): string {
     let resource = `${SgaLinkerService.url}/${SgaLinkerService.endpoint}?`;
     for (const resourceKey of Object.keys(params)) {
       resource += `${resourceKey}=${params[resourceKey]}&`;
@@ -52,7 +53,7 @@ export class SgaLinkerService {
    *  problems with the string codification used.
    *  @param  word  The raw string to be formatted
    */
-  public static removeTildes(word: string): string {
+  private static removeTildes(word: string): string {
     return word.replace('á', 'a').replace('é', 'e').replace('í', 'i').replace('ó', 'o').replace('ú', 'u');
   }
 
@@ -60,7 +61,7 @@ export class SgaLinkerService {
    * Translates the weekday from english to lowercase spanish
    * @param name  The current day
    */
-  public static translateDayName(name: string): string {
+  private static translateDayName(name: string): string {
     if (name === 'MONDAY') {
       return 'Lunes';
     } else if (name === 'TUESDAY') {
@@ -74,6 +75,30 @@ export class SgaLinkerService {
     }
 
     return null;
+  }
+
+  /**
+   * Merges the SGA response data with the professors data
+   * @param commissionData  The data returned from the SGA endpoint
+   * @param professorData   The data returned from the professors endpoint/hardcoded
+   */
+  private static mergeProfessorsToData(commissionData, professorsData) {
+    const commissions = commissionData.courseCommissions.courseCommission;
+    const professors = professorsData.commissions;
+    for (const professor of professors) {
+      const commission = commissions.find(
+        element => element.subjectCode === professor.subjectCode && element.commissionName === professor.commission);
+      if (commission) {
+        if (!commission.hasOwnProperty('professors')) {
+          commission.professors = [professor.professorName];
+        } else {
+          if (!commission.professors.find(element => element === professor.professorName)) {
+            commission.professors.push(professor.professorName);
+          }
+        }
+      }
+    }
+    return commissionData;
   }
 
   /**
@@ -119,9 +144,11 @@ export class SgaLinkerService {
   getDataFromApi(): void {
     this.getAllComissions().subscribe(data => {
       // Here I set what happens when I receive something from get (asynchronous)
-      this.rawHttpResponse = data;
-      this.allCommissions = data.courseCommissions.courseCommission;
+      this.rawHttpResponse = SgaLinkerService.mergeProfessorsToData(data, PROFESSORS);
+      this.allCommissions = this.rawHttpResponse.courseCommissions.courseCommission;
       this.allSubjectsValue = {};
+
+      console.log(this.rawHttpResponse);
 
       // For all commissions in the SGA response
       for (const commission of this.allCommissions) {
@@ -163,7 +190,7 @@ export class SgaLinkerService {
         // Create the current comission with its current schedule
         const currCommission: Commission = {
           name: commission.commissionName,
-          professors: [],
+          professors: commission.professors,
           subject: null,
           schedule: timeBlockArr
         };

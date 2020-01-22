@@ -4,12 +4,18 @@
     <mat-grid-tile Align="center"> <h1>{{commission.name}}</h1> </mat-grid-tile>
     <mat-grid-tile Align="center">
         <div>
-            <div *ngFor="let timeblock of commission.schedule">
-                {{timeblock.day}} {{timeblock.start.hours}}:{{timeblock.start.minutes}}-{{timeblock.end.hours}}:{{timeblock.end.minutes}}
-            </div>
+          <div *ngFor="let timeblock of commission.schedule">
+            {{timeblock.day}} {{timeblock.start.hours}}:{{timeblock.start.minutes}}-{{timeblock.end.hours}}:{{timeblock.end.minutes}}
           </div>
+        </div>
     </mat-grid-tile>
-    <mat-grid-tile Align="center">profesores</mat-grid-tile>
+    <mat-grid-tile Align="center">
+        <div>
+          <div *ngFor="let professor of commission.professors">
+            {{professor}}
+          </div>
+       </div>
+    </mat-grid-tile>
 </mat-grid-list>
 
 
