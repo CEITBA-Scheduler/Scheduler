@@ -73,4 +73,8 @@ export class ResultsComponent implements OnInit {
   back(){
     this.router.navigate(['/combinadorDeHorarios']);
   }
+  selected(selected: number, state: boolean){
+    console.log("El estado de la opcion ", selected," paso a ", state);
+    this.combinacionDeHorarioService.changeHeartList(selected,state);
+  }
 }

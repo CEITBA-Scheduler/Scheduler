@@ -97,4 +97,8 @@ export class CombinacionDeHorarioService {
     return ans;
   }
   // }
+
+  changeHeartList(id, value){
+    console.log(`El corazon ${id} cambio a ${value}`);
+  }
 }
