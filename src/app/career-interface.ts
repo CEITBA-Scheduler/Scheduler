@@ -9,11 +9,15 @@ export interface ICareerTerm {
   year: string;
   period: string;
   subjects: ICareerSubject[];
+
+  addSubject(subject: ICareerSubject): ICareerTerm;
 }
 
 export interface ICareerCycle {
   name: string;
   terms: ICareerTerm[];
+
+  addTerm(term: ICareerTerm): ICareerCycle;
 }
 
 export interface ICareerPlan {
@@ -21,4 +25,6 @@ export interface ICareerPlan {
   career: string;
   degreeLevel: string;
   cycles: ICareerCycle[];
+
+  addCycle(cycle: ICareerCycle): ICareerPlan;
 }
