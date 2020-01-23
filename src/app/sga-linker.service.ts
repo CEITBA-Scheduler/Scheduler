@@ -39,6 +39,7 @@ export class SgaLinkerService {
     private authService: AuthService
   ) {
     this.allSubjects = new BehaviorSubject<{ [id: string]: Subject; }>({});
+    this.careerPlan = new BehaviorSubject<CareerPlan>(new CareerPlan());
     this.getSubjectsDataFromApi();
     this.getCareerDataFromApi();
   }

@@ -75,9 +75,9 @@ export class CareerPlan implements ICareerPlan {
   public cycles: ICareerCycle[];
 
   constructor(
-    name: string,
-    career: string,
-    level: string,
+    name: string = '',
+    career: string = '',
+    level: string = '',
     cycles: ICareerCycle[] = []) {
       this.name = name;
       this.career = career;
