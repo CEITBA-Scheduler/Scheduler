@@ -323,13 +323,16 @@ export class SgaLinkerService {
    */
   addToAllSubjects(name: string, commission: any, currCommission: Commission): void {
     if (!this.allSubjectsValue[commission.subjectCode]) {
+      console.log("estoy por imprimir los credits")
+      console.log(commission)
       // If such subject doesn't exist, we create it and then add it to the dictionary
       const currSubject: Subject = {
         name: commission.subjectName,
         code: commission.subjectCode,
         search: SgaLinkerService.removeTildes((commission.subjectName + commission.subjectCode).toLowerCase()),
         commissions: [currCommission],
-        priority: 0
+        priority: 0,
+        credits: commission.credits,
       };
       this.allSubjectsValue[commission.subjectCode] = currSubject;
     } else {

@@ -2,24 +2,29 @@
 <!-- https://stackblitz.com/edit/angular-carousel-component carrousel -->
 
 <mat-vertical-stepper labelPosition="bottom" linear="true">
-  <ng-template matStepperIcon="ELEGIR MATERIAS">
-		<mat-icon>bubble_chart</mat-icon>
-	</ng-template>
-  <ng-template matStepperIcon="ELEGIR MATERIAS">
-		<mat-icon>home</mat-icon>
-	</ng-template>
-	<ng-template matStepperIcon="ELEGIR MATERIAS">
-		<mat-icon>format_align_center</mat-icon>
-	</ng-template>
-	<ng-template matStepperIcon="ELEGIR MATERIAS">
-		<mat-icon>done_all</mat-icon>
-	</ng-template>
 
+    <mat-step label="ELEGIR MATERIAS">
 
+      <div class="grid-container">
+        <div class="grid-item">
 
     <mat-step label="ELEGIR MATERIAS">
       <app-subject-selector [userSelection]="userSelection">
       </app-subject-selector>
+          <app-subject-selector>
+
+          </app-subject-selector>
+        </div>
+        <div class="grid-item">
+          <app-show-plans>
+
+          </app-show-plans>
+        </div>
+
+      </div>
+      
+      
+      <!-- ACA VIENE EL NUEVO COMPONENTE-->
     </mat-step>
     <mat-step label="ELEGIR COMISIONES">
       <app-commission-selector>
