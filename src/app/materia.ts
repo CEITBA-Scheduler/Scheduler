@@ -7,7 +7,11 @@ import { addMinutes } from 'date-fns';
 
 export interface Subject {
     name: string;
+<<<<<<< HEAD
+    code: string;    
+=======
     code: string;
+>>>>>>> 3da65d28729aae66b580df1fa06b9b3bd9d965bc
     search: string;
     commissions?: Commission[];
     priority?: number;

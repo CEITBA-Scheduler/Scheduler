@@ -80,7 +80,6 @@ export class CombinacionDeHorarioService {
   getAlgorithmResults(): Combination[]{
     return this.algorithmResults;
   }
-
   removeSubject(subject: Subject) {
    delete this.subjectCommissions[subject.code];
    this.subjectCommissionsBehavioural.next(this.subjectCommissions);

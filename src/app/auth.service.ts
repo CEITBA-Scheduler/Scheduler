@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { User, FirestoreCommissionSelection, TickboxSelection } from './user.model'; // optional
+import { Subject } from './materia';
 
 import { auth } from 'firebase/app';
 //import { AngularFireAuth } from '@angular/fire/auth';
@@ -26,6 +27,7 @@ export class AuthService implements CanActivate {
   urlGetDni : string = "https://itbagw.itba.edu.ar/api/v1/people/"+token.CEITBA+"?email="; // email url
   urlGetPlan: string = "https://itbagw.itba.edu.ar/api/v1/students/"+token.CEITBA+"/"
   credentials?;
+  dbSubjects: BehaviorSubject<Subject[]>;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -109,14 +111,17 @@ export class AuthService implements CanActivate {
               this.notreg = false;
             }else{
               console.log("El mail no esta registrado en el itba");
+<<<<<<< HEAD
+=======
               this.notreg = true;
+>>>>>>> 04761a767e94050d7c4da6eb2cb9a7704750dae6
             }
           }
         });
 
 
       }else{
-        console.log("Welcome user");
+        console.log("Welcome user " + this.user);
         console.log(data.data());
 
         if ("plan" in data.data()){
@@ -138,8 +143,9 @@ export class AuthService implements CanActivate {
   }
 
 
+
   /// actualizar en la información de usuario la información introducida en los formularios
-  updateUserSelection(subjectCommissions: SubjectCommissions[], tickboxSelection: TickboxSelection){
+  updateUserSelection(subjectCommissions: SubjectCommissions[], tickboxSelection: TickboxSelection) {
     this.user.userSelection = [];
 
     for (var item of subjectCommissions){
