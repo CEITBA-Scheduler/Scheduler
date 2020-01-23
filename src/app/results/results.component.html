@@ -3,7 +3,7 @@
   <ngb-carousel #carousel interval="false">
     <ng-template ngbSlide *ngFor="let combination of combinations; index as i">
       <div class="carousel-caption">
-        <h3>Combinación {{i + 1}}</h3>
+        <h3>Combinación {{i + 1}} <app-favourite-button (selectedChange)="selected(i+1, $event)"></app-favourite-button> </h3>
       </div>
 
         <div class="picsum-img-wrapper">

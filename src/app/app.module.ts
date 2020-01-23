@@ -50,6 +50,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxHmCarouselModule } from 'ngx-hm-carousel';
 import { ShowPlansComponent } from './show-plans/show-plans.component';
+import { LikedItemComponent } from './liked-item/liked-item.component';
+import { FavouriteButtonComponent } from './favourite-button/favourite-button.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +77,9 @@ import { ShowPlansComponent } from './show-plans/show-plans.component';
     TrashCardComponent,
     ResultsComponent,
     NavbarComponent,
-    ShowPlansComponent
+    ShowPlansComponent,
+    LikedItemComponent,
+    FavouriteButtonComponent
   ],
   imports: [
     BrowserModule,
