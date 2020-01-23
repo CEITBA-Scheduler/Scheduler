@@ -11,13 +11,13 @@ export interface User {
   career?: string;
 }
 
-export interface FirestoreCommissionSelection{
+export interface FirestoreCommissionSelection {
   subjectCode: string;
   subjectName: string;
   commissions: string[];
 }
 
-export interface TickboxSelection{
+export interface TickboxSelection {
   superposition: boolean;
   freeday: boolean;
   buildingChange: boolean;

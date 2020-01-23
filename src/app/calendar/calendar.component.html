@@ -5,12 +5,20 @@
       <div class="hour-name" fxLayoutAlign="center center">
         #
       </div>
+<<<<<<< HEAD
       <div 
         class="subject-hour" 
         fxLayoutAlign="center center" 
         *ngFor="let hour of hoursInteger; 
         let i = index">
         <div class="hourText">{{ hour }} - {{nextHoursInteger[i]}}</div>
+=======
+
+      <div *ngFor="let subject of this.subjectsOfDay[day]">
+        <div class="subjectRelative" fxLayoutAlign="center center" [style.background-color]="subject.color" [style.height.px]="subject.height" [style.top.px] = "subject.startPos">
+          {{subject.name }} <br> Comisión {{ subject.commission }}
+        </div>
+>>>>>>> 3da65d28729aae66b580df1fa06b9b3bd9d965bc
       </div>
     </div>
     <!-- absolute https://dzone.com/articles/css-position-relative-vs-position-absolute -->

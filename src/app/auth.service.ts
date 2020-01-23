@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { User, FirestoreCommissionSelection, TickboxSelection } from './user.model'; // optional
+import { Subject } from './materia';
 
 import { auth } from 'firebase/app';
 //import { AngularFireAuth } from '@angular/fire/auth';
@@ -21,10 +22,12 @@ import { HttpClient } from '@angular/common/http';
 export class AuthService implements CanActivate {
 
   user?: User = null;
+  notreg = false;
   behaviourUser: BehaviorSubject<User> = new BehaviorSubject<User>(null);
   urlGetDni : string = "https://itbagw.itba.edu.ar/api/v1/people/"+token.CEITBA+"?email="; // email url
   urlGetPlan: string = "https://itbagw.itba.edu.ar/api/v1/students/"+token.CEITBA+"/"
   credentials?;
+  dbSubjects: BehaviorSubject<Subject[]>;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -47,12 +50,12 @@ export class AuthService implements CanActivate {
         console.log(this.user);
 
         this.generateUserDb();
-        
+
       }else{
         // Logged out
         this.user = null;
         this.behaviourUser.next(this.user); // avisamos al resto del programa que el login fue exitoso
-      } 
+      }
     });
   }
   getSgaInfo() : Observable<{[id: string] : string}>{
@@ -61,14 +64,14 @@ export class AuthService implements CanActivate {
     // obtener primero dni y con el dni obtener el plan
     this.http.get(this.urlGetDni + this.user.email).subscribe(
       data => {
-      
+
         this.http.get(this.urlGetPlan + data["dni"]).subscribe(
           data => {
 
             obs.next(
               {
                 success: "true",
-                plan: data["plan"], 
+                plan: data["plan"],
                 career: data["career"]
               }
             );
@@ -105,17 +108,20 @@ export class AuthService implements CanActivate {
                 career: udata.career
               });
               this.behaviourUser.next(this.user); // avisamos al resto del programa que el login fue exitoso
-
+              this.notreg = false;
             }else{
               console.log("El mail no esta registrado en el itba");
-              
+<<<<<<< HEAD
+=======
+              this.notreg = true;
+>>>>>>> 04761a767e94050d7c4da6eb2cb9a7704750dae6
             }
           }
         });
 
-        
+
       }else{
-        console.log("Welcome user");
+        console.log("Welcome user " + this.user);
         console.log(data.data());
 
         if ("plan" in data.data()){
@@ -137,8 +143,9 @@ export class AuthService implements CanActivate {
   }
 
 
+
   /// actualizar en la información de usuario la información introducida en los formularios
-  updateUserSelection(subjectCommissions: SubjectCommissions[], tickboxSelection: TickboxSelection){
+  updateUserSelection(subjectCommissions: SubjectCommissions[], tickboxSelection: TickboxSelection) {
     this.user.userSelection = [];
 
     for (var item of subjectCommissions){
@@ -199,6 +206,7 @@ export class AuthService implements CanActivate {
 
   async signOut() {
     await this.afAuth.auth.signOut();
+    this.notreg = false;
     //this.router.navigate(['/login']);
   }
 

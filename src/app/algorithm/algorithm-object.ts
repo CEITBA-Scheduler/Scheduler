@@ -65,6 +65,13 @@ export class CombinationSubject implements ICombinationSubject {
   }
 
   /**
+   * Returns an array of timeblocks
+   */
+  getAllTimeblocks(): ITimeblock[] {
+    return this.commissionTimes;
+  }
+
+  /**
    * Returns an array of weekdays containing the free days
    * where the subject has no lectures.
    */
@@ -140,7 +147,6 @@ export class Combination implements ICombination {
 
     return timeblocks;
   }
-
   /**
    * Returns an array of weekday with the free days where
    * the combination has no lectures, by comparing the freedays
@@ -275,6 +281,49 @@ export class Timeblock implements ITimeblock {
   }
 
   /**
+   * Returns the amount of travelling time between two different
+   * placed ITimeblocks. Should return 0.0 if no travelling.
+   * @param other   The other ITimeblock to which is being compared
+   */
+  travels(other: ITimeblock): number {
+    if (this.day === other.day) {
+      if (!this.sharesLocationWith(other)) {
+        if (this.overlaps(other) === 0.0) {
+          if (this.end < other.start) {
+            return other.start - this.end;
+          } else if (this.start > other.end) {
+            return this.start - other.end;
+          }
+        }
+      }
+    }
+
+    // Share the same location, so no travelling time detected
+    return 0.0;
+  }
+
+  /**
+   * Verifies if both this and the other timeblock share
+   * the same location.
+   * @param other The other timeblock
+   */
+  sharesLocationWith(other: ITimeblock): boolean {
+    if (this.building === other.building) {
+      return true;
+    } else {
+      const buildingWords = this.building.split(' ');
+      for (const buildingWord of buildingWords) {
+        if (other.building.includes(buildingWord)) {
+          return true;
+        }
+      }
+    }
+
+    // No special case of similar building has been detected
+    return false;
+  }
+
+  /**
    * Returns the duration of the timeblock.
    */
   duration(): number {
@@ -354,6 +403,34 @@ export class Timeblock implements ITimeblock {
    */
   intervalToHHmm(): string {
     return this.startToHHmm() + '-' + this.endToHHmm();
+  }
+
+  /**
+   * Return the start minutes
+   */
+  getStartMinutes(): number {
+    return Math.round(60 * (this.start - Math.floor(this.start)));
+  }
+
+  /**
+   * Return the start hours
+   */
+  getStartHours(): number {
+    return Math.floor(this.start);
+  }
+
+  /**
+   * Return the end minutes
+   */
+  getEndMinutes(): number {
+    return Math.round(60 * (this.end - Math.floor(this.end)));
+  }
+
+  /**
+   * Return the end hours
+   */
+  getEndHours(): number {
+    return Math.floor(this.end);
   }
 }
 

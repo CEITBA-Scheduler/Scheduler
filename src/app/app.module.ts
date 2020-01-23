@@ -1,3 +1,5 @@
+import 'hammerjs';
+
 import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -45,6 +47,8 @@ import { TrashCardComponent } from './trash-card/trash-card.component';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { ResultsComponent } from './results/results.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxHmCarouselModule } from 'ngx-hm-carousel';
 
 @NgModule({
   declarations: [
@@ -97,7 +101,9 @@ import { NavbarComponent } from './navbar/navbar.component';
     DemoMaterialModule,
     HttpClientModule,
     MatIconModule,
-    MDBBootstrapModule.forRoot()
+    MDBBootstrapModule.forRoot(),
+    NgbModule,
+    NgxHmCarouselModule
   ],
   providers: [],
   bootstrap: [AppComponent]

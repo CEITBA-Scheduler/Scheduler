@@ -2,8 +2,23 @@
 <!-- https://stackblitz.com/edit/angular-carousel-component carrousel -->
 
 <mat-vertical-stepper labelPosition="bottom" linear="true">
+  <ng-template matStepperIcon="ELEGIR MATERIAS">
+		<mat-icon>bubble_chart</mat-icon>
+	</ng-template>
+  <ng-template matStepperIcon="ELEGIR MATERIAS">
+		<mat-icon>home</mat-icon>
+	</ng-template>
+	<ng-template matStepperIcon="ELEGIR MATERIAS">
+		<mat-icon>format_align_center</mat-icon>
+	</ng-template>
+	<ng-template matStepperIcon="ELEGIR MATERIAS">
+		<mat-icon>done_all</mat-icon>
+	</ng-template>
+
+
+
     <mat-step label="ELEGIR MATERIAS">
-      <app-subject-selector>
+      <app-subject-selector [userSelection]="userSelection">
       </app-subject-selector>
     </mat-step>
     <mat-step label="ELEGIR COMISIONES">
@@ -19,8 +34,8 @@
     </mat-step>
     <mat-step label="TERMINADO">
       <!--mat-card-->
-        <div fxLayoutAlign="center center">
-          <button mat-raised-button color="primary" (click)="done()">Calcular combinaciones</button>
+        <div fxLayoutAlign="center center" >
+          <button (click)="done()"  mdbBtn type="button" color="primary" outline="true" mdbWavesEffect>Calcular combinaciones</button>
         </div>
       <!--/mat-card-->
     </mat-step>

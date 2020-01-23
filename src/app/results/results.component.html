@@ -1,54 +1,206 @@
 <app-navbar></app-navbar>
+<div fxLayout="column" fxLayoutAlign="center center">
+  <ngb-carousel #carousel interval="false">
+    <ng-template ngbSlide *ngFor="let combination of combinations; index as i">
+      <div class="carousel-caption">
+        <h3>Combinación {{i + 1}}</h3>
+      </div>
 
-<mdb-carousel [animation]="'slide'">
+        <div class="picsum-img-wrapper">
+          <div fxLayout="column" fxLayoutAlign="center center" >
+            <app-calendar [subjectsComissions]="commissions[i]">
+
+            </app-calendar>
+            <div class="space">
+
+            </div>
+          </div>
+        </div>
+
+    </ng-template>
+  </ngb-carousel>
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <button (click)="select()"  mdbBtn type="button" color="primary" outline="true" mdbWavesEffect>Seleccionar</button>
+    <button (click)="back()"  mdbBtn type="button" color="danger" outline="true" mdbWavesEffect>Volver</button>
+  </div>
+</div>
+<!--<mdb-carousel [animation]="'slide'" [interval]="false">
     <mdb-carousel-item>
-      <div class="view w-100">
+      <div class="d-block w-100">
         <div alt="First slide">
-            <div fxLayout="row" fxLayoutAlign="center center" >
+            <div fxLayout="column" fxLayoutAlign="center center" >
                 <app-calendar [subjectsComissions]="commissionsTest">
 
                 </app-calendar>
+                <div class="space">
+
+                </div>
             </div>
-        </div>  
+        </div>
         <div class="mask rgba-black-light waves-light" mdbWavesEffect></div>
       </div>
       <div class="carousel-caption">
-        <h3 class="h3-responsive">Light mask</h3>
         <p>First text</p>
       </div>
     </mdb-carousel-item>
     <mdb-carousel-item>
-        <div class="view w-100">
+      <div class="d-block w-100">
         <div alt="First slide">
-            <div fxLayout="row" fxLayoutAlign="center center" >
+            <div fxLayout="column" fxLayoutAlign="center center" >
                 <app-calendar [subjectsComissions]="commissionsTest">
 
                 </app-calendar>
+                <div class="space">
+
+                </div>
             </div>
-        </div>  
-            
-          <div class="mask rgba-black-light waves-light" mdbWavesEffect> </div>
         </div>
-        <div class="carousel-caption">
-          <h3 class="h3-responsive">Light mask</h3>
-          <p>Second text</p>
-        </div>
-      </mdb-carousel-item>
-      <mdb-carousel-item>
-        <div class="view w-100">
+        <div class="mask rgba-black-light waves-light" mdbWavesEffect></div>
+      </div>
+      <div class="carousel-caption">
+        <p>Second text</p>
+      </div>
+    </mdb-carousel-item>
+    <mdb-carousel-item>
+      <div class="d-block w-100">
         <div alt="First slide">
-            <div fxLayout="row" fxLayoutAlign="center center" >
+            <div fxLayout="column" fxLayoutAlign="center center" >
                 <app-calendar [subjectsComissions]="commissionsTest">
 
                 </app-calendar>
+                <div class="space">
+
+                </div>
             </div>
-        </div>  
-            
-          <div class="mask rgba-black-light waves-light" mdbWavesEffect> </div>
         </div>
-        <div class="carousel-caption">
-          <h3 class="h3-responsive">Light mask</h3>
-          <p>Third text</p>
+        <div class="mask rgba-black-light waves-light" mdbWavesEffect></div>
+      </div>
+      <div class="carousel-caption">
+        <p>Second text</p>
+      </div>
+    </mdb-carousel-item>
+
+  </mdb-carousel>!-->
+
+  <!--<ngb-carousel *ngIf="images">
+    <ng-template ngbSlide>
+      <div class="picsum-img-wrapper" fxLayout="row"  fxLayoutAlign="center center">
+        <app-calendar [subjectsComissions]="commissionsTest">
+
+        </app-calendar>
+      </div>
+      <div class="carousel-caption">
+
+
+        <h3>10 seconds between slides...</h3>
+        <p>This carousel uses customized default values.</p>
+      </div>
+    </ng-template>
+    <ng-template ngbSlide>
+      <div class="picsum-img-wrapper" fxLayout="row"  fxLayoutAlign="center center">
+        <app-calendar [subjectsComissions]="commissionsTest">
+
+        </app-calendar>
+      </div>
+      <div class="carousel-caption">
+
+
+        <h3>10 seconds between slides...</h3>
+        <p>This carousel uses customized default values.</p>
+      </div>
+    </ng-template>
+  </ngb-carousel>-->
+
+  <!--<h2>
+    Current Index &nbsp;
+    <input type="number" [(ngModel)]="index">
+  </h2>
+
+  <button mat-raised-button (click)="push()">Push Item</button>
+  <button mat-raised-button (click)="remove()" *ngIf="avatars.length > 1">Remove last Item</button>
+
+  <ngx-hm-carousel #carousel
+    [(ngModel)]="index"
+    (ngModelChange)="indexChanged($event)"
+    [autoplay-speed]="speed"
+    [autoplay]="autoplay"
+    [autoplay-direction]="direction"
+    [infinite]="infinite"
+    [between-delay]="2000"
+    [mourse-enable]="true"
+    [data]="avatars"
+    [aniTime]="300"
+    class="carousel c-accent">
+
+    <section ngx-hm-carousel-container class="content">
+      <article class="item cursor-pointer"
+        ngx-hm-carousel-item
+        *ngFor="let avatar of avatars">
+        <div class="img"
+          [style.backgroundImage]="'url('+avatar.url+')'">
         </div>
-      </mdb-carousel-item>
-  </mdb-carousel>
+      </article>
+      <ng-template #infiniteContainer></ng-template>
+    </section>
+
+    <ng-template #carouselContent let-avatar let-i="index">
+      <article class="item cursor-pointer">
+        <app-calendar [subjectsComissions]="commissionsTest">
+
+        </app-calendar>
+      </article>
+    </ng-template>
+
+    <ng-template #carouselPrev>
+      <div class="click-area">
+        <i class="material-icons">keyboard_arrow_left</i>
+      </div>
+    </ng-template>
+    <ng-template #carouselNext>
+      <div class="click-area">
+        <i class="material-icons">keyboard_arrow_right</i>
+      </div>
+    </ng-template>
+
+    <ng-template #carouselDot let-model>
+      <div class="ball bg-accent"
+        [class.visible]="model.index === model.currentIndex"></div>
+    </ng-template>
+
+    <ng-template #carouselProgress>
+      <div class="progress"></div>
+    </ng-template>
+
+  </ngx-hm-carousel>
+
+  <button mat-raised-button (click)="speed=500">speed=500</button>
+  <button mat-raised-button (click)="speed=2000">speed=2000</button>
+  <button mat-raised-button (click)="speed=5000">speed=5000</button>
+  <h2 class="center">
+    One Picture
+  </h2>
+
+  <div>
+
+    <mat-slide-toggle
+      color="primary"
+      [(ngModel)]="directionToggle" (change)="toggleDirection($event)">
+      {{directionToggle ? 'go right' : 'go left'}}
+    </mat-slide-toggle>
+  </div>
+!-->
+<!--<ngb-carousel #carousel interval="1000" [paused]="true" (slide)="onSlide($event)">
+  <ng-template ngbSlide *ngFor="let img of images; index as i">
+    <div class="carousel-caption">
+      <h3>My slide {{i + 1}} title</h3>
+    </div>
+      <div class="picsum-img-wrapper" fxLayout="column" fxLayoutAlign="center center">
+        <app-calendar [subjectsComissions]="commissionsTest">
+
+        </app-calendar>
+        <div class="space">
+
+        </div>
+        </div>
+  </ng-template>
+</ngb-carousel>-->

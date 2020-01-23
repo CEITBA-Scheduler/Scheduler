@@ -49,6 +49,7 @@ export class CombinerComponent implements OnInit {
     this.authService.getUserObservable().subscribe((user: User) => {
       if (user != null) {
         this.router.navigate(['/combinadorDeHorarios']);
+        this.dbServices.askForUserSubjectSelection();
       } else {
         this.router.navigate(['/login']);
       }
@@ -103,6 +104,7 @@ export class CombinerComponent implements OnInit {
             for (const subjectCommission of subject.commissions) {
               this.priorities.push(
                 Priority.gpCommission(subjectCommission.name, subjectCode)
+                        .setExclusive(true)
               );
             }
           }
@@ -119,29 +121,32 @@ export class CombinerComponent implements OnInit {
     const userPreferences = this.generalProgramService.getAllCheckboxStatus();
     if (userPreferences.superposition) {
       this.priorities.push(
-        Priority.gpSuperposition(DEFAULT_SUPERPOSITION)
+        Priority.gpSuperposition(DEFAULT_SUPERPOSITION).setExclusive(true)
+      );
+    } else {
+      this.priorities.push(
+        Priority.gpSuperposition(0.0).setExclusive(true)
       );
     }
     if (userPreferences.freeday) {
       this.priorities.push(
-        Priority.gpFreeDay(DEFAULT_FREEDAY)
+        Priority.gpFreeDay(DEFAULT_FREEDAY).setExclusive(true)
       );
     }
     if (userPreferences.buildingChange) {
       this.priorities.push(
-        Priority.gpLocation()
+        Priority.gpLocation().setExclusive(true)
       );
     }
     if (userPreferences.travelTime) {
       this.priorities.push(
-        Priority.gpTravel(DEFAULT_TRAVEL)
+        Priority.gpTravel(DEFAULT_TRAVEL).setExclusive(true)
       );
     }
 
     // Then, we set the priority weights
     this.priorities = Priority.generateWeightedPriorities(this.priorities);
 
-    // Using the algorithm... Let's run it!
     this.combinations = this.algorithmServices.schedulerAlgorithm(
       this.subjects,            // All the possible subjects
       this.subjectSelections,   // User's selected subjects
@@ -149,7 +154,13 @@ export class CombinerComponent implements OnInit {
       'quicksort'               // Available sorting algorithm
     );
 
-    this.router.navigate(['/resultados']);
+    this.scheduleCombinerServices.setAlgorithmResults(
+      this.combinations.slice(0, 20)
+    );
+
+    // Using the algorithm... Let's run it!
+
+    this.router.navigate(['/results']);
 
     console.log('=== Subjects ===');
     console.log(this.subjects);

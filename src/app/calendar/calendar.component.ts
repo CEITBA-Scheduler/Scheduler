@@ -168,12 +168,12 @@ export class CalendarComponent implements OnInit {
             times.push({
               day: schedule.day,
               initialHour: {
-                hours:schedule.start.hours,
-                minutes:schedule.start.minutes
+                hours: schedule.start.hours,
+                minutes: schedule.start.minutes
               },
               finalHour: {
-                hours:schedule.end.hours,
-                minutes:schedule.end.minutes
+                hours: schedule.end.hours,
+                minutes: schedule.end.minutes
               }
             });
           }
@@ -186,7 +186,7 @@ export class CalendarComponent implements OnInit {
               commissionTimes: times
             },
           );
-          i++;
+          i = (i + 1) % 4;
         }
         this.subjectList = [];
         for (let i = 0; i < schedules.length ; i++ ) {
