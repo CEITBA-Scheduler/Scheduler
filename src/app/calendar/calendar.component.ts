@@ -449,28 +449,28 @@ export class CalendarComponent implements OnInit {
   }
 
   startTogglePeriodMarker(day: string, indexHour: number) {
+    console.log(this.periodButtonsColorState);
     this.isMouseClicked = true;
-    if (this.periodButtonsColorState[day][indexHour] === false)
+    if (!this.periodButtonsColorState[day][indexHour])
       this.periodButtonsColorState[day][indexHour] = true;
     else
       this.periodButtonsColorState[day][indexHour] = false;
-    // this.updatePeriodBlocks();
+    this.updatePeriodBlock();
   }
 
   inTogglePeriodMarker(day: string, indexHour: number) {
     if (this.isMouseClicked) {
-      if (this.periodButtonsColorState[day][indexHour] === false)
+      if (!this.periodButtonsColorState[day][indexHour])
         this.periodButtonsColorState[day][indexHour] = true;
       else
         this.periodButtonsColorState[day][indexHour] = false;
     }
-    // this.updatePeriodBlocks();
+    this.updatePeriodBlock();
   }
 
   endTogglePeriodMarker(day: string, indexHour: number) {
     this.isMouseClicked = false;
-    // this.updatePeriodBlocks();
-    // console.log(this.periodBlocks); // Used to track this.periodBlocks content
+    console.log(this.periodBlocks); // Used to track this.periodBlocks content
   }
 
   mouseIsNotOnCalendar() {
@@ -478,25 +478,50 @@ export class CalendarComponent implements OnInit {
   }
 
   // Not working yet
-  /*
-  updatePeriodBlocks() {
-    var startHour: number = parseInt(this.hoursInteger[0]); // Bc its the minimum value possible
-    var endHour: number = parseInt(this.hoursInteger[0]);
-    var timeBlockGenetator: boolean = false;
-    // TODO: Add Timeblock
-    for (let i=0; i < this.days.length ; i++) {
-      for (let j=0; j < this.hoursInteger.length ; j++) {
-        if (this.periodButtonsColorState[this.days[i]][j] && timeBlockGenetator === false) {
-          startHour += j;
-          timeBlockGenetator = true;
+  updatePeriodBlock() {
+    var startHour: number = 0; // Bc its the minimum value possible
+    var endHour: number = 0;
+    var timeBlockGenerator: boolean = false;
+    var timeBlock: Timeblock;
+    for (let i=0 ; i < this.days.length ; i++) {
+      for (let j=0 ; j < this.hoursInteger.length ; j++) {
+        // Si el botón está presionado
+        if (this.periodButtonsColorState[this.days[i]][j])
+        {
+          if (j === this.hoursInteger.length - 1) { // En caso de que llege a la última hora
+            endHour = j + 8;
+            timeBlockGenerator = false;
+            if(!this.existsOnPeriodBlocks)
+              this.periodBlocks.push(new Timeblock(i, startHour, endHour));
+            startHour = 0;  // Reseteo las variables
+            endHour = 0;
+          }
+          else {
+            startHour = j + 8;
+            timeBlockGenerator = true;
+          }
         }
-        if (!this.periodButtonsColorState[this.days[i]][j] && timeBlockGenetator === true) {
-          endHour += j;
-          timeBlockGenetator = false;
-          this.periodBlocks.push(new Timeblock(i, startHour, endHour));
+        // Si no está presionado
+        else {
+          if (timeBlockGenerator) {
+            timeBlockGenerator = false; //
+          }
         }
+        // Resetting both variables
+        startHour = 0;
+        endHour = 0;
+        timeBlockGenerator = false;
       }
     }
   }
-  */
+
+  existsOnPeriodBlocks(day: number, start: number, end: number): boolean {
+    for (let periodBlock of this.periodBlocks) {
+      if (periodBlock.day === day &&
+        periodBlock.start === start &&
+        periodBlock.end === end)
+          return true;
+    }
+    return false;
+  }
 }
