@@ -10,24 +10,38 @@ import { User } from './user.model';
 import { token } from './secrets';
 import { PROFESSORS } from '../assets/professors';
 
+import {
+  CareerPlan,
+  CareerCycle,
+  CareerTerm,
+  CareerSubject
+} from './career-object';
+
 @Injectable({
   providedIn: 'root'
 })
 export class SgaLinkerService {
-  static url = 'https://itbagw.itba.edu.ar';
-  static endpoint = `api/v1/courseCommissions/${token.CEITBA}`;
+  static URL = 'https://itbagw.itba.edu.ar';
+  static SUBJECTS_ENDPOINT = `api/v1/courseCommissions/${token.CEITBA}`;
+  static CAREER_ENDPOINT = `api/v1/careerPlans/${token.CEITBA}`;
 
   public allSubjects: BehaviorSubject<{ [id: string]: Subject; }>;
   public allSubjectsValue: { [id: string]: Subject; };
   public allCommissions = null;
-  public rawHttpResponse = null;
+
+  public careerPlan: BehaviorSubject<CareerPlan>;
+
+  public rawSubjectsResponse = null;
+  public rawCareerResponse = null;
 
   constructor(
     private http: HttpClient,
     private authService: AuthService
   ) {
     this.allSubjects = new BehaviorSubject<{ [id: string]: Subject; }>({});
-    this.getDataFromApi();
+    this.careerPlan = new BehaviorSubject<CareerPlan>(new CareerPlan());
+    this.getSubjectsDataFromApi();
+    this.getCareerDataFromApi();
   }
 
   /**
@@ -38,7 +52,7 @@ export class SgaLinkerService {
    *  @param  params      The request parameters
    */
   private static httpRequestUrlFormat(url: string, endpoint: string, params): string {
-    let resource = `${SgaLinkerService.url}/${SgaLinkerService.endpoint}?`;
+    let resource = `${url}/${endpoint}?`;
     for (const resourceKey of Object.keys(params)) {
       resource += `${resourceKey}=${params[resourceKey]}&`;
     }
@@ -104,15 +118,22 @@ export class SgaLinkerService {
   /**
    * Returns the raw response of the HTTP request made
    */
-  getRawResponse(): any {
-    return this.rawHttpResponse;
+  getRawSubjects(): any {
+    return this.rawSubjectsResponse;
+  }
+
+  /**
+   * Returns the raw response of the HTTP request made
+   */
+  getRawCareer(): any {
+    return this.rawCareerResponse;
   }
 
   /**
    * Creates and sends the HTTP request to the SGA server, and saves the
    * raw JSON response inside the service instance. Returns an observable.
    */
-  getAllComissions(): Observable<any> {
+  requestAllComissions(): Observable<any> {
     // Parameters for the HTTP Request are created
     // with the current corresponding data...
     const currentDate = new Date();
@@ -128,24 +149,106 @@ export class SgaLinkerService {
     // Generating the url for the HTTP Request and
     // saving the raw json response for future uses and cache
     const url = SgaLinkerService.httpRequestUrlFormat(
-      SgaLinkerService.url,
-      SgaLinkerService.endpoint,
+      SgaLinkerService.URL,
+      SgaLinkerService.SUBJECTS_ENDPOINT,
       params
     );
+
     return this.http
       .get(url)
       .pipe(shareReplay(1));
   }
 
   /**
+   * Creates and sends the HTTP request to the SGA server, and saves the
+   * raw JSON response inside the service instance. Returns an observable.
+   * @param plan  The career plan
+   */
+  requestCareerPlan(careerPlan: string): Observable<any> {
+    // Creating the request parameters
+    const params = {
+      plan: careerPlan
+    };
+
+    // Generating the GET url
+    const url = SgaLinkerService.httpRequestUrlFormat(
+      SgaLinkerService.URL,
+      SgaLinkerService.CAREER_ENDPOINT,
+      params
+    );
+
+    return this.http
+      .get(url)
+      .pipe(shareReplay(1));
+  }
+
+  /**
+   * Updates the internal career data by making the HTTP request
+   * and parsing it into the internal properties of the Service
+   */
+  getCareerDataFromApi(): void {
+    this.authService.getUserObservable()
+    .subscribe(
+      user => {
+        // When the user has logged in succesfully, then
+        // we have enough data to get its career plan
+        if (user) {
+          this.requestCareerPlan(user.plan)
+          .subscribe(
+            data => {
+              // Saving the raw response from SGA server
+              this.rawCareerResponse = data.careerplan;
+              console.log(data);
+
+              // First, we need to create the instance of the
+              // career plan and through a loop create every cycle
+              const careerPlan = new CareerPlan(
+                this.rawCareerResponse.name,
+                this.rawCareerResponse.career,
+                this.rawCareerResponse.degreeLevel
+              );
+
+              // We create each possible cycle in the career plan
+              for (const cycle of this.rawCareerResponse.section) {
+                const newCareerCycle = new CareerCycle(cycle.name);
+                if (cycle.terms) {
+                  for (const term of cycle.terms.term) {
+                    const newCareerTerm = new CareerTerm(
+                      term.year,
+                      term.period
+                    );
+                    for (const subject of term.entries.entry) {
+                      const newCareerSubject = new CareerSubject(
+                        subject.name,
+                        subject.code,
+                        subject.credits,
+                        Array.isArray(subject.dependencies) ? subject.dependencies : [subject.dependencies]
+                      );
+                      newCareerTerm.addSubject(newCareerSubject);
+                    }
+                    newCareerCycle.addTerm(newCareerTerm);
+                  }
+                  careerPlan.addCycle(newCareerCycle);
+                }
+              }
+
+              this.careerPlan.next(careerPlan);
+            }
+          );
+        }
+      }
+    );
+  }
+
+  /**
    * Updates the internal subject data by making the HTTP request
    * and parsing it into the internal properties of the Service
    */
-  getDataFromApi(): void {
-    this.getAllComissions().subscribe(data => {
+  getSubjectsDataFromApi(): void {
+    this.requestAllComissions().subscribe(data => {
       // Here I set what happens when I receive something from get (asynchronous)
-      this.rawHttpResponse = SgaLinkerService.mergeProfessorsToData(data, PROFESSORS);
-      this.allCommissions = this.rawHttpResponse.courseCommissions.courseCommission;
+      this.rawSubjectsResponse = SgaLinkerService.mergeProfessorsToData(data, PROFESSORS);
+      this.allCommissions = this.rawSubjectsResponse.courseCommissions.courseCommission;
       this.allSubjectsValue = {};
 
       // For all commissions in the SGA response
@@ -201,6 +304,13 @@ export class SgaLinkerService {
 
       this.allSubjects.next(this.allSubjectsValue);
     });
+  }
+
+  /**
+   * Returns the career plan as an observable
+   */
+  getCareerPlan(): Observable<CareerPlan> {
+    return this.careerPlan.asObservable();
   }
 
   /**

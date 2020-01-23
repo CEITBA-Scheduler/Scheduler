@@ -67,7 +67,7 @@ export class AuthService implements CanActivate {
 
         this.http.get(this.urlGetPlan + data["dni"]).subscribe(
           data => {
-
+            console.log(data);
             obs.next(
               {
                 success: "true",
