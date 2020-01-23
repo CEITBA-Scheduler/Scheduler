@@ -491,7 +491,7 @@ export class CalendarComponent implements OnInit {
           if (j === this.hoursInteger.length - 1) { // En caso de que llege a la última hora
             endHour = j + 8;
             timeBlockGenerator = false;
-            if(!this.existsOnPeriodBlocks)
+            if(!this.existsOnPeriodBlocks(i, startHour, endHour))
               this.periodBlocks.push(new Timeblock(i, startHour, endHour));
             startHour = 0;  // Reseteo las variables
             endHour = 0;
@@ -504,6 +504,11 @@ export class CalendarComponent implements OnInit {
         // Si no está presionado
         else {
           if (timeBlockGenerator) {
+            endHour = j + 8;
+            if(!this.existsOnPeriodBlocks(i, startHour, endHour))
+              this.periodBlocks.push(new Timeblock(i, startHour, endHour));
+            startHour = 0;  // Reseteo las variables
+            endHour = 0;
             timeBlockGenerator = false; //
           }
         }
