@@ -67,14 +67,8 @@ export class CombinationSubject implements ICombinationSubject {
   /**
    * Returns an array of timeblocks
    */
-  getAllTimeblock(): ITimeblock[] {
-    const timeblocks: ITimeblock[] = [];
-
-    for (const commissionTime of this.commissionTimes) {
-      timeblocks.push(commissionTime);
-    }
-
-    return timeblocks;
+  getAllTimeblocks(): ITimeblock[] {
+    return this.commissionTimes;
   }
 
   /**
@@ -284,6 +278,49 @@ export class Timeblock implements ITimeblock {
   static parseHHmm(time: string): number {
     const hourMinute: string[] = time.split(':', 2);
     return Number(hourMinute[0]) + Number(hourMinute[1]) / 60;
+  }
+
+  /**
+   * Returns the amount of travelling time between two different
+   * placed ITimeblocks. Should return 0.0 if no travelling.
+   * @param other   The other ITimeblock to which is being compared
+   */
+  travels(other: ITimeblock): number {
+    if (this.day === other.day) {
+      if (!this.sharesLocationWith(other)) {
+        if (this.overlaps(other) === 0.0) {
+          if (this.end < other.start) {
+            return other.start - this.end;
+          } else if (this.start > other.end) {
+            return this.start - other.end;
+          }
+        }
+      }
+    }
+
+    // Share the same location, so no travelling time detected
+    return 0.0;
+  }
+
+  /**
+   * Verifies if both this and the other timeblock share
+   * the same location.
+   * @param other The other timeblock
+   */
+  sharesLocationWith(other: ITimeblock): boolean {
+    if (this.building === other.building) {
+      return true;
+    } else {
+      const buildingWords = this.building.split(' ');
+      for (const buildingWord of buildingWords) {
+        if (other.building.includes(buildingWord)) {
+          return true;
+        }
+      }
+    }
+
+    // No special case of similar building has been detected
+    return false;
   }
 
   /**

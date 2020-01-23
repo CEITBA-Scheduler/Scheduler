@@ -17,6 +17,9 @@ import {
   CombinationSubject,
   Priority
 } from './algorithm-object';
+import {
+  quicksort
+} from './algorithm-utils';
 
 @Injectable({
   providedIn: 'root'
@@ -241,18 +244,20 @@ export class AlgorithmService {
 
   private verifyLocation(combination: ICombination, currentPriority: IPriority, index: number): boolean {
     let failedLocation = false;
-
     for (let day = Weekday.MONDAY ; day <= Weekday.FRIDAY ; day++) {
       const timeblocks = combination.getTimeblocksByDay(day);
       if (timeblocks.length > 0) {
-        const location = timeblocks[0].building;
-        for (let timeblockIndex = 1 ; timeblockIndex < timeblocks.length ; timeblockIndex++) {
-          if (location !== timeblocks[timeblockIndex].building) {
-            if (currentPriority.isExclusive()) {
-              return false;
-            } else {
-              failedLocation = true;
-              break;
+        for (let timeblockIndex = 0 ; timeblockIndex < timeblocks.length ; timeblockIndex++) {
+          if (timeblockIndex < timeblocks.length - 1) {
+            const currentTimeblock = timeblocks[timeblockIndex];
+            const nextTimeblock = timeblocks[timeblockIndex + 1];
+            if (!currentTimeblock.sharesLocationWith(nextTimeblock)) {
+              if (currentPriority.isExclusive()) {
+                return false;
+              } else {
+                failedLocation = true;
+                break;
+              }
             }
           }
         }
@@ -269,26 +274,31 @@ export class AlgorithmService {
   }
 
   private verifyTravelTime(combination: ICombination, currentPriority: IPriority, index: number): boolean {
-    let tooFar = false; // We assume our combination works with realistic time-distances until the contrary is proved
-    for (let i = 0; i < combination.subjects.length; i++) {
-      if (tooFar) {break; } // optimization line. Can be removed.
-      for (let j = i + 1; j < combination.subjects.length; j++) {
-        for (const currentTime1 of combination.subjects[i].commissionTimes) {
-          for (const currentTime2 of combination.subjects[j].commissionTimes) {
-            if (currentTime1.building !== currentTime2.building) { // Classes are in different buildings... can i get there in time?
-              const travelTime = this.getTravelTime(currentTime1, currentTime2);
-              if (travelTime > currentPriority.value) { // I don't want to travel from Parque patricios to Madero 6PM in 1 hour
-                tooFar = true; // TODO: implement calculator for travel time between two buildings
-              }
+    let failedTravelTime = false;
+    for (let day = Weekday.MONDAY ; day <= Weekday.FRIDAY && !failedTravelTime ; day++) {
+      let dayTimeblocks = combination.getTimeblocksByDay(day);
+      dayTimeblocks = quicksort(
+        dayTimeblocks,
+        0, dayTimeblocks.length - 1,
+        (element: ITimeblock) => element.start
+      );
+      for (let timeblockIndex = 0 ; timeblockIndex < dayTimeblocks.length ; timeblockIndex++) {
+        if (timeblockIndex < dayTimeblocks.length - 1) {
+          const currentTimeblock = dayTimeblocks[timeblockIndex];
+          const nextTimeblock = dayTimeblocks[timeblockIndex + 1];
+          if (currentTimeblock.overlaps(nextTimeblock) > 0.0 || currentTimeblock.travels(nextTimeblock) > currentPriority.value) {
+            if (currentPriority.isExclusive()) {
+              return false;
+            } else {
+              failedTravelTime = true;
             }
           }
         }
       }
     }
-    if (!tooFar) {
+    if (!failedTravelTime) {
       combination.priorities.push(Number(index));
     }
-
     return true;
   }
 
@@ -313,13 +323,6 @@ export class AlgorithmService {
       }
     }
     return true;
-  }
-
-  private getTravelTime(schedule1, schedule2) {
-    if (schedule1.day !== schedule2.day) {
-      return 0.0;
-    }
-    return 1.0; // TODO implement minimum travel time
   }
 
   /**
@@ -359,7 +362,7 @@ export class AlgorithmService {
             );
             break;
           case 'quicksort':
-            combinations = this.quicksort(
+            combinations = quicksort(
                 combinations,
                 0, combinations.length - 1,
                 (combination: ICombination) => combination.weight,
@@ -370,62 +373,5 @@ export class AlgorithmService {
 
         // 4°, return the result
         return combinations;
-  }
-
-  public quicksort(
-    array: Array<any>,
-    left: number,
-    right: number,
-    get = (element) => element,
-    condition = (current, pivot) => current > pivot) {
-
-    function swap(list: Array<any>, one: number, two: number): void {
-        const auxiliar = list[one];
-        list[one] = array[two];
-        list[two] = auxiliar;
-    }
-
-    function partition(list: Array<any>, leftIndex: number, rightIndex: number, pivot: number): number {
-        let partitionIndex = pivot;
-        const pivotValue = get(list[pivot]);
-        for (let i = leftIndex ; i <= rightIndex ; i++) {
-            const currentValue = get(list[i]);
-            if ( condition(currentValue, pivotValue) ) {
-                while (partitionIndex > i) {
-                    partitionIndex -= 1;
-                    const swapingValue = get(list[partitionIndex]);
-                    if ( !condition(swapingValue, pivotValue) ) {
-                        swap(list, i, partitionIndex);
-                        break;
-                    }
-                }
-
-                if (partitionIndex <= i) {
-                    swap(list, pivot, partitionIndex);
-                    break;
-                }
-            }
-        }
-
-        return partitionIndex;
-    }
-
-    const interval: Array<Array<number>> = [[left, right]];
-    do {
-      const iterInterval = interval.shift();
-      const iterLeft = iterInterval[0];
-      const iterRight = iterInterval[1];
-
-      if (iterLeft < iterRight) {
-          // Choose a pivot value and creates both partitions of the array, ordering with the given condition
-          const partitionIndex = partition(array, iterLeft, iterRight, iterRight);
-
-          // Swaps the partition and the pivot values
-          interval.push([iterLeft, partitionIndex - 1]);
-          interval.push([partitionIndex + 1, iterRight]);
-      }
-    } while (interval.length > 0);
-
-    return array;
   }
 }

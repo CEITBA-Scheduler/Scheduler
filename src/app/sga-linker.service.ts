@@ -148,8 +148,6 @@ export class SgaLinkerService {
       this.allCommissions = this.rawHttpResponse.courseCommissions.courseCommission;
       this.allSubjectsValue = {};
 
-      console.log(this.rawHttpResponse);
-
       // For all commissions in the SGA response
       for (const commission of this.allCommissions) {
         // Verifying that there are some commissions, if not then this subject

@@ -24,7 +24,7 @@ export interface ICombinationSubject {
   commissionTimes: ITimeblock[];
 
   getTimeblocksByDay(day: Weekday): ITimeblock[];
-  getAllTimeblock(): ITimeblock[];
+  getAllTimeblocks(): ITimeblock[];
   getFreeDays(): Weekday[];
   hasProfessors(): boolean;
   hasCommissionTimes(): boolean;
@@ -91,6 +91,8 @@ export interface ITimeblock {
   endToHHmm(): string;
   startToHHmm(): string;
   overlaps(other: ITimeblock): number;
+  travels(other: ITimeblock): number;
+  sharesLocationWith(other: ITimeblock): boolean;
   duration(): number;
   getStartMinutes(): number;
   getStartHours(): number;
