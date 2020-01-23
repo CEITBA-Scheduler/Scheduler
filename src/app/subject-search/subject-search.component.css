@@ -7,3 +7,31 @@
 .example-full-width {
     width: 100%;
 }
+
+.plus {
+    display:inline-block;
+    width:20px;
+    height:20px;
+    
+    background:
+      linear-gradient(#fff,#fff),
+      linear-gradient(#fff,#fff),
+      #69f0ae;
+    background-position:center;
+    background-size: 50% 2px,2px 50%; /*thickness = 2px, length = 50% (25px)*/
+    background-repeat:no-repeat;
+    margin-bottom: -0.5%;  
+  }
+
+  
+.alt {
+    background:
+      linear-gradient(#000,#000),
+      linear-gradient(#000,#000);
+    background-position:center;
+    background-size: 50% 2px,2px 50%; /*thickness = 2px, length = 50% (25px)*/
+    background-repeat:no-repeat;
+  }
+  .radius {
+    border-radius:50%;
+  }

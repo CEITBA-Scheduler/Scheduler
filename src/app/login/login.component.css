@@ -23,3 +23,10 @@ img.center {
     margin-left: 0;
     
 }
+.noreg{
+    text-align: center;
+    margin-bottom:  -50px;
+    font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+    font-size: 3;
+    color: red;
+}
