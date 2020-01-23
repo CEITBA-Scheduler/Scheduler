@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SgaLinkerService } from '../sga-linker.service';
 
 @Component({
   selector: 'app-show-plans',
@@ -6,15 +7,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./show-plans.component.css']
 })
 export class ShowPlansComponent implements OnInit {
-  materiasPlan : string[] = []
-  materiasCuatri : string[] = []
 
+  careerPlan = null
 
-  constructor() {  
-    this.materiasCuatri.push("1er año primer cuatri") 
-    this.materiasPlan.push("Fisica")
-    this.materiasPlan.push("Mate")    
-    
+  constructor(private sgaLinkerService : SgaLinkerService) {  
+    this.sgaLinkerService.getCareerPlan().subscribe(data => {
+      this.careerPlan = data
+      console.log("Este es el plan by lucas")
+      console.log(this.careerPlan)
+    });
   }
 
   ngOnInit() {

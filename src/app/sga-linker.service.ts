@@ -323,8 +323,6 @@ export class SgaLinkerService {
    */
   addToAllSubjects(name: string, commission: any, currCommission: Commission): void {
     if (!this.allSubjectsValue[commission.subjectCode]) {
-      console.log("estoy por imprimir los credits")
-      console.log(commission)
       // If such subject doesn't exist, we create it and then add it to the dictionary
       const currSubject: Subject = {
         name: commission.subjectName,
