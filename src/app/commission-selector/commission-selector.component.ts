@@ -13,6 +13,9 @@ import { CombinacionDeHorarioService } from '../combinacion-de-horario.service';
 })
 export class CommissionSelectorComponent implements OnInit {
   subjects: Observable<Subject[]>;
+  @Input() selectedCommissions: Observable<{[code: string]: Observable<Commission[]>}>;
+
+  selectedCommissionsData: {[code: string]: Observable<Commission[]>} = {};
 
   constructor(
     private combinacionDeHorarioService: CombinacionDeHorarioService) {
@@ -21,6 +24,16 @@ export class CommissionSelectorComponent implements OnInit {
   ngOnInit() {
     // consigo todas las materias seleccionadas del menu 1 (el seleccionador de materias)
     this.subjects = this.combinacionDeHorarioService.getMaterias();
+
+    this.subjects.subscribe((subject: Subject[]) => {
+
+    });
+    //if (this.selectedCommissions) {
+    // this.selectedCommissions.subscribe((data: {[code: string]: Observable<Commission[]>}) => {
+   //     this.selectedCommissionsData = data;
+   //   });
+  //  }
+
   }
 
   setCommissionData(subject: Subject, commissions: Observable<Commission[]>) {
@@ -29,5 +42,8 @@ export class CommissionSelectorComponent implements OnInit {
 
   removeCommissionData(subject: Subject) {
     this.combinacionDeHorarioService.removeSubject(subject);
+  }
+  getSelectedCommissions(subject: Subject): Observable<Commission[]> {
+    return this.selectedCommissionsData[subject.code];
   }
 }

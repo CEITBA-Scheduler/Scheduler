@@ -27,6 +27,7 @@ export class DbServicesService {
   gotSubjectInfo: boolean;
   gotUserSubjectInfo: boolean;
   subjectCodes: string[] = [];
+  commissionNames: string[][] = [];
 
   constructor(
     private afs: AngularFirestore,
