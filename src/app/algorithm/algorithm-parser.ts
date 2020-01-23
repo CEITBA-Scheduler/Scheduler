@@ -28,7 +28,7 @@ export function parseSubjects(data: any): Subject[] {
   for (const subjectCommission of subjectCommissions) {
 
     // If subject does not exist, we create it
-    if (subjects.find(subject => subject.name === subjectCommission.subjectName) === undefined) {
+    if (subjects.find(subject => subject.code === subjectCommission.subjectCode) === undefined) {
       subjects.push(
         new Subject(
           subjectCommission.subjectName,
@@ -57,7 +57,7 @@ export function parseSubjects(data: any): Subject[] {
       );
 
       // Adding the new commission
-      subjects.find(subject => subject.name === subjectCommission.subjectName)
+      subjects.find(subject => subject.code === subjectCommission.subjectCode)
               .addCommission(newCommission);
     }
   }
