@@ -29,7 +29,7 @@ export class SgaLinkerService {
   public allSubjectsValue: { [id: string]: Subject; };
   public allCommissions = null;
 
-  public careerPlan = null;
+  public careerPlan: BehaviorSubject<CareerPlan>;
 
   public rawSubjectsResponse = null;
   public rawCareerResponse = null;
@@ -201,7 +201,7 @@ export class SgaLinkerService {
 
               // First, we need to create the instance of the
               // career plan and through a loop create every cycle
-              this.careerPlan = new CareerPlan(
+              const careerPlan = new CareerPlan(
                 this.rawCareerResponse.name,
                 this.rawCareerResponse.career,
                 this.rawCareerResponse.degreeLevel
@@ -227,9 +227,11 @@ export class SgaLinkerService {
                     }
                     newCareerCycle.addTerm(newCareerTerm);
                   }
-                  this.careerPlan.addCycle(newCareerCycle);
+                  careerPlan.addCycle(newCareerCycle);
                 }
               }
+
+              this.careerPlan.next(careerPlan);
             }
           );
         }
@@ -307,7 +309,7 @@ export class SgaLinkerService {
    * Returns the career plan as an observable
    */
   getCareerPlan(): Observable<CareerPlan> {
-    return of(this.careerPlan);
+    return this.careerPlan.asObservable();
   }
 
   /**
