@@ -89,7 +89,7 @@ export function generateSubjectCommissionsFromCombionation(combination: Combinat
           {
             name: subject.commissionName,
             professors: subject.professors,
-            schedule: getAllTimeblock(subject.getAllTimeblock())
+            schedule: getAllTimeblock(subject.getAllTimeblocks())
           }
         ]
       }
