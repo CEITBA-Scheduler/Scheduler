@@ -111,10 +111,7 @@ export class AuthService implements CanActivate {
               this.notreg = false;
             }else{
               console.log("El mail no esta registrado en el itba");
-<<<<<<< HEAD
-=======
               this.notreg = true;
->>>>>>> 04761a767e94050d7c4da6eb2cb9a7704750dae6
             }
           }
         });
