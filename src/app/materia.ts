@@ -11,7 +11,7 @@ export interface Subject {
     search: string;
     commissions?: Commission[];
     priority?: number;
-    credits: number;
+    credits?: number;
 }
 
 export interface Timeblock {

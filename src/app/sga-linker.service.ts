@@ -198,7 +198,6 @@ export class SgaLinkerService {
             data => {
               // Saving the raw response from SGA server
               this.rawCareerResponse = data.careerplan;
-              console.log(data);
 
               // First, we need to create the instance of the
               // career plan and through a loop create every cycle
@@ -229,7 +228,23 @@ export class SgaLinkerService {
                     newCareerCycle.addTerm(newCareerTerm);
                   }
                   careerPlan.addCycle(newCareerCycle);
+                } else if (cycle.withoutTerm) {
+                  const newCareerTerm = new CareerTerm(
+                    '-',
+                    '-'
+                  );
+                  for (const subject of cycle.withoutTerm.withoutTerm) {
+                    const newCareerSubject = new CareerSubject(
+                      subject.name,
+                      subject.code,
+                      subject.credits,
+                      Array.isArray(subject.dependencies) ? subject.dependencies : [subject.dependencies]
+                    );
+                    newCareerTerm.addSubject(newCareerSubject);
+                  }
+                  newCareerCycle.addTerm(newCareerTerm);
                 }
+                careerPlan.addCycle(newCareerCycle);
               }
 
               this.careerPlan.next(careerPlan);
@@ -330,7 +345,7 @@ export class SgaLinkerService {
         search: SgaLinkerService.removeTildes((commission.subjectName + commission.subjectCode).toLowerCase()),
         commissions: [currCommission],
         priority: 0,
-        credits: commission.credits,
+        credits: null,
       };
       this.allSubjectsValue[commission.subjectCode] = currSubject;
     } else {

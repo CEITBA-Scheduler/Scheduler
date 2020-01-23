@@ -6,7 +6,7 @@
         <div *ngFor="let term of cycle.terms">
             Año : {{term.year}} - Cuatrimestre : {{term.period}} 
             <li *ngFor="let subject of term.subjects">
-                {{subject.subjectName}}
+                {{subject.subjectName}} ({{subject.subjectCode}})
             </li>
         </div>
     </div>
