@@ -104,6 +104,7 @@ export class CombinerComponent implements OnInit {
             for (const subjectCommission of subject.commissions) {
               this.priorities.push(
                 Priority.gpCommission(subjectCommission.name, subjectCode)
+                        .setExclusive(true)
               );
             }
           }

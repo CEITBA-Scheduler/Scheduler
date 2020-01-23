@@ -1,4 +1,3 @@
-
 import { ICombinationSubject, ITimeblock, Weekday, ISubject } from './algorithm/algorithm-interface';
 import { Combination, Timeblock as TimeblockAlgo } from './algorithm/algorithm-object';
 
@@ -89,7 +88,7 @@ export function generateSubjectCommissionsFromCombionation(combination: Combinat
           {
             name: subject.commissionName,
             professors: subject.professors,
-            schedule: getAllTimeblock(subject.getAllTimeblock())
+            schedule: getAllTimeblock(subject.getAllTimeblocks())
           }
         ]
       }

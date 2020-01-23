@@ -41,7 +41,6 @@ export class SubjectSearchComponent implements OnInit {
 
   ngOnInit() {
     this.options = this.sgaLinkerService.getAllSubjectsAsList();
-
     /*this.options.subscribe(
       (materias: Subject[]) => (console.log(materias) )
     );*/
@@ -62,12 +61,11 @@ export class SubjectSearchComponent implements OnInit {
     /// filtramos acorde al input del usuario el observable
     return this.options.pipe(
       map(
-        (options: Subject[]) => options.filter((option: Subject) => 
+        (options: Subject[]) => options.filter((option: Subject) =>
         (option.search.includes(this.removeTildes(this.searchValue)) && !(this.areEqual(option,this.subjects)))))
     );
   }
   optionSelected(value: Subject) {
-    //console.log("Materia seleccionada", value);
     this.onOptionSelected.emit(value);
 
     this.myControl.setValue('');
