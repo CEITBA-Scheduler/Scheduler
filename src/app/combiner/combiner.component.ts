@@ -7,6 +7,7 @@ import { AlgorithmService } from '../algorithm/algorithm.service';
 import { SgaLinkerService } from '../sga-linker.service';
 import { CombinacionDeHorarioService } from '../combinacion-de-horario.service';
 import { GeneralProgramService } from '../general-program.service';
+import { CalendarServiceService } from '../calendar-service.service';
 
 import {
   SubjectSelection,
@@ -43,7 +44,8 @@ export class CombinerComponent implements OnInit {
     private algorithmServices: AlgorithmService,
     private sgaLinkerServices: SgaLinkerService,
     private generalProgramService: GeneralProgramService,
-    private scheduleCombinerServices: CombinacionDeHorarioService) { }
+    private scheduleCombinerServices: CombinacionDeHorarioService,
+    private calendarService: CalendarServiceService) { }
 
   ngOnInit() {
     this.authService.getUserObservable().subscribe((user: User) => {
@@ -143,6 +145,10 @@ export class CombinerComponent implements OnInit {
         Priority.gpTravel(DEFAULT_TRAVEL).setExclusive(true)
       );
     }
+
+    this.priorities.push(
+      Priority.gpBusyTime(this.calendarService.getTimeblocks()).setExclusive(true)
+    );
 
     // Then, we set the priority weights
     this.priorities = Priority.generateWeightedPriorities(this.priorities);

@@ -9,6 +9,7 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { SubjectCommissions, Subject, Commission } from '../materia';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Timeblock } from '../algorithm/algorithm-object';
+import { CalendarServiceService } from '../calendar-service.service';
 
 /* "Dummy" datatypes to simulate obtained data through the algorithm */
 interface possibleSchedules {
@@ -120,7 +121,8 @@ export class CalendarComponent implements OnInit {
     "Viernes": []
   };
 
-  constructor(private cd: ChangeDetectorRef) {
+  constructor(private cd: ChangeDetectorRef,
+    private calendarService: CalendarServiceService) {
     /*for (let day in this.days){
       for (let hour in this.hours){
         this.generateSubjectOn(day, hour);
@@ -530,6 +532,7 @@ export class CalendarComponent implements OnInit {
         }
       }
     }
+    this.calendarService.setTimeblocks(this.periodBlocks);
   }
 
   existsOnPeriodBlocks(day: number, start: number, end: number): boolean {
@@ -573,5 +576,4 @@ export class CalendarComponent implements OnInit {
       }
     }
   }
-
 }
