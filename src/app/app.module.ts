@@ -49,6 +49,7 @@ import { ResultsComponent } from './results/results.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxHmCarouselModule } from 'ngx-hm-carousel';
+import { ShowPlansComponent } from './show-plans/show-plans.component';
 import { LikedItemComponent } from './liked-item/liked-item.component';
 import { FavouriteButtonComponent } from './favourite-button/favourite-button.component';
 
@@ -76,6 +77,7 @@ import { FavouriteButtonComponent } from './favourite-button/favourite-button.co
     TrashCardComponent,
     ResultsComponent,
     NavbarComponent,
+    ShowPlansComponent,
     LikedItemComponent,
     FavouriteButtonComponent
   ],

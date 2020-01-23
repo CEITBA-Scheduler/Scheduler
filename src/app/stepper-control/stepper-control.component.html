@@ -3,10 +3,24 @@
 
 <mat-vertical-stepper labelPosition="bottom" linear="true">
 
-
     <mat-step label="ELEGIR MATERIAS">
-      <app-subject-selector [userSelection]="userSelection">
-      </app-subject-selector>
+
+      <div class="grid-container">
+        <div class="grid-item">
+          <app-subject-selector>
+
+          </app-subject-selector>
+        </div>
+        <div class="grid-item">
+          <app-show-plans>
+
+          </app-show-plans>
+        </div>
+
+      </div>
+      
+      
+      <!-- ACA VIENE EL NUEVO COMPONENTE-->
     </mat-step>
     <mat-step label="ELEGIR COMISIONES">
       <app-commission-selector>

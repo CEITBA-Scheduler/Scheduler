@@ -1,0 +1,13 @@
+
+<div class="card example-1 scrollbar-deep-purple bordered-deep-purple thin">
+    <div *ngFor="let cycle of careerPlan.cycles">
+        <b>{{cycle.name}}</b>
+
+        <div *ngFor="let term of cycle.terms">
+            Año : {{term.year}} - Cuatrimestre : {{term.period}} 
+            <li *ngFor="let subject of term.subjects">
+                {{subject.subjectName}} ({{subject.subjectCode}})
+            </li>
+        </div>
+    </div>
+</div>
