@@ -1,18 +1,13 @@
 
 <div class="card example-1 scrollbar-deep-purple bordered-deep-purple thin">
-    <li *ngFor="let item of careerPlan">
-        {{item}}
-    </li>
-    <div class="card-body">
+    <div *ngFor="let cycle of careerPlan.cycles">
+        <b>{{cycle.name}}</b>
 
-        <h4 id="section1">
-            <strong>
-                {{ materiasCuatri }}
-            </strong>
-        </h4>
-        <li *ngFor="let mats of materiasPlan">
-            {{ mats }}
-        </li>
-
+        <div *ngFor="let term of cycle.terms">
+            Año : {{term.year}} - Cuatrimestre : {{term.period}} 
+            <li *ngFor="let subject of term.subjects">
+                {{subject.subjectName}}
+            </li>
+        </div>
     </div>
 </div>
