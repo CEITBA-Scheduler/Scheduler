@@ -1,14 +1,14 @@
 <!--div div fxLayout="column"-->
 
 <mat-grid-list class="mat-card-header" cols="3" rowHeight="2:1">
-    <mat-grid-tile Align="center"> <h6>{{commission.name}}</h6> </mat-grid-tile>
+    <mat-grid-tile  Align="center"> <h6>{{commission.name}}</h6> </mat-grid-tile >
     <mat-grid-tile Align="center">
         <div>
             <div *ngFor="let timeblock of commission.schedule">
                 {{timeblock.day}} {{myFunc(timeblock.start.minutes, timeblock.start.hours)}} - {{myFunc(timeblock.end.minutes,timeblock.end.hours)}}
             </div>
           </div>
-        </div>
+      
     </mat-grid-tile>
     <mat-grid-tile Align="center">
         <div>
