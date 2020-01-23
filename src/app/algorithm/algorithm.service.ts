@@ -247,14 +247,17 @@ export class AlgorithmService {
     for (let day = Weekday.MONDAY ; day <= Weekday.FRIDAY ; day++) {
       const timeblocks = combination.getTimeblocksByDay(day);
       if (timeblocks.length > 0) {
-        const location = timeblocks[0].building;
-        for (let timeblockIndex = 1 ; timeblockIndex < timeblocks.length ; timeblockIndex++) {
-          if (location !== timeblocks[timeblockIndex].building) {
-            if (currentPriority.isExclusive()) {
-              return false;
-            } else {
-              failedLocation = true;
-              break;
+        for (let timeblockIndex = 0 ; timeblockIndex < timeblocks.length ; timeblockIndex++) {
+          if (timeblockIndex < timeblocks.length - 1) {
+            const currentTimeblock = timeblocks[timeblockIndex];
+            const nextTimeblock = timeblocks[timeblockIndex + 1];
+            if (!currentTimeblock.sharesLocationWith(nextTimeblock)) {
+              if (currentPriority.isExclusive()) {
+                return false;
+              } else {
+                failedLocation = true;
+                break;
+              }
             }
           }
         }
@@ -273,10 +276,7 @@ export class AlgorithmService {
   private verifyTravelTime(combination: ICombination, currentPriority: IPriority, index: number): boolean {
     let failedTravelTime = false;
     for (let day = Weekday.MONDAY ; day <= Weekday.FRIDAY && !failedTravelTime ; day++) {
-      let dayTimeblocks = [];
-      for (const subject of combination.subjects) {
-        dayTimeblocks = dayTimeblocks.concat(subject.getTimeblocksByDay(day));
-      }
+      let dayTimeblocks = combination.getTimeblocksByDay(day);
       dayTimeblocks = quicksort(
         dayTimeblocks,
         0, dayTimeblocks.length - 1,
