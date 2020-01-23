@@ -1,4 +1,3 @@
-
 import { ICombinationSubject, ITimeblock, Weekday, ISubject } from './algorithm/algorithm-interface';
 import { Combination, Timeblock as TimeblockAlgo } from './algorithm/algorithm-object';
 
