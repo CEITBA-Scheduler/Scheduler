@@ -1,25 +1,29 @@
 <app-navbar></app-navbar>
-
-<ngb-carousel #carousel interval="false" [pauseOnHover]="pauseOnHover" (slide)="onSlide($event)">
-  <ng-template ngbSlide *ngFor="let combination of combinations; index as i">
-    <div class="carousel-caption">
-      <h3>Combinación {{i + 1}}</h3>
-    </div>
-
-      <div class="picsum-img-wrapper">
-        <div fxLayout="column" fxLayoutAlign="center center" >
-          <app-calendar [subjectsComissions]="commissions[i]">
-
-          </app-calendar>
-          <div class="space">
-
-          </div>
-        </div>
+<div fxLayout="column" fxLayoutAlign="center center">
+  <ngb-carousel #carousel interval="false">
+    <ng-template ngbSlide *ngFor="let combination of combinations; index as i">
+      <div class="carousel-caption">
+        <h3>Combinación {{i + 1}}</h3>
       </div>
 
-  </ng-template>
-</ngb-carousel>
+        <div class="picsum-img-wrapper">
+          <div fxLayout="column" fxLayoutAlign="center center" >
+            <app-calendar [subjectsComissions]="commissions[i]">
 
+            </app-calendar>
+            <div class="space">
+
+            </div>
+          </div>
+        </div>
+
+    </ng-template>
+  </ngb-carousel>
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <button (click)="select()"  mdbBtn type="button" color="primary" outline="true" mdbWavesEffect>Seleccionar</button>
+    <button (click)="back()"  mdbBtn type="button" color="danger" outline="true" mdbWavesEffect>Volver</button>
+  </div>
+</div>
 <!--<mdb-carousel [animation]="'slide'" [interval]="false">
     <mdb-carousel-item>
       <div class="d-block w-100">

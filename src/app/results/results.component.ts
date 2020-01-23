@@ -1,3 +1,4 @@
+
 import { CombinacionDeHorarioService } from './../combinacion-de-horario.service';
 import { Component, OnInit } from '@angular/core';
 import { Subject, SubjectCommissions, generateSubjectCommissionsFromCombionation } from '../materia';
@@ -8,6 +9,7 @@ import {
   Priority,
   Combination
 } from '../algorithm/algorithm-object';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-results',
@@ -22,7 +24,7 @@ export class ResultsComponent implements OnInit {
   images = [944, 1011, 984].map((n) => `https://picsum.photos/id/${n}/900/500`);
   combinations: Combination[];
 
-  constructor(private sgaLinkerService: SgaLinkerService, private combinacionDeHorarioService: CombinacionDeHorarioService) { }
+  constructor(private router: Router, private sgaLinkerService: SgaLinkerService, private combinacionDeHorarioService: CombinacionDeHorarioService) { }
 
   ngOnInit() {
 
@@ -65,5 +67,10 @@ export class ResultsComponent implements OnInit {
     }
 
   }
-
+  select(){
+    this.router.navigate(['/menuFinal']);
+  }
+  back(){
+    this.router.navigate(['/combinadorDeHorarios']);
+  }
 }

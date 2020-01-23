@@ -1,8 +1,8 @@
 //import { Observable } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
+import { Input, Component, OnInit } from '@angular/core';
 import { CombinacionDeHorarioService } from '../combinacion-de-horario.service'
 import { Subject } from '../materia';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { of, BehaviorSubject, Observable } from 'rxjs';
 
 
 @Component({
@@ -12,13 +12,20 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class SubjectSelectorComponent implements OnInit {
 
-  
+  @Input() userSelection: Observable<Subject[]>;
+
   plainData: Subject[] = [];
   dataSource = new BehaviorSubject<Subject[]>([]);
   constructor(private combinacionService: CombinacionDeHorarioService) { }
 
   ngOnInit() {
     this.combinacionService.setSubjectData(this.dataSource.asObservable());
+    if (this.userSelection){
+      this.userSelection.subscribe((data: Subject[]) => {
+        this.plainData = data;
+        this.dataSource.next(this.plainData);
+      });
+    }
   }
 
   addMateria(materia: Subject){
@@ -45,7 +52,7 @@ export class SubjectSelectorComponent implements OnInit {
   }
 
   setData(data: Observable<Subject[]>) {
-    
+
   }
 
 }

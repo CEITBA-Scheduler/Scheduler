@@ -3,7 +3,7 @@
 
 <mat-vertical-stepper labelPosition="bottom" linear="true">
     <mat-step label="ELEGIR MATERIAS">
-      <app-subject-selector>
+      <app-subject-selector [userSelection]="userSelection">
       </app-subject-selector>
     </mat-step>
     <mat-step label="ELEGIR COMISIONES">
@@ -17,7 +17,7 @@
     <mat-step label="TERMINADO">
       <!--mat-card-->
         <div fxLayoutAlign="center center" >
-          <button mat-raised-button color="primary" (click)="done()">Calcular combinaciones</button>
+          <button (click)="done()"  mdbBtn type="button" color="primary" outline="true" mdbWavesEffect>Calcular combinaciones</button>
         </div>
       <!--/mat-card-->
     </mat-step>
