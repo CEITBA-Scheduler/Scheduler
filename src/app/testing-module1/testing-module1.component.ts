@@ -16,11 +16,11 @@ export class TestingModule1Component implements OnInit {
   constructor(private sgaLinkerService: SgaLinkerService) { }
 
   ngOnInit() {
-    
+
     this.subjects = this.subjectsBehavioural.asObservable();
-    
-    this.sgaLinkerService.getDataFromApi();
-    //var subjectsData: Subject[] = 
+
+    this.sgaLinkerService.getSubjectDataFromApi();
+    //var subjectsData: Subject[] =
     this.sgaLinkerService.getAllSubjects().subscribe(
       (data: { [id: string]: Subject; }) => {
         //console.log("data = ");
@@ -39,7 +39,7 @@ export class TestingModule1Component implements OnInit {
         }
         this.subjectsBehavioural.next(subjectCommissionsTest);
       }
-    ); 
+    );
   }
 }
 

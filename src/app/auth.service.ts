@@ -48,12 +48,12 @@ export class AuthService implements CanActivate {
         console.log(this.user);
 
         this.generateUserDb();
-        
+
       }else{
         // Logged out
         this.user = null;
         this.behaviourUser.next(this.user); // avisamos al resto del programa que el login fue exitoso
-      } 
+      }
     });
   }
   getSgaInfo() : Observable<{[id: string] : string}>{
@@ -62,14 +62,14 @@ export class AuthService implements CanActivate {
     // obtener primero dni y con el dni obtener el plan
     this.http.get(this.urlGetDni + this.user.email).subscribe(
       data => {
-      
+
         this.http.get(this.urlGetPlan + data["dni"]).subscribe(
           data => {
-
+            console.log(data);
             obs.next(
               {
                 success: "true",
-                plan: data["plan"], 
+                plan: data["plan"],
                 career: data["career"]
               }
             );
@@ -114,7 +114,7 @@ export class AuthService implements CanActivate {
           }
         });
 
-        
+
       }else{
         console.log("Welcome user");
         console.log(data.data());
