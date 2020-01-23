@@ -449,23 +449,28 @@ export class CalendarComponent implements OnInit {
   }
 
   startTogglePeriodMarker(day: string, indexHour: number) {
-    console.log(this.periodButtonsColorState);
     this.isMouseClicked = true;
-    if (!this.periodButtonsColorState[day][indexHour])
+    if (!this.periodButtonsColorState[day][indexHour]) {
       this.periodButtonsColorState[day][indexHour] = true;
-    else
+      this.updatePeriodBlock("ADD");
+    }
+    else {
       this.periodButtonsColorState[day][indexHour] = false;
-    this.updatePeriodBlock();
+      this.updatePeriodBlock("REMOVE");
+    }
   }
 
   inTogglePeriodMarker(day: string, indexHour: number) {
     if (this.isMouseClicked) {
-      if (!this.periodButtonsColorState[day][indexHour])
+      if (!this.periodButtonsColorState[day][indexHour]) {
         this.periodButtonsColorState[day][indexHour] = true;
-      else
+        this.updatePeriodBlock("ADD");
+      }
+      else {
         this.periodButtonsColorState[day][indexHour] = false;
+        this.updatePeriodBlock("REMOVE");
+      }
     }
-    this.updatePeriodBlock();
   }
 
   endTogglePeriodMarker(day: string, indexHour: number) {
@@ -478,44 +483,51 @@ export class CalendarComponent implements OnInit {
   }
 
   // Not working yet
-  updatePeriodBlock() {
+  updatePeriodBlock(option: string) {
     var startHour: number = 0; // Bc its the minimum value possible
     var endHour: number = 0;
     var timeBlockGenerator: boolean = false;
     var timeBlock: Timeblock;
     for (let i=0 ; i < this.days.length ; i++) {
       for (let j=0 ; j < this.hoursInteger.length ; j++) {
-        // Si el botón está presionado
-        if (this.periodButtonsColorState[this.days[i]][j])
-        {
-          if (j === this.hoursInteger.length - 1) { // En caso de que llege a la última hora
-            endHour = j + 8;
-            timeBlockGenerator = false;
-            if(!this.existsOnPeriodBlocks(i, startHour, endHour))
-              this.periodBlocks.push(new Timeblock(i, startHour, endHour));
-            startHour = 0;  // Reseteo las variables
-            endHour = 0;
+        if (option === "ADD") {
+          if (this.periodButtonsColorState[this.days[i]][j]) {  // Si el botón está presionado
+            if (j === this.hoursInteger.length - 1) { // En caso de que llege a la última hora
+              if (startHour === 0) // En caso de que el último periodo esté "solo" (sin ningun periodo arriba)
+                startHour = j + 8;
+              endHour = j + 9;
+              if (!this.existsOnPeriodBlocks(i, startHour, endHour)) {
+                this.deletePeriodBlocksInsideOf(i, startHour, endHour);
+                this.periodBlocks.push(new Timeblock(i, startHour, endHour));
+              }
+              startHour = 0;  // Reseteo las variables
+              endHour = 0;
+              timeBlockGenerator = false;
+            }
+            else if (!timeBlockGenerator) {
+              startHour = j + 8;
+              timeBlockGenerator = true;
+            }
           }
+          // Si no está presionado
           else {
-            startHour = j + 8;
-            timeBlockGenerator = true;
+            if (timeBlockGenerator) {
+              endHour = j + 8;
+              if (!this.existsOnPeriodBlocks(i, startHour, endHour)) {
+                this.deletePeriodBlocksInsideOf(i, startHour, endHour);
+                this.periodBlocks.push(new Timeblock(i, startHour, endHour));
+              }
+              startHour = 0;  // Reseteo las variables
+              endHour = 0;
+              timeBlockGenerator = false; //
+            }
           }
         }
-        // Si no está presionado
-        else {
-          if (timeBlockGenerator) {
-            endHour = j + 8;
-            if(!this.existsOnPeriodBlocks(i, startHour, endHour))
-              this.periodBlocks.push(new Timeblock(i, startHour, endHour));
-            startHour = 0;  // Reseteo las variables
-            endHour = 0;
-            timeBlockGenerator = false; //
+        else if (option === "REMOVE") {
+          if (!this.periodButtonsColorState[this.days[i]][j]) {
+            this.deletePeriodBlock(i, j+8, j+9);
           }
         }
-        // Resetting both variables
-        startHour = 0;
-        endHour = 0;
-        timeBlockGenerator = false;
       }
     }
   }
@@ -529,4 +541,37 @@ export class CalendarComponent implements OnInit {
     }
     return false;
   }
+
+  deletePeriodBlocksInsideOf(day: number, startHour: number, endHour: number) {
+    for (let periodBlock of this.periodBlocks) {
+      if (periodBlock.day === day &&
+        periodBlock.start >= startHour &&
+        periodBlock.end <= endHour)
+          this.periodBlocks.splice(this.periodBlocks.indexOf(periodBlock), 1);
+    }
+  }
+
+  deletePeriodBlock(day: number, startHour: number, endHour: number) {
+    for (let periodBlock of this.periodBlocks) {
+      if (day === periodBlock.day) {
+        if (startHour === periodBlock.start && endHour === periodBlock.end) {
+          this.periodBlocks.splice(this.periodBlocks.indexOf(periodBlock), 1);
+        }
+        else if (startHour === periodBlock.start) {
+          this.periodBlocks.push(new Timeblock(day, periodBlock.start + 1, periodBlock.end));
+          this.periodBlocks.splice(this.periodBlocks.indexOf(periodBlock), 1);
+        }
+        else if (endHour === periodBlock.end) {
+          this.periodBlocks.push(new Timeblock(day, periodBlock.start, periodBlock.end - 1));
+          this.periodBlocks.splice(this.periodBlocks.indexOf(periodBlock), 1);
+        }
+        else if (startHour > periodBlock.start && endHour < periodBlock.end) {
+          this.periodBlocks.push(new Timeblock(day, periodBlock.start, startHour));
+          this.periodBlocks.push(new Timeblock(day, endHour, periodBlock.end));
+          this.periodBlocks.splice(this.periodBlocks.indexOf(periodBlock), 1);
+        }
+      }
+    }
+  }
+
 }
