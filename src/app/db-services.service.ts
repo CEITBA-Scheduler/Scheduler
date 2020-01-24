@@ -8,7 +8,7 @@ import { AuthService } from './auth.service';
 import { UserSelection, SubjectCommissions } from './materia';
 import { CombinacionDeHorarioService } from './combinacion-de-horario.service';
 import { GeneralProgramService } from './general-program.service';
-import { Subject } from './materia';
+import { Subject, Commission } from './materia';
 
 /// algunos tutoriales de firestore
 /* https://www.techiediaries.com/angular-firestore-tutorial/*/
@@ -22,12 +22,22 @@ import { Subject } from './materia';
 })
 export class DbServicesService {
   dbSubjects: BehaviorSubject<Subject[]> = new BehaviorSubject([]);
+  dbSubjectsCommissions: BehaviorSubject<{[code: string]: Observable<Commission[]>}> = new BehaviorSubject({});
+
   subjectsData: { [id: string]: Subject };
   selectedSubjectsInfo: string[] = [];
+
+  // got subject info from sga
   gotSubjectInfo: boolean;
+
+  // go subject info from user data
   gotUserSubjectInfo: boolean;
+  
+  // to store subject codes loaded from db
   subjectCodes: string[] = [];
-  commissionNames: string[][] = [];
+
+  // to store commission names loaded from db
+  commissionNames: {[subjectCode: string]: string[]} = {};
 
   constructor(
     private afs: AngularFirestore,
@@ -137,6 +147,11 @@ export class DbServicesService {
 
     for (let matI of user.userSelection){
       this.subjectCodes.push(matI.subjectCode);
+      this.commissionNames[matI.subjectCode] = matI.commissions;
+      // the next line must be erased
+      console.log("commissions:");
+      console.log(matI.commissions);
+      // the last line must be erased
     }
 
     this.gotUserSubjectInfo = true;
@@ -146,9 +161,15 @@ export class DbServicesService {
     }
 
   }
+  // get user last subject selection
   getUserSubjectSelection(): Observable<Subject[]> {
     return this.dbSubjects.asObservable();
   }
+
+  // get user last commissions selection
+  getUserCommissionSelection(): Observable<{[code: string]: Observable<Commission[]>}>{
+    return this.dbSubjectsCommissions.asObservable();
+  } 
 
   /** to call this function two queries must be have been asnwered,
    * the subjectData query and the userData for selected subjects
@@ -156,11 +177,21 @@ export class DbServicesService {
 
   updateUserSubjectSelection(){
     var subjects: Subject[] = [];
+    var subjectsCommissions: {[code: string]: Observable<Commission[]>} = {};
 
     for (let subjectCode of this.subjectCodes) {
       subjects.push(this.subjectsData[subjectCode]);
+      var commissions: Commission[] = [];
+
+      for (let commission of this.subjectsData[subjectCode].commissions){
+        if (this.commissionNames[subjectCode].includes(commission.name)){
+          commissions.push(commission);
+        }
+      }
+      subjectsCommissions[subjectCode] = new BehaviorSubject(commissions).asObservable();
     }
 
     this.dbSubjects.next(subjects);
+    this.dbSubjectsCommissions.next(subjectsCommissions);
   }
 }

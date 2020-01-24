@@ -12,8 +12,11 @@ import { CombinacionDeHorarioService } from '../combinacion-de-horario.service';
   styleUrls: ['./commission-selector.component.css']
 })
 export class CommissionSelectorComponent implements OnInit {
+
+  // this information is to get the subjects from the other observable
   subjects: Observable<Subject[]>;
-  @Input() selectedCommissions: Observable<{[code: string]: Observable<Commission[]>}>;
+  // this information is to make the start values of the commission selector
+  @Input() selectedCommissions: Observable<{[code: string]: Observable<Commission[]>}>; 
 
   selectedCommissionsData: {[code: string]: BehaviorSubject<Commission[]>} = {};
 
@@ -25,13 +28,28 @@ export class CommissionSelectorComponent implements OnInit {
     // consigo todas las materias seleccionadas del menu 1 (el seleccionador de materias)
     this.subjects = this.combinacionDeHorarioService.getMaterias();
 
-    this.subjects.subscribe((subject: Subject[]) => {
+    if (this.selectedCommissions){
+      this.selectedCommissions.subscribe((data: {[code: string]: Observable<Commission[]>} ) => {
+        //this.selectedCommissionsData = data;
 
-    });
+        // the next line must be erased
+        console.log("updating selected commissions");
+        console.log(data); // ok
+        // the last line must be erased
 
-    this.selectedCommissions.subscribe((data: {[code: string]: Observable<Commission[]>} ) => {
-      this.selectedCommissionsData = data;
-    });
+        for (let code in data){
+          if (!(code in this.selectedCommissionsData)){
+            this.selectedCommissionsData[code] = new BehaviorSubject<Commission[]>([]);
+          }
+
+          data[code].subscribe((newCommissions: Commission[]) => {
+            console.log(newCommissions);
+            this.selectedCommissionsData[code].next(newCommissions);
+          });
+
+        }
+      });
+    }
 
     //if (this.selectedCommissions) {
     // this.selectedCommissions.subscribe((data: {[code: string]: Observable<Commission[]>}) => {

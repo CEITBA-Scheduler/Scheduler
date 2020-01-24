@@ -9,8 +9,8 @@ import { Observable, BehaviorSubject } from 'rxjs';
   styleUrls: ['./drag-commissions.component.css']
 })
 export class DragCommissionsComponent implements OnInit {
-  todo = [];
-  done = [];
+  todo: Commission[] = [];
+  done: Commission[] = [];
   selectedCommissions: BehaviorSubject<Commission[]> = new BehaviorSubject([]);
 
   @Input() commissions: { [letter: string]: Commission; };
@@ -54,7 +54,8 @@ export class DragCommissionsComponent implements OnInit {
     this.setCommissionData.emit(this.selectedCommissions.asObservable());
 
     this.preSelectedCommissions.subscribe((commissions: Commission[]) => {
-      var comString: { [code: string]: boolean };
+      /// we update commissions from data arrived from server
+      var comString: { [code: string]: boolean } = {};
 
       for (let com of commissions){
         comString[com.name] = true;
@@ -62,8 +63,8 @@ export class DragCommissionsComponent implements OnInit {
 
       this.done = commissions;
 
-      for (let i = this.todo.length; i > 0; i--) {
-        if (comString[this.todo[i]]) {
+      for (let i = this.todo.length-1; i >= 0; i--) {
+        if (this.todo[i].name in comString) {
           this.todo.splice(i, 1);
         }
       }
