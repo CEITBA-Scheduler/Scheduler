@@ -8,7 +8,7 @@
 
         <div class="picsum-img-wrapper">
           <div fxLayout="column" fxLayoutAlign="center center" >
-            <app-calendar [subjectsComissions]="commissions[i]" [areSubjectsShown]=true>
+            <app-calendar [subjectsComissions]="commissions[i]" [areSubjectsShown]="true" [style.font-size.em]="1.23">
 
             </app-calendar>
             <div class="space">
@@ -24,7 +24,7 @@
     <button (click)="back()"  mdbBtn type="button" color="danger" outline="true" mdbWavesEffect>Volver</button>
   </div>
 </div>
-<!--<mdb-carousel [animation]="'slide'" [interval]="false">
+<!--<mdb-carousel [animation]='slide' [interval]="false">
     <mdb-carousel-item>
       <div class="d-block w-100">
         <div alt="First slide">
