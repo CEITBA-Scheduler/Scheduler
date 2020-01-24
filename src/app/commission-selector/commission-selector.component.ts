@@ -15,7 +15,7 @@ export class CommissionSelectorComponent implements OnInit {
   subjects: Observable<Subject[]>;
   @Input() selectedCommissions: Observable<{[code: string]: Observable<Commission[]>}>;
 
-  selectedCommissionsData: {[code: string]: Observable<Commission[]>} = {};
+  selectedCommissionsData: {[code: string]: BehaviorSubject<Commission[]>} = {};
 
   constructor(
     private combinacionDeHorarioService: CombinacionDeHorarioService) {
@@ -28,6 +28,11 @@ export class CommissionSelectorComponent implements OnInit {
     this.subjects.subscribe((subject: Subject[]) => {
 
     });
+
+    this.selectedCommissions.subscribe((data: {[code: string]: Observable<Commission[]>} ) => {
+      this.selectedCommissionsData = data;
+    });
+
     //if (this.selectedCommissions) {
     // this.selectedCommissions.subscribe((data: {[code: string]: Observable<Commission[]>}) => {
    //     this.selectedCommissionsData = data;
@@ -44,6 +49,9 @@ export class CommissionSelectorComponent implements OnInit {
     this.combinacionDeHorarioService.removeSubject(subject);
   }
   getSelectedCommissions(subject: Subject): Observable<Commission[]> {
-    return this.selectedCommissionsData[subject.code];
+    if (!(subject.code in this.selectedCommissionsData)){
+      this.selectedCommissionsData[subject.code] = new BehaviorSubject<Commission[]>([]);
+    }
+    return this.selectedCommissionsData[subject.code].asObservable();
   }
 }

@@ -14,6 +14,8 @@ export class DragCommissionsComponent implements OnInit {
   selectedCommissions: BehaviorSubject<Commission[]> = new BehaviorSubject([]);
 
   @Input() commissions: { [letter: string]: Commission; };
+  @Input() preSelectedCommissions: Observable<Commission[]>;
+
   @Output() setCommissionData: EventEmitter<Observable<Commission[]>> = new EventEmitter<Observable<Commission[]>>();
   @Output() onDestroy: EventEmitter<void> = new EventEmitter<void>();
 
@@ -50,6 +52,22 @@ export class DragCommissionsComponent implements OnInit {
     this.todo = getValues(this.commissions);
 
     this.setCommissionData.emit(this.selectedCommissions.asObservable());
+
+    this.preSelectedCommissions.subscribe((commissions: Commission[]) => {
+      var comString: { [code: string]: boolean };
+
+      for (let com of commissions){
+        comString[com.name] = true;
+      }
+
+      this.done = commissions;
+
+      for (let i = this.todo.length; i > 0; i--) {
+        if (comString[this.todo[i]]) {
+          this.todo.splice(i, 1);
+        }
+      }
+    });
   }
   ngOnDestroy(){
     this.onDestroy.emit();
