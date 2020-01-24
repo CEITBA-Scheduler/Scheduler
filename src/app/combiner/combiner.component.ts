@@ -89,6 +89,7 @@ export class CombinerComponent implements OnInit {
     // user's choice of subjects for the algorithm
     this.scheduleCombinerServices.getMaterias()
     .subscribe( (subjects) => {
+
       this.subjectSelections = SubjectSelection.generateSelectionByArray(
         subjects.map(subject => subject.code)
       );
@@ -101,6 +102,7 @@ export class CombinerComponent implements OnInit {
     // Here, we take the commission priorities from the combination service
     this.scheduleCombinerServices.getCommissionsSelectedData()
     .subscribe( (data) => {
+
       for (const subjectCode in data) {
         if (data.hasOwnProperty(subjectCode)) {
           const subject = data[subjectCode];
@@ -168,8 +170,6 @@ export class CombinerComponent implements OnInit {
 
     // Using the algorithm... Let's run it!
 
-    this.router.navigate(['/results']);
-
     console.log('=== Subjects ===');
     console.log(this.subjects);
     console.log('=== Subjects Selected ===');
@@ -178,5 +178,7 @@ export class CombinerComponent implements OnInit {
     console.log(this.priorities);
     console.log('=== Combinations ===');
     console.log(this.combinations);
+
+    this.router.navigate(['/results']);
   }
 }

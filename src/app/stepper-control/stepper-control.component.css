@@ -1,12 +1,14 @@
 .grid-container {
-    display: grid;
-    grid-template-areas:
-      'header header header header header header'
-      'menu main main main right right'
-      'menu footer footer footer footer footer';
-    grid-gap: 10px;
-    background-color: white;
-    padding: 10px;
-  }
-
+  display: grid;
+  grid-template-areas:
+    'header header header header header header'
+    'menu main main main right right'
+    'menu footer footer footer footer footer';
+  grid-gap: 10px;
+  background-color: white;
+  padding: 10px;
+}
+.mat-expansion-panel{
+  max-width: 60em;
+}
   

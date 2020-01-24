@@ -1,5 +1,19 @@
 
 <!--mat-card-->
+    
+<!--/mat-card-->
+
+
+<mat-accordion fxFlex="0 1 100" fxLayout="column">
+  <mat-expansion-panel class="mat-expansion-panel">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Prioridades
+      </mat-panel-title>
+      <mat-panel-description>
+        Selecciona criterios que te quisieras tener en tu seleccion
+      </mat-panel-description>
+    </mat-expansion-panel-header> 
     <div class="configuration-options">
       <div>
         <app-checkbox-item storeName="superposition" name="Permitir superposición de horarios." [startChecked]="initialStatus['superposition']">
@@ -11,10 +25,22 @@
         <app-checkbox-item storeName="travelTime" name="Considerar tiempo de viaje entre dos materias en distintas sedes." [startChecked]="initialStatus['travelTime']">
         </app-checkbox-item>
       </div>
-      <app-calendar [areSubjectsShown]=false>
 
-      </app-calendar>
     </div>
-<!--/mat-card-->
+    
+  </mat-expansion-panel>    
+  <mat-expansion-panel class="mat-expansion-panel">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Horarios libres
+      </mat-panel-title>
+      <mat-panel-description>
+        Selecciona los horarios que no quieres tener cursada
+      </mat-panel-description>
+    </mat-expansion-panel-header> 
+    <app-calendar fxLayoutAlign="center center" [areSubjectsShown]=false>
 
+    </app-calendar>
+  </mat-expansion-panel>  
 
+</mat-accordion>

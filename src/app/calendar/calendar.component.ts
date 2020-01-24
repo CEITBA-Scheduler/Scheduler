@@ -149,66 +149,68 @@ export class CalendarComponent implements OnInit {
       }
     }
     this.subjectsComissions.subscribe((subjectsComissions: SubjectCommissions[]) => {
-        console.log("Actualizando schedules ...");
+      // the next line must be erased  
+      console.log("Actualizando schedules ...");
+      // the last line must be erased
 
-        /// actualizamos possibleSchedules
-        var schedules = [];
+      /// actualizamos possibleSchedules
+      var schedules = [];
 
-        var colors = [
-          'rgba(200,0,0,0.5)',
-          'rgba(0,200,200,0.5)',
-          'rgba(0,0,200,0.5)',
-          'rgba(0,200,0,0.5)'
-        ];
-        var i = 0;
+      var colors = [
+        'rgba(200,0,0,0.5)',
+        'rgba(0,200,200,0.5)',
+        'rgba(0,0,200,0.5)',
+        'rgba(0,200,0,0.5)'
+      ];
+      var i = 0;
 
-        for (let subjectComission of subjectsComissions){
+      for (let subjectComission of subjectsComissions){
 
-          var times = [];
+        var times = [];
 
-          for (let schedule of subjectComission.commissions[0].schedule){
-            times.push({
-              day: schedule.day,
-              initialHour: {
-                hours: schedule.start.hours,
-                minutes: schedule.start.minutes
-              },
-              finalHour: {
-                hours: schedule.end.hours,
-                minutes: schedule.end.minutes
-              }
-            });
-          }
-
-          schedules.push(
-            {
-              name: subjectComission.subject.name,
-              color: colors[i],
-              commissionName: subjectComission.commissions[0].name,
-              commissionTimes: times
+        for (let schedule of subjectComission.commissions[0].schedule){
+          times.push({
+            day: schedule.day,
+            initialHour: {
+              hours: schedule.start.hours,
+              minutes: schedule.start.minutes
             },
-          );
-          i = (i + 1) % 4;
-        }
-        this.subjectList = [];
-        for (let i = 0; i < schedules.length ; i++ ) {
-          this.subjectList.push(
-            {
-              checked: true, subject: Object.assign({}, schedules[i])
+            finalHour: {
+              hours: schedule.end.hours,
+              minutes: schedule.end.minutes
             }
-          );
+          });
         }
 
-        /*for (let day in this.days){
-          for (let hour in this.hours){
-            this.updateSubjectOn(this.days[day], this.hours[hour]);
+        schedules.push(
+          {
+            name: subjectComission.subject.name,
+            color: colors[i],
+            commissionName: subjectComission.commissions[0].name,
+            commissionTimes: times
+          },
+        );
+        i = (i + 1) % 4;
+      }
+      this.subjectList = [];
+      for (let i = 0; i < schedules.length ; i++ ) {
+        this.subjectList.push(
+          {
+            checked: true, subject: Object.assign({}, schedules[i])
           }
-        }*/
-        this.updateSubjectOnv2();
-        if (subjectsComissions.length > 0){
-          this.isLoading = false; // erase loading icon
+        );
+      }
+
+      /*for (let day in this.days){
+        for (let hour in this.hours){
+          this.updateSubjectOn(this.days[day], this.hours[hour]);
         }
-        this.isLoading = false;
+      }*/
+      this.updateSubjectOnv2();
+      if (subjectsComissions.length > 0){
+        this.isLoading = false; // erase loading icon
+      }
+      this.isLoading = false;
     });
   }
   setLoading(){

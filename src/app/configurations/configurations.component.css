@@ -24,3 +24,7 @@
 .configuration-options {
 	display: inline-flex;            /* So that columns are displayed horizontally */
 }
+.mat-expansion-panel{
+	max-width: 60em;
+}
+	

@@ -31,6 +31,10 @@ export class ResultsComponent implements OnInit {
 
     this.combinations = this.combinacionDeHorarioService.getAlgorithmResults();
 
+
+    // the next lines must be erased
+    console.log(this.combinations);
+
     //this.commissionsTest = this.subjectsBehavioural.asObservable();
     //this.sgaLinkerService.getDataFromApi();
     //var subjectsData: Subject[] =
@@ -57,7 +61,9 @@ export class ResultsComponent implements OnInit {
      // (data: { [id: string]: Subject; }) => {
 
     //});
-
+    
+    // the last lines must be erased
+    
     var i = 0;
 
     for (let combination of this.combinations){

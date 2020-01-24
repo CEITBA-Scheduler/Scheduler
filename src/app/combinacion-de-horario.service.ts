@@ -29,7 +29,7 @@ export class CombinacionDeHorarioService {
   subjectCommissions: { [id: string]: SubjectCommissions} = {}; // has all subjects
   subjectCommissionsBehavioural: BehaviorSubject<{ [id: string]: SubjectCommissions}> = new BehaviorSubject({});
 
-  algorithmResults: Combination[];
+  algorithmResults: Combination[]= [];
 
   constructor(
     private sgaLinkerService: SgaLinkerService,
@@ -45,9 +45,11 @@ export class CombinacionDeHorarioService {
     return this.subjectData.asObservable();
   }
   setSubjectData(data: Observable<Subject[]>) {
+    
     data.subscribe((subjects: Subject[]) => {
       this.subjectData.next(subjects);
       this.subjects = subjects;
+
     });
 
     this.subjectData.subscribe(subjects => {
@@ -75,6 +77,10 @@ export class CombinacionDeHorarioService {
     });
   }
   setAlgorithmResults(results: Combination[]){
+    // this line must be erased
+    console.log(`Results set = ${results}`);
+    // the last line must be erased
+
     this.algorithmResults = results;
   }
   getAlgorithmResults(): Combination[]{
