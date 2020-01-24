@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-configurations',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./configurations.component.css']
 })
 export class ConfigurationsComponent implements OnInit {
+  @Input() initialStatus: {[code: string]: Observable<boolean>} = {};
 
   constructor() { }
 

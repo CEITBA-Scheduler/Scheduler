@@ -7,7 +7,7 @@
 
       <div class="grid-container">
         <div class="grid-item">
-          <app-subject-selector>
+          <app-subject-selector [userSelection]="userSelection">
 
           </app-subject-selector>
         </div>
@@ -23,11 +23,11 @@
       <!-- ACA VIENE EL NUEVO COMPONENTE-->
     </mat-step>
     <mat-step label="ELEGIR COMISIONES">
-      <app-commission-selector>
+      <app-commission-selector [selectedCommissions]="userSelectionCommissions">
       </app-commission-selector>
     </mat-step>
     <mat-step label="CONFIGURACIONES ADICIONALES">
-      <app-configurations>
+      <app-configurations [initialStatus]="userInitialConfigStatus">
         <app-calendar>
 
         </app-calendar>

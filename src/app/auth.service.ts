@@ -23,6 +23,8 @@ export class AuthService implements CanActivate {
 
   user?: User = null;
   notreg = false;
+  loading: boolean = true;
+
   behaviourUser: BehaviorSubject<User> = new BehaviorSubject<User>(null);
   urlGetDni : string = "https://itbagw.itba.edu.ar/api/v1/people/"+token.CEITBA+"?email="; // email url
   urlGetPlan: string = "https://itbagw.itba.edu.ar/api/v1/students/"+token.CEITBA+"/"
@@ -35,6 +37,7 @@ export class AuthService implements CanActivate {
     private afs: AngularFirestore,
     private http: HttpClient
 ) {
+    
     // Get the auth state, then fetch the Firestore user document or return null
     this.afAuth.authState.subscribe(user => {
       //console.log(user)
@@ -54,9 +57,13 @@ export class AuthService implements CanActivate {
       }else{
         // Logged out
         this.user = null;
+        this.loading = false;
         this.behaviourUser.next(this.user); // avisamos al resto del programa que el login fue exitoso
       }
     });
+  }
+  getLoading() : boolean{
+    return this.loading;
   }
   getSgaInfo() : Observable<{[id: string] : string}>{
     const obs: BehaviorSubject<{[id: string] : string}> = new BehaviorSubject<{[id: string] : string}>({});
@@ -107,6 +114,7 @@ export class AuthService implements CanActivate {
                 plan: udata.plan,
                 career: udata.career
               });
+              
               this.behaviourUser.next(this.user); // avisamos al resto del programa que el login fue exitoso
               this.notreg = false;
             }else{
@@ -114,6 +122,7 @@ export class AuthService implements CanActivate {
               this.notreg = true;
             }
           }
+          this.loading = false;
         });
 
 
@@ -133,8 +142,9 @@ export class AuthService implements CanActivate {
         if ("userSelection" in data.data()){
           this.user.userSelection = data.data()["userSelection"];
         }
-
+        this.loading = false;
         this.behaviourUser.next(this.user); // avisamos al resto del programa que el login fue exitoso
+        
       }
     });
   }
@@ -203,7 +213,9 @@ export class AuthService implements CanActivate {
 
   async signOut() {
     await this.afAuth.auth.signOut();
+
     this.notreg = false;
+    
     //this.router.navigate(['/login']);
   }
 

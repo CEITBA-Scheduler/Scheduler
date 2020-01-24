@@ -49,11 +49,13 @@ export class CombinerComponent implements OnInit {
 
   ngOnInit() {
     this.authService.getUserObservable().subscribe((user: User) => {
-      if (user != null) {
-        this.router.navigate(['/combinadorDeHorarios']);
-        this.dbServices.askForUserSubjectSelection();
-      } else {
-        this.router.navigate(['/login']);
+      if (!this.authService.getLoading()){
+        if (user != null) {
+          this.router.navigate(['/combinadorDeHorarios']);
+          this.dbServices.askForUserSubjectSelection();
+        } else {
+          this.router.navigate(['/login']);
+        }
       }
     });
   }

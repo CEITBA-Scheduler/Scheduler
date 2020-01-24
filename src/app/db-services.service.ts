@@ -8,7 +8,7 @@ import { AuthService } from './auth.service';
 import { UserSelection, SubjectCommissions } from './materia';
 import { CombinacionDeHorarioService } from './combinacion-de-horario.service';
 import { GeneralProgramService } from './general-program.service';
-import { Subject } from './materia';
+import { Subject, Commission } from './materia';
 
 /// algunos tutoriales de firestore
 /* https://www.techiediaries.com/angular-firestore-tutorial/*/
@@ -22,11 +22,28 @@ import { Subject } from './materia';
 })
 export class DbServicesService {
   dbSubjects: BehaviorSubject<Subject[]> = new BehaviorSubject([]);
+  dbSubjectsCommissions: BehaviorSubject<{[code: string]: Observable<Commission[]>}> = new BehaviorSubject({});
+  dbConfigCheckbox: {[code: string]: BehaviorSubject<boolean>} = {
+    "superposition": new BehaviorSubject<boolean>(false),
+    "freeday": new BehaviorSubject<boolean>(false),
+    "buildingChange": new BehaviorSubject<boolean>(false),
+    "travelTime": new BehaviorSubject<boolean>(false)
+  };
+
   subjectsData: { [id: string]: Subject };
   selectedSubjectsInfo: string[] = [];
+
+  // got subject info from sga
   gotSubjectInfo: boolean;
+
+  // go subject info from user data
   gotUserSubjectInfo: boolean;
+  
+  // to store subject codes loaded from db
   subjectCodes: string[] = [];
+
+  // to store commission names loaded from db
+  commissionNames: {[subjectCode: string]: string[]} = {};
 
   constructor(
     private afs: AngularFirestore,
@@ -133,11 +150,22 @@ export class DbServicesService {
   askForUserSubjectSelection() {
     const user: User = this.auth.getUser();
     this.subjectCodes = [];
-
-    for (let matI of user.userSelection){
-      this.subjectCodes.push(matI.subjectCode);
+    if (user.userSelection){
+      for (let matI of user.userSelection){
+        this.subjectCodes.push(matI.subjectCode);
+        this.commissionNames[matI.subjectCode] = matI.commissions;
+        // the next line must be erased
+        console.log("commissions:");
+        console.log(matI.commissions);
+        // the last line must be erased
+      }
     }
-
+    if (user.tickboxSelection){
+      this.dbConfigCheckbox["superposition"].next(user.tickboxSelection.superposition);
+      this.dbConfigCheckbox["freeday"].next(user.tickboxSelection.freeday);
+      this.dbConfigCheckbox["buildingChange"].next(user.tickboxSelection.buildingChange);
+      this.dbConfigCheckbox["travelTime"] .next(user.tickboxSelection.travelTime);
+    }
     this.gotUserSubjectInfo = true;
 
     if (this.gotSubjectInfo) {
@@ -145,8 +173,24 @@ export class DbServicesService {
     }
 
   }
+  // get user last subject selection
   getUserSubjectSelection(): Observable<Subject[]> {
     return this.dbSubjects.asObservable();
+  }
+
+  // get user last commissions selection
+  getUserCommissionSelection(): Observable<{[code: string]: Observable<Commission[]>}>{
+    return this.dbSubjectsCommissions.asObservable();
+  } 
+
+  getUserInitialConfigStatus(): {[code: string]: Observable<boolean>} {
+    var ans : {[code: string]: Observable<boolean>} = {};
+
+    for (let i in this.dbConfigCheckbox){
+      ans[i] = this.dbConfigCheckbox[i].asObservable();
+    }
+    
+    return this.dbConfigCheckbox;
   }
 
   /** to call this function two queries must be have been asnwered,
@@ -155,11 +199,29 @@ export class DbServicesService {
 
   updateUserSubjectSelection(){
     var subjects: Subject[] = [];
+    var subjectsCommissions: {[code: string]: Observable<Commission[]>} = {};
 
     for (let subjectCode of this.subjectCodes) {
       subjects.push(this.subjectsData[subjectCode]);
+      var commissions: Commission[] = [];
+
+      for (let commission of this.subjectsData[subjectCode].commissions){
+        if (this.commissionNames[subjectCode].includes(commission.name)){
+          commissions.push(commission);
+        }
+      }
+      subjectsCommissions[subjectCode] = new BehaviorSubject(commissions).asObservable();
     }
 
+    /*"superposition": new BehaviorSubject<boolean>(false),
+    "freeday": new BehaviorSubject<boolean>(false),
+    "buildingChange": new BehaviorSubject<boolean>(false),
+    "travelTime": new BehaviorSubject<boolean>(false)*/
+
+    
+
     this.dbSubjects.next(subjects);
+    this.dbSubjectsCommissions.next(subjectsCommissions);
   }
+  
 }

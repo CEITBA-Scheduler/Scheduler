@@ -2,14 +2,14 @@
 <!--mat-card-->
     <div class="configuration-options">
       <div>
-      <app-checkbox-item storeName="superposition" name="Permitir superposición de horarios.">
-      </app-checkbox-item>
-      <app-checkbox-item storeName="freeday" name="Tener un día libre.">
-      </app-checkbox-item>
-      <app-checkbox-item storeName="buildingChange" name="Evitar cambios de sede en un mismo día.">
-      </app-checkbox-item>
-      <app-checkbox-item storeName="travelTime" name="Considerar tiempo de viaje entre dos materias en distintas sedes.">
-      </app-checkbox-item>
+        <app-checkbox-item storeName="superposition" name="Permitir superposición de horarios." [startChecked]="initialStatus['superposition']">
+        </app-checkbox-item>
+        <app-checkbox-item storeName="freeday" name="Tener un día libre." [startChecked]="initialStatus['freeday']">
+        </app-checkbox-item>
+        <app-checkbox-item storeName="buildingChange" name="Evitar cambios de sede en un mismo día." [startChecked]="initialStatus['buildingChange']">
+        </app-checkbox-item>
+        <app-checkbox-item storeName="travelTime" name="Considerar tiempo de viaje entre dos materias en distintas sedes." [startChecked]="initialStatus['travelTime']">
+        </app-checkbox-item>
       </div>
       <app-calendar [areSubjectsShown]=false>
 

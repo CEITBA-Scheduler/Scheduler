@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { parse, set, format } from 'date-fns';
 import { Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Subject } from '../materia';
+import { Subject, Commission } from '../materia';
 
 /* Stepper control: handles the program highest level
 structure to different algoritm stages */
@@ -18,6 +18,8 @@ structure to different algoritm stages */
 export class StepperControlComponent implements OnInit {
   @Output() onDone: EventEmitter<void> = new EventEmitter<void>();
   userSelection: Observable <Subject[]>;
+  userSelectionCommissions: Observable<{[code: string]: Observable<Commission[]>}>;
+  userInitialConfigStatus: {[code: string]: Observable<boolean>};
 
   constructor(private dbServicesService: DbServicesService) {
 
@@ -25,6 +27,8 @@ export class StepperControlComponent implements OnInit {
 
   ngOnInit() {
     this.userSelection = this.dbServicesService.getUserSubjectSelection();
+    this.userSelectionCommissions = this.dbServicesService.getUserCommissionSelection();
+    this.userInitialConfigStatus = this.dbServicesService.getUserInitialConfigStatus();
   }
 
   done() {
