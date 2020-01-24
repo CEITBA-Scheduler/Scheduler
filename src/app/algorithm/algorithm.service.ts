@@ -173,7 +173,6 @@ export class AlgorithmService {
     } else if (currentPriority.isExclusive()) {
       return false;
     }
-
     return true;
   }
 
@@ -302,7 +301,7 @@ export class AlgorithmService {
     return true;
   }
 
-  private verifiesPriorities(combination: ICombination, priorities: IPriority[]): boolean {
+  private verifierDispatcher(combination: ICombination, priority: IPriority, index: number): boolean {
     const verifiers = {
       [PriorityTypes.SUPERPOSITION]: this.verifySuperposition,
       [PriorityTypes.COMMISSION]: this.verifyCommission,
@@ -310,16 +309,38 @@ export class AlgorithmService {
       [PriorityTypes.LOCATION]: this.verifyLocation,
       [PriorityTypes.FREEDAY]: this.verifyFreeDay,
       [PriorityTypes.TRAVEL]: this.verifyTravelTime,
-      [PriorityTypes.BUSYTIME]: this.verifyBusyTime
+      [PriorityTypes.BUSYTIME]: this.verifyBusyTime,
+      [PriorityTypes.MULTIPLE]: this.verifyMultiple
     };
 
+    if (verifiers.hasOwnProperty(priority.type)) {
+      return verifiers[priority.type].call(this, combination, priority, index);
+    } else {
+      return false;
+    }
+  }
+
+  private verifyMultiple(combination: ICombination, currentPriority: IPriority, index: number): boolean {
+    for (const priority of currentPriority.value as IPriority[]) {
+      const verifierResult = this.verifierDispatcher(combination, priority, index);
+      if (verifierResult) {
+        return true;
+      }
+    }
+
+    if (currentPriority.isExclusive()) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  private verifiesPriorities(combination: ICombination, priorities: IPriority[]): boolean {
     for (let index = 0 ; index < priorities.length ; index++) {
       const currentPriority = priorities[index];
-      if (verifiers.hasOwnProperty(currentPriority.type)) {
-        const verifierResult = verifiers[currentPriority.type](combination, currentPriority, index);
-        if (verifierResult === false) {
-          return false;
-        }
+      const verifierResult = this.verifierDispatcher(combination, currentPriority, index);
+      if (verifierResult === false) {
+        return false;
       }
     }
     return true;

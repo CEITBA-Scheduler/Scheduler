@@ -9,6 +9,7 @@ import {
 import {
   ISubjectSelection,
   IPriority,
+  IMultiplePriority,
   PriorityTypes
 } from './algorithm-interface';
 
@@ -203,7 +204,7 @@ export class Subject implements ISubject {
 
   /**
    * Adds a new commission to the subject.
-   * @param commission  Instance of the new commission being added
+   * @param   Instance of the new commission being added
    */
   addCommission(commission: ICommission) {
     this.commissions.push(commission);
@@ -438,7 +439,7 @@ export class Priority implements IPriority {
   public type: PriorityTypes;
   public weight: number;
   public relatedSubjectCode: string;
-  public value: string | ITimeblock[] | number;
+  public value: string | ITimeblock[] | number | IPriority[];
 
   private exclusive: boolean;
 
@@ -460,6 +461,14 @@ export class Priority implements IPriority {
       priorities[priorityIndex].setWeight(priorities.length - priorityIndex);
     }
     return priorities;
+  }
+
+  /**
+   * Multiple Priority generator or factory method
+   * @param priorities Individual priorities of the multiple one
+   */
+  public static gpMultiple(priorities: IPriority[]): Priority {
+    return new Priority(PriorityTypes.MULTIPLE, priorities);
   }
 
   /**

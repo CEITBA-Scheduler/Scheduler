@@ -49,7 +49,7 @@ export class CombinerComponent implements OnInit {
 
   ngOnInit() {
     this.authService.getUserObservable().subscribe((user: User) => {
-      if (!this.authService.getLoading()){
+      if (!this.authService.getLoading()) {
         if (user != null) {
           this.router.navigate(['/combinadorDeHorarios']);
           this.dbServices.askForUserSubjectSelection();
@@ -107,10 +107,16 @@ export class CombinerComponent implements OnInit {
         if (data.hasOwnProperty(subjectCode)) {
           const subject = data[subjectCode];
           if (subject.hasOwnProperty('commissions')) {
+            const commissionPriorities: Priority[] = [];
             for (const subjectCommission of subject.commissions) {
-              this.priorities.push(
+              commissionPriorities.push(
                 Priority.gpCommission(subjectCommission.name, subjectCode)
                         .setExclusive(true)
+              );
+            }
+            if (commissionPriorities.length > 0) {
+              this.priorities.push(
+                Priority.gpMultiple(commissionPriorities).setExclusive(true)
               );
             }
           }
@@ -182,16 +188,7 @@ export class CombinerComponent implements OnInit {
 
     // Using the algorithm... Let's run it!
 
-<<<<<<< HEAD
-    console.log('=== Subjects ===');
-    console.log(this.subjects);
-    console.log('=== Subjects Selected ===');
-    console.log(this.subjectSelections);
-    console.log('=== Priorities ===');
-    console.log(this.priorities);
-=======
     this.router.navigate(['/results']);
->>>>>>> d4798cc8a68bbaf66132ca93fe7f2739aaa48efb
     console.log('=== Combinations ===');
     console.log(this.combinations);
 
