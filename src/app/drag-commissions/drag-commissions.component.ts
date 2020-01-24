@@ -69,6 +69,7 @@ export class DragCommissionsComponent implements OnInit {
         }
       }
     });
+    this.selectedCommissions.next(this.done);
   }
   ngOnDestroy(){
     this.onDestroy.emit();

@@ -19,6 +19,7 @@ export class StepperControlComponent implements OnInit {
   @Output() onDone: EventEmitter<void> = new EventEmitter<void>();
   userSelection: Observable <Subject[]>;
   userSelectionCommissions: Observable<{[code: string]: Observable<Commission[]>}>;
+  userInitialConfigStatus: {[code: string]: Observable<boolean>};
 
   constructor(private dbServicesService: DbServicesService) {
 
@@ -27,6 +28,7 @@ export class StepperControlComponent implements OnInit {
   ngOnInit() {
     this.userSelection = this.dbServicesService.getUserSubjectSelection();
     this.userSelectionCommissions = this.dbServicesService.getUserCommissionSelection();
+    this.userInitialConfigStatus = this.dbServicesService.getUserInitialConfigStatus();
   }
 
   done() {

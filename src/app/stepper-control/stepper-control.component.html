@@ -11,7 +11,7 @@
       </app-commission-selector>
     </mat-step>
     <mat-step label="CONFIGURACIONES ADICIONALES">
-      <app-configurations>
+      <app-configurations [initialStatus]="userInitialConfigStatus">
       </app-configurations>
     </mat-step>
     <mat-step label="TERMINADO">

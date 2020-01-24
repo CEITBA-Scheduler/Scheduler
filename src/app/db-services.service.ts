@@ -23,6 +23,12 @@ import { Subject, Commission } from './materia';
 export class DbServicesService {
   dbSubjects: BehaviorSubject<Subject[]> = new BehaviorSubject([]);
   dbSubjectsCommissions: BehaviorSubject<{[code: string]: Observable<Commission[]>}> = new BehaviorSubject({});
+  dbConfigCheckbox: {[code: string]: BehaviorSubject<boolean>} = {
+    "superposition": new BehaviorSubject<boolean>(false),
+    "freeday": new BehaviorSubject<boolean>(false),
+    "buildingChange": new BehaviorSubject<boolean>(false),
+    "travelTime": new BehaviorSubject<boolean>(false)
+  };
 
   subjectsData: { [id: string]: Subject };
   selectedSubjectsInfo: string[] = [];
@@ -144,16 +150,22 @@ export class DbServicesService {
   askForUserSubjectSelection() {
     const user: User = this.auth.getUser();
     this.subjectCodes = [];
-
-    for (let matI of user.userSelection){
-      this.subjectCodes.push(matI.subjectCode);
-      this.commissionNames[matI.subjectCode] = matI.commissions;
-      // the next line must be erased
-      console.log("commissions:");
-      console.log(matI.commissions);
-      // the last line must be erased
+    if (user.userSelection){
+      for (let matI of user.userSelection){
+        this.subjectCodes.push(matI.subjectCode);
+        this.commissionNames[matI.subjectCode] = matI.commissions;
+        // the next line must be erased
+        console.log("commissions:");
+        console.log(matI.commissions);
+        // the last line must be erased
+      }
     }
-
+    if (user.tickboxSelection){
+      this.dbConfigCheckbox["superposition"].next(user.tickboxSelection.superposition);
+      this.dbConfigCheckbox["freeday"].next(user.tickboxSelection.freeday);
+      this.dbConfigCheckbox["buildingChange"].next(user.tickboxSelection.buildingChange);
+      this.dbConfigCheckbox["travelTime"] .next(user.tickboxSelection.travelTime);
+    }
     this.gotUserSubjectInfo = true;
 
     if (this.gotSubjectInfo) {
@@ -170,6 +182,16 @@ export class DbServicesService {
   getUserCommissionSelection(): Observable<{[code: string]: Observable<Commission[]>}>{
     return this.dbSubjectsCommissions.asObservable();
   } 
+
+  getUserInitialConfigStatus(): {[code: string]: Observable<boolean>} {
+    var ans : {[code: string]: Observable<boolean>} = {};
+
+    for (let i in this.dbConfigCheckbox){
+      ans[i] = this.dbConfigCheckbox[i].asObservable();
+    }
+    
+    return this.dbConfigCheckbox;
+  }
 
   /** to call this function two queries must be have been asnwered,
    * the subjectData query and the userData for selected subjects
@@ -191,7 +213,15 @@ export class DbServicesService {
       subjectsCommissions[subjectCode] = new BehaviorSubject(commissions).asObservable();
     }
 
+    /*"superposition": new BehaviorSubject<boolean>(false),
+    "freeday": new BehaviorSubject<boolean>(false),
+    "buildingChange": new BehaviorSubject<boolean>(false),
+    "travelTime": new BehaviorSubject<boolean>(false)*/
+
+    
+
     this.dbSubjects.next(subjects);
     this.dbSubjectsCommissions.next(subjectsCommissions);
   }
+  
 }
