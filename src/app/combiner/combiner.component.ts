@@ -150,12 +150,24 @@ export class CombinerComponent implements OnInit {
       );
     }
 
-    this.priorities.push(
-      Priority.gpBusyTime(this.calendarService.getTimeblocks()).setExclusive(true)
-    );
+    const timeblocks = this.calendarService.getTimeblocks();
+    if (timeblocks) {
+      if (timeblocks.length > 0) {
+        this.priorities.push(
+          Priority.gpBusyTime(timeblocks).setExclusive(true)
+        );
+      }
+    }
 
     // Then, we set the priority weights
     this.priorities = Priority.generateWeightedPriorities(this.priorities);
+
+    console.log('=== Subjects ===');
+    console.log(this.subjects);
+    console.log('=== Subjects Selected ===');
+    console.log(this.subjectSelections);
+    console.log('=== Priorities ===');
+    console.log(this.priorities);
 
     this.combinations = this.algorithmServices.schedulerAlgorithm(
       this.subjects,            // All the possible subjects
@@ -170,12 +182,16 @@ export class CombinerComponent implements OnInit {
 
     // Using the algorithm... Let's run it!
 
+<<<<<<< HEAD
     console.log('=== Subjects ===');
     console.log(this.subjects);
     console.log('=== Subjects Selected ===');
     console.log(this.subjectSelections);
     console.log('=== Priorities ===');
     console.log(this.priorities);
+=======
+    this.router.navigate(['/results']);
+>>>>>>> d4798cc8a68bbaf66132ca93fe7f2739aaa48efb
     console.log('=== Combinations ===');
     console.log(this.combinations);
 
