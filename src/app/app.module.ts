@@ -50,7 +50,6 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxHmCarouselModule } from 'ngx-hm-carousel';
 import { ShowPlansComponent } from './show-plans/show-plans.component';
-import { LikedItemComponent } from './liked-item/liked-item.component';
 import { FavouriteButtonComponent } from './favourite-button/favourite-button.component';
 
 @NgModule({
@@ -78,7 +77,6 @@ import { FavouriteButtonComponent } from './favourite-button/favourite-button.co
     ResultsComponent,
     NavbarComponent,
     ShowPlansComponent,
-    LikedItemComponent,
     FavouriteButtonComponent
   ],
   imports: [
