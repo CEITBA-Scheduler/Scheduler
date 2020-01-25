@@ -67,7 +67,7 @@ export class CommissionSelectorComponent implements OnInit {
     this.combinacionDeHorarioService.removeSubject(subject);
   }
   getSelectedCommissions(subject: Subject): Observable<Commission[]> {
-    if (!(subject.code in this.selectedCommissionsData)){
+    if (!(subject.code in this.selectedCommissionsData )){
       this.selectedCommissionsData[subject.code] = new BehaviorSubject<Commission[]>([]);
     }
     return this.selectedCommissionsData[subject.code].asObservable();
