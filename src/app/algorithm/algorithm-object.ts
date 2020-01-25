@@ -9,7 +9,6 @@ import {
 import {
   ISubjectSelection,
   IPriority,
-  IMultiplePriority,
   PriorityTypes
 } from './algorithm-interface';
 
