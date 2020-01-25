@@ -1,4 +1,24 @@
 /**
+ * Serialization and Deserialization patterns to save and load,
+ * read or write into files, the session objects from the user
+ */
+export interface ISerializable {
+  serialize(): string;
+}
+
+export interface IDeserializable {
+  deserialize(jsonObject): IDeserializable;
+}
+
+export interface IStreamable extends ISerializable, IDeserializable {}
+
+export class Serializable {
+  serialize(): string {
+    return JSON.stringify(this);
+  }
+}
+
+/**
  * Quicksort, sorting algorithm for a collection of objects
  * @param array       Sorting target array
  * @param left        Starting index

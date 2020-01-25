@@ -4,16 +4,19 @@ import {
   ICommission,
   ITimeblock,
   ISubject,
-  Weekday
-} from './algorithm-interface';
-import {
+  Weekday,
   ISubjectSelection,
   IPriority,
-  IMultiplePriority,
   PriorityTypes
 } from './algorithm-interface';
 
-export class CombinationSubject implements ICombinationSubject {
+import {
+  ISerializable,
+  IDeserializable,
+  Serializable
+} from './algorithm-utils';
+
+export class CombinationSubject extends Serializable implements ICombinationSubject {
   public name: string;
   public code: string;
   public search: string;
@@ -21,7 +24,13 @@ export class CombinationSubject implements ICombinationSubject {
   public commissionName: string;
   public commissionTimes: ITimeblock[];
 
-  constructor(name: string, code: string, professors: string[], commissionName: string, commissionTimes: ITimeblock[]) {
+  constructor(
+    name: string = '', code: string = '',
+    professors: string[] = [],
+    commissionName: string = '',
+    commissionTimes: ITimeblock[] = []) {
+    super();
+
     this.name = name;
     this.code = code;
     this.professors = professors;
@@ -47,6 +56,29 @@ export class CombinationSubject implements ICombinationSubject {
     );
 
     return newCombinationSubject;
+  }
+
+  /**
+   * Deserializes the object from the JSON formatted string.
+   * @param json  Raw json string
+   */
+  deserialize(jsonObject): IDeserializable {
+    this.name = jsonObject.name;
+    this.code = jsonObject.code;
+    this.search = jsonObject.search;
+    this.professors = jsonObject.professors;
+    this.commissionName = jsonObject.commissionName;
+    this.commissionTimes = [];
+    if (jsonObject.hasOwnProperty('commissionTimes')) {
+      if (jsonObject.commissionTimes.length > 0) {
+        for (const jsonElement of jsonObject.commissionTimes) {
+          const newTimeblock = new Timeblock();
+          this.commissionTimes.push(newTimeblock.deserialize(jsonElement));
+        }
+      }
+    }
+
+    return this;
   }
 
   /**
@@ -107,12 +139,14 @@ export class CombinationSubject implements ICombinationSubject {
   }
 }
 
-export class Combination implements ICombination {
+export class Combination extends Serializable implements ICombination {
   public weight: number;
   public priorities: number[];
   public subjects: ICombinationSubject[];
 
   constructor(weight = NaN, priorities = [], subjects = []) {
+    super();
+
     this.weight = weight;
     this.priorities = priorities;
     this.subjects = subjects;
@@ -130,6 +164,26 @@ export class Combination implements ICombination {
       CombinationSubject.copyMany(combination.subjects)
     );
     return newCombination;
+  }
+
+  /**
+   * Deserializes the object from the JSON formatted string.
+   * @param json  Raw json string
+   */
+  deserialize(jsonObject): IDeserializable {
+    this.weight = Number(jsonObject.weight);
+    this.priorities = jsonObject.priorities.map(element => Number(element));
+    this.subjects = [];
+    if (jsonObject.hasOwnProperty('subjects')) {
+      if (jsonObject.subjects.length > 0) {
+        for (const jsonElement of jsonObject.subjects) {
+          const newSubject = new CombinationSubject();
+          this.subjects.push(newSubject.deserialize(jsonElement) as CombinationSubject);
+        }
+      }
+    }
+
+    return this;
   }
 
   /**
@@ -256,14 +310,16 @@ export class Commission implements ICommission {
   }
 }
 
-export class Timeblock implements ITimeblock {
+export class Timeblock extends Serializable implements ITimeblock {
   public day: Weekday;
   public start: number;
   public end: number;
   public building: string;
   public classroom: string;
 
-  constructor(day: Weekday, start: number, end: number, building: string = '', classroom: string = '') {
+  constructor(day: Weekday = Weekday.ANY, start: number = 0, end: number = 0, building: string = '', classroom: string = '') {
+    super();
+
     this.day = day;
     this.start = start;
     this.end = end;
@@ -279,6 +335,20 @@ export class Timeblock implements ITimeblock {
   static parseHHmm(time: string): number {
     const hourMinute: string[] = time.split(':', 2);
     return Number(hourMinute[0]) + Number(hourMinute[1]) / 60;
+  }
+
+  /**
+   * Deserializes the object from the JSON formatted string.
+   * @param json  Raw json string
+   */
+  deserialize(jsonObject): Timeblock {
+    this.day = Number(jsonObject.day);
+    this.start = Number(jsonObject.start);
+    this.end = Number(jsonObject.end);
+    this.building = jsonObject.building;
+    this.classroom = jsonObject.classroom;
+
+    return this;
   }
 
   /**
@@ -435,7 +505,7 @@ export class Timeblock implements ITimeblock {
   }
 }
 
-export class Priority implements IPriority {
+export class Priority extends Serializable implements IPriority {
   public type: PriorityTypes;
   public weight: number;
   public relatedSubjectCode: string;
@@ -443,7 +513,9 @@ export class Priority implements IPriority {
 
   private exclusive: boolean;
 
-  constructor(type: PriorityTypes, value: any = null) {
+  constructor(type: PriorityTypes = PriorityTypes.NONE, value: any = null) {
+    super();
+
     this.type = type;
     this.value = value;
     this.weight = NaN;
@@ -526,6 +598,40 @@ export class Priority implements IPriority {
    */
   public static gpTravel(travelTime: number): Priority {
     return new Priority(PriorityTypes.TRAVEL, travelTime);
+  }
+
+  /**
+   * Deserializes the object from the JSON formatted string.
+   * @param json  Raw json string
+   */
+  deserialize(jsonObject): Priority {
+    this.type = jsonObject.type;
+    this.weight = Number(jsonObject.weight);
+    this.relatedSubjectCode = jsonObject.relatedSubjectCode;
+    if (Array.isArray(jsonObject.value)) {
+      if (jsonObject.value.length > 0) {
+        this.value = [];
+        if (jsonObject.value.find(object => object.hasOwnProperty('type'))) {
+          for (const jsonElement of jsonObject.value) {
+            const newPriority = new Priority();
+            (this.value as Priority[]).push(newPriority.deserialize(jsonElement));
+          }
+        } else {
+          for (const jsonElement of jsonObject.value) {
+            const newTimeblock = new Timeblock();
+            (this.value as Timeblock[]).push(newTimeblock.deserialize(jsonElement));
+          }
+        }
+      }
+    } else {
+      if (isNaN(Number(jsonObject.value))) {
+        this.value = jsonObject.value;
+      } else {
+        this.value = Number(jsonObject.value);
+      }
+    }
+
+    return this;
   }
 
   /**

@@ -1,12 +1,17 @@
 import { Priority } from './algorithm-object';
 
+import {
+  IDeserializable,
+  ISerializable
+} from './algorithm-utils';
+
 /**
  * Contains information for a single combination. This object should
  * be graphable in Calendar component if the SUBJECTS object is at hand.
  *
  * SUBJECTS should contain all subjects in an array.
  */
-export interface ICombination {
+export interface ICombination extends ISerializable, IDeserializable {
   weight: number;
   priorities: number[];
   subjects: ICombinationSubject[];
@@ -16,7 +21,7 @@ export interface ICombination {
   hasPriorities(): boolean;
 }
 
-export interface ICombinationSubject {
+export interface ICombinationSubject extends ISerializable, IDeserializable {
   name: string;
   code: string;
   search: string;
@@ -80,7 +85,7 @@ export enum Weekday {
   ANY
 }
 
-export interface ITimeblock {
+export interface ITimeblock extends ISerializable, IDeserializable {
   day: Weekday;
   start: number;  // 19.5 == 19:30hs
   end: number;
@@ -121,7 +126,7 @@ export enum PriorityTypes {
   TRAVEL = 'BuildingTravel'
 }
 
-export interface IPriority {
+export interface IPriority extends ISerializable, IDeserializable {
   type: PriorityTypes;
   weight: number;
   relatedSubjectCode: string;

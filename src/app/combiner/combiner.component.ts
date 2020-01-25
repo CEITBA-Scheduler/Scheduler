@@ -16,6 +16,7 @@ import {
   Combination
 } from '../algorithm/algorithm-object';
 import { parseSubjects } from '../algorithm/algorithm-parser';
+import { saveObjectsToFile } from '../algorithm/algorithm-utils';
 import { Weekday } from '../algorithm/algorithm-interface';
 
 /**
@@ -188,7 +189,6 @@ export class CombinerComponent implements OnInit {
 
     // Using the algorithm... Let's run it!
 
-    this.router.navigate(['/results']);
     console.log('=== Combinations ===');
     console.log(this.combinations);
 

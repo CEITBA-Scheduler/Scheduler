@@ -25,8 +25,17 @@ import {
   providedIn: 'root'
 })
 export class AlgorithmService {
+  public subjects: ISubject[];
+  public priorities: IPriority[];
+  public combinations: ICombination[];
+  public subjectSelections: ISubjectSelection[];
 
-  constructor() { }
+  constructor() {
+    this.subjects = null;
+    this.priorities = null;
+    this.combinations = null;
+    this.subjectSelections = null;
+  }
 
   /**
    * Recursive algorithm to generate a list of all possible combinations between subjects.
@@ -58,7 +67,7 @@ export class AlgorithmService {
             const newSubject = new CombinationSubject(
               nodeSubject.name,
               nodeSubject.code,
-              nodeCommission.hasOwnProperty('teachers') ? nodeCommission.professors : undefined,
+              nodeCommission.hasOwnProperty('professors') ? nodeCommission.professors : undefined,
               nodeCommission.label,
               nodeCommission.schedule
             );
@@ -355,6 +364,11 @@ export class AlgorithmService {
    */
   public schedulerAlgorithm(subjects: ISubject[], selectedSubjects: ISubjectSelection[], priorities: IPriority[], sort: string = 'sort')
   : Combination[] {
+        // Saving current algorithm session data
+        this.subjects = subjects;
+        this.subjectSelections = selectedSubjects;
+        this.priorities = priorities;
+
         // 1°, run the combination algorithm to obtain all possible schedules and classify them by the criteria and priorities
         const chosenSubjects: ISubject[] = [];
         for (const selectedSubject of selectedSubjects) {
@@ -393,6 +407,7 @@ export class AlgorithmService {
         }
 
         // 4°, return the result
+        this.combinations = combinations;
         return combinations;
   }
 }
