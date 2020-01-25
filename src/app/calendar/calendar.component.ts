@@ -255,7 +255,7 @@ export class CalendarComponent implements OnInit {
         // por cada horario de la materia
         this.subjectsOfDay[this.subjectList[m].subject.commissionTimes[i].day].push(
           {
-            startPos: 70 + startPos,
+            startPos: 50 + startPos, // initially on 70
             height: endPos - startPos,
             color: colors[u],
             name: subjectName,
@@ -269,7 +269,7 @@ export class CalendarComponent implements OnInit {
   }
 
   getPos(time: Time){ // obtenemos la distancia acorde a la hora
-    return (time.hours-8) * 40 + time.minutes * 40 / 60;
+    return (time.hours-8) * 25 + time.minutes * 25 / 60;
   }
 
   // NOT USED ATM
