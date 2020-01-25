@@ -16,8 +16,9 @@ import {
   Combination
 } from '../algorithm/algorithm-object';
 import { parseSubjects } from '../algorithm/algorithm-parser';
-import { saveObjectsToFile } from '../algorithm/algorithm-utils';
 import { Weekday } from '../algorithm/algorithm-interface';
+
+import { saveObjectToFile, loadObjectFromFile } from '../algorithm/algorithm-utils';
 
 /**
  * CombinerComponent
@@ -186,8 +187,6 @@ export class CombinerComponent implements OnInit {
     this.scheduleCombinerServices.setAlgorithmResults(
       this.combinations.slice(0, 20)
     );
-
-    // Using the algorithm... Let's run it!
 
     console.log('=== Combinations ===');
     console.log(this.combinations);

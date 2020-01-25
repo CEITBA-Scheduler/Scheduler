@@ -1,3 +1,5 @@
+import { saveAs } from 'file-saver';
+
 /**
  * Serialization and Deserialization patterns to save and load,
  * read or write into files, the session objects from the user
@@ -16,6 +18,22 @@ export class Serializable {
   serialize(): string {
     return JSON.stringify(this);
   }
+}
+
+export function saveObjectToFile(filename: string, data) {
+  const blob = new Blob([JSON.stringify(data)], {type : 'application/json'});
+  saveAs(blob, filename);
+}
+
+export function loadObjectFromFile(file: File) {
+  const fileReader = new FileReader();
+  let result = null;
+  fileReader.onload = (e) => {
+    console.log(e);
+    result = fileReader.result;
+  };
+  fileReader.readAsText(file);
+  return result;
 }
 
 /**
