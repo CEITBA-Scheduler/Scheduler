@@ -1,3 +1,4 @@
+import { Priority } from './algorithm-object';
 
 /**
  * Contains information for a single combination. This object should
@@ -110,6 +111,7 @@ export interface ITimeblock {
  */
 export enum PriorityTypes {
   NONE = 'None',
+  MULTIPLE = 'Multiple',
   COMMISSION = 'Commission',
   PROFESSOR = 'Professor',
   LOCATION = 'Location',
@@ -122,11 +124,16 @@ export enum PriorityTypes {
 export interface IPriority {
   type: PriorityTypes;
   weight: number;
-  relatedSubjectCode?: string;
-  value?: string | ITimeblock[] | number;
+  relatedSubjectCode: string;
+  value: string | ITimeblock[] | number | IPriority[];
 
-  isExclusive(): boolean;
   hasSubjectRelated(): boolean;
+  isExclusive(): boolean;
+
+  setExclusive(value: boolean): IPriority;
+  setWeight(value: number): IPriority;
+  setCode(value: string): IPriority;
+  setValue(value: any): IPriority;
 }
 
 /**

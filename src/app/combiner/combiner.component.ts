@@ -49,7 +49,7 @@ export class CombinerComponent implements OnInit {
 
   ngOnInit() {
     this.authService.getUserObservable().subscribe((user: User) => {
-      if (!this.authService.getLoading()){
+      if (!this.authService.getLoading()) {
         if (user != null) {
           this.router.navigate(['/combinadorDeHorarios']);
           this.dbServices.askForUserSubjectSelection();
@@ -107,10 +107,16 @@ export class CombinerComponent implements OnInit {
         if (data.hasOwnProperty(subjectCode)) {
           const subject = data[subjectCode];
           if (subject.hasOwnProperty('commissions')) {
+            const commissionPriorities: Priority[] = [];
             for (const subjectCommission of subject.commissions) {
-              this.priorities.push(
+              commissionPriorities.push(
                 Priority.gpCommission(subjectCommission.name, subjectCode)
                         .setExclusive(false)
+              );
+            }
+            if (commissionPriorities.length > 0) {
+              this.priorities.push(
+                Priority.gpMultiple(commissionPriorities).setExclusive(true)
               );
             }
           }
