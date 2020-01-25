@@ -51,6 +51,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxHmCarouselModule } from 'ngx-hm-carousel';
 import { ShowPlansComponent } from './show-plans/show-plans.component';
 import { FavouriteButtonComponent } from './favourite-button/favourite-button.component';
+import { AdjustMenuComponent } from './adjust-menu/adjust-menu.component';
 
 @NgModule({
   declarations: [
@@ -77,7 +78,8 @@ import { FavouriteButtonComponent } from './favourite-button/favourite-button.co
     ResultsComponent,
     NavbarComponent,
     ShowPlansComponent,
-    FavouriteButtonComponent
+    FavouriteButtonComponent,
+    AdjustMenuComponent
   ],
   imports: [
     BrowserModule,
@@ -89,7 +91,8 @@ import { FavouriteButtonComponent } from './favourite-button/favourite-button.co
       { path: 'testingModule2', component: TestingModule2Component },
       { path: 'testingModule3', component: TestingModule3Component },
       { path: 'infoSubject', component: InfoSubjectInterestComponent },
-      { path: 'results', component: ResultsComponent }
+      { path: 'results', component: ResultsComponent },
+      { path: 'adjustMenu', component: AdjustMenuComponent }
     ]),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule,
