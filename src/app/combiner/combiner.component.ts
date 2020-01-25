@@ -110,7 +110,7 @@ export class CombinerComponent implements OnInit {
             for (const subjectCommission of subject.commissions) {
               this.priorities.push(
                 Priority.gpCommission(subjectCommission.name, subjectCode)
-                        .setExclusive(true)
+                        .setExclusive(false)
               );
             }
           }
@@ -182,16 +182,12 @@ export class CombinerComponent implements OnInit {
 
     // Using the algorithm... Let's run it!
 
-<<<<<<< HEAD
     console.log('=== Subjects ===');
     console.log(this.subjects);
     console.log('=== Subjects Selected ===');
     console.log(this.subjectSelections);
     console.log('=== Priorities ===');
     console.log(this.priorities);
-=======
-    this.router.navigate(['/results']);
->>>>>>> d4798cc8a68bbaf66132ca93fe7f2739aaa48efb
     console.log('=== Combinations ===');
     console.log(this.combinations);
 
