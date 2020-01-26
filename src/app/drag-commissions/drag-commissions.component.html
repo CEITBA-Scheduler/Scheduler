@@ -1,6 +1,6 @@
 <div cdkDropListGroup fxLayout="row"> <!-- para compu queda lindo como row en vez de column. Pero para el telefono column-->
   <div class="example-container">
-    COMISIONES DISPONIBLES
+    COMISIONES DISPONIBLES (MÁXIMO A ELEGIR : 3)
 
       <div
         cdkDropList
@@ -15,7 +15,9 @@
 
     <div class="example-container">
       <!-- <h1>Comisiones elegidas</h1> -->
-      COMISIONES ELEGIDAS
+      ARRASTRÁ PARA ELEGIR LAS COMISIONES  
+      
+      <app-hoverbutton></app-hoverbutton>
       <div
         cdkDropList
         [cdkDropListData]="done"

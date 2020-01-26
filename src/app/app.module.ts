@@ -1,8 +1,7 @@
 import 'hammerjs';
 
 import { RouterModule } from '@angular/router';
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -47,11 +46,15 @@ import { TrashCardComponent } from './trash-card/trash-card.component';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { ResultsComponent } from './results/results.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxHmCarouselModule } from 'ngx-hm-carousel';
 import { ShowPlansComponent } from './show-plans/show-plans.component';
-import { LikedItemComponent } from './liked-item/liked-item.component';
 import { FavouriteButtonComponent } from './favourite-button/favourite-button.component';
+import { HoverbuttonComponent } from './hoverbutton/hoverbutton.component';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+
 
 @NgModule({
   declarations: [
@@ -78,8 +81,10 @@ import { FavouriteButtonComponent } from './favourite-button/favourite-button.co
     ResultsComponent,
     NavbarComponent,
     ShowPlansComponent,
-    LikedItemComponent,
-    FavouriteButtonComponent
+    
+    FavouriteButtonComponent,
+    
+    HoverbuttonComponent
   ],
   imports: [
     BrowserModule,
@@ -112,7 +117,8 @@ import { FavouriteButtonComponent } from './favourite-button/favourite-button.co
     NgxHmCarouselModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent,HoverbuttonComponent],
+  
 })
 export class AppModule { }
 
