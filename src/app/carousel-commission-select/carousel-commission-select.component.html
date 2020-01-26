@@ -1,3 +1,4 @@
+
 <ngb-carousel (slide)=changeSlide($event) [activeId]="startCommission" #carousel wrap="true" interval="false">
   <ng-template ngbSlide *ngFor="let commission of commissions; index as i" [id]="commission.name">
     <div class="carousel-caption" fxLayout="row" fxLayoutAlign="center center">
@@ -10,7 +11,7 @@
             <mat-icon>navigate_before</mat-icon>
           </button>
         </div>
-        <div fxFlex="80">
+        <div fxFlex="40">
           <app-comission-card class="commissionCard"  [commission]="commissions[i]">
 
           </app-comission-card>
