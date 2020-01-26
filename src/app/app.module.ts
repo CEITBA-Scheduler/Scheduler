@@ -52,6 +52,8 @@ import { NgxHmCarouselModule } from 'ngx-hm-carousel';
 import { ShowPlansComponent } from './show-plans/show-plans.component';
 import { FavouriteButtonComponent } from './favourite-button/favourite-button.component';
 import { AdjustMenuComponent } from './adjust-menu/adjust-menu.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { CalendarAdjustMenuComponent } from './calendar-adjust-menu/calendar-adjust-menu.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +81,8 @@ import { AdjustMenuComponent } from './adjust-menu/adjust-menu.component';
     NavbarComponent,
     ShowPlansComponent,
     FavouriteButtonComponent,
-    AdjustMenuComponent
+    AdjustMenuComponent,
+    CalendarAdjustMenuComponent
   ],
   imports: [
     BrowserModule,

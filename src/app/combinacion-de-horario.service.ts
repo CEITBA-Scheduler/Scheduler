@@ -30,7 +30,9 @@ export class CombinacionDeHorarioService {
   subjectCommissionsBehavioural: BehaviorSubject<{ [id: string]: SubjectCommissions}> = new BehaviorSubject({});
 
   algorithmResults: Combination[]= [];
-
+  hearts: string[] = [];
+  heartBehavioural: BehaviorSubject<string[]> = new BehaviorSubject([]);
+  
   constructor(
     private sgaLinkerService: SgaLinkerService,
     private authService: AuthService
@@ -104,7 +106,20 @@ export class CombinacionDeHorarioService {
   }
   // }
 
-  changeHeartList(id, value){
+  changeHeartList(id : string, value: boolean){
     console.log(`El corazon ${id} cambio a ${value}`);
+    if (value){
+      if (this.hearts.length < 3){
+        this.hearts.push(id);
+      }
+    }else{
+      var index = this.hearts.indexOf(id);
+      this.hearts.splice(index, 1);  
+    }
+    this.heartBehavioural.next(this.hearts);
+    console.log(`this.hearts = ${this.hearts}`);
+  }
+  getHeartList(): Observable<string[]>{
+    return this.heartBehavioural.asObservable();
   }
 }

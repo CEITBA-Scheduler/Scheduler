@@ -1,9 +1,10 @@
 
 import { CombinacionDeHorarioService } from './../combinacion-de-horario.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Subject, SubjectCommissions, generateSubjectCommissionsFromCombionation } from '../materia';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, of } from 'rxjs';
 import { SgaLinkerService } from '../sga-linker.service';
+import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
 import {
   SubjectSelection,
   Priority,
@@ -11,26 +12,45 @@ import {
 } from '../algorithm/algorithm-object';
 import { Router } from '@angular/router';
 
+export interface Food {
+  value: string;
+  viewValue: string;
+}
+
 @Component({
   selector: 'app-results',
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.css']
 })
 export class ResultsComponent implements OnInit {
+  @ViewChild('carousel', {static: false}) carousel: NgbCarousel;
+
   commissions: Observable<SubjectCommissions[]>[] = [];
 
   subjectsBehavioural: BehaviorSubject<SubjectCommissions[]>[] = [];
 
-  
   images = [944, 1011, 984].map((n) => `https://picsum.photos/id/${n}/900/500`);
   combinations: Combination[];
+  combinationNames: string[] = [];
+
+  hearts: Observable<string[]> = of([]);
+  
+  foods: Food[] = [
+    {value: 'steak-0', viewValue: 'Steak'},
+    {value: 'pizza-1', viewValue: 'Pizza'},
+    {value: 'tacos-2', viewValue: 'Tacos'}
+  ];
 
   constructor(private router: Router, private sgaLinkerService: SgaLinkerService, private combinacionDeHorarioService: CombinacionDeHorarioService) { }
 
   ngOnInit() {
 
     this.combinations = this.combinacionDeHorarioService.getAlgorithmResults();
+    for (let combination in this.combinations){
+      this.combinationNames.push(`${(+combination+1)}`);
+    }
 
+    this.hearts = this.combinacionDeHorarioService.getHeartList();
 
     // the next lines must be erased
     console.log(this.combinations);
@@ -80,8 +100,12 @@ export class ResultsComponent implements OnInit {
   back(){
     this.router.navigate(['/combinadorDeHorarios']);
   }
-  selected(selected: number, state: boolean){
+  selected(selected: string, state: boolean){
     console.log("El estado de la opcion ", selected," paso a ", state);
-    this.combinacionDeHorarioService.changeHeartList(selected,state);
+    this.combinacionDeHorarioService.changeHeartList(selected, state);
+  }
+  selectSlide(slide: string){
+    console.log(`Select slide ${+slide}`)
+    this.carousel.select('ngb-slide-' + (+slide-1));
   }
 }

@@ -1,1 +1,11 @@
-<p>adjust-menu works!</p>
+
+<div fxLayout="row" class="example-list-top">
+    <div *ngFor="let timePeriod of timePeriods" class="example-box-top">Opción elegida</div>
+</div>
+<div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
+    <div class="example-box" *ngFor="let timePeriod of timePeriods" cdkDrag>{{timePeriod}}</div>
+</div>
+
+    <!--<app-calendar-adjust-menu>
+    </app-calendar-adjust-menu>-->
+    
