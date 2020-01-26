@@ -29,11 +29,11 @@
     </div>
     <br>
 
-    <app-subject-commission-config (subjectChanged)="subjectChanged($event)" [subjectCommissionsData]="subjects">
+    <app-subject-commission-config (selectedSubject)="changeSelectedSubject($event)" (subjectChanged)="subjectChanged($event)" [subjectCommissionsData]="subjects">
 
     </app-subject-commission-config>
     <br>
-    <button mat-button>Reestablecer horarios originales</button>
+    <button (click)="resetSubjects()" mat-button>Reestablecer horarios originales</button>
 
 </div>
     <!---->

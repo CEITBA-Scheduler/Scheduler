@@ -1,4 +1,4 @@
-<ngb-carousel  [activeId]="startCommission" [showNavigationArrows]="showNavigationArrows" [showNavigationIndicators]="showNavigationIndicators" #carousel wrap="true" interval="false">
+<ngb-carousel (slide)=changeSlide($event) [activeId]="startCommission" #carousel wrap="true" interval="false">
   <ng-template ngbSlide *ngFor="let commission of commissions; index as i" [id]="commission.name">
     <div class="carousel-caption" fxLayout="row" fxLayoutAlign="center center">
     </div>

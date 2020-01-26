@@ -347,8 +347,10 @@ export class SgaLinkerService {
         priority: 0,
         credits: null,
       };
+      currCommission.subject = currSubject;
       this.allSubjectsValue[commission.subjectCode] = currSubject;
     } else {
+      currCommission.subject = this.allSubjectsValue[commission.subjectCode];
       // If the subject exists, we just push the comission
       this.allSubjectsValue[commission.subjectCode].commissions.push(currCommission);
     }

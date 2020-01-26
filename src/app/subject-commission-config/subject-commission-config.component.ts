@@ -23,6 +23,8 @@ export class SubjectCommissionConfigComponent implements OnInit {
     });
   }
   commissionChange(changeData: SubjectCommissions){
+    console.log("commission change");
+    console.log(changeData);
     this.subjectChanged.emit(changeData);
   }
 }

@@ -12,7 +12,7 @@ import { SgaLinkerService } from '../sga-linker.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private authService: AuthService, private router: Router, private linker: SgaLinkerService) { }
+  constructor(public authService: AuthService, private router: Router, private linker: SgaLinkerService) { }
 
   ngOnInit() {
     if (this.authService.getLogged()){

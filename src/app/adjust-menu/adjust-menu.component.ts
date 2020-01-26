@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import { Commission, SubjectCommissions, generateSubjectCommissionsFromCombionation } from '../materia';
+import { Subject, Commission, SubjectCommissions, generateSubjectCommissionsFromCombionation, generateSubjectCommissionsCopy } from '../materia';
 import { CombinacionDeHorarioService } from '../combinacion-de-horario.service';
 import { Combination } from '../algorithm/algorithm-object';
 import { Observable, BehaviorSubject, of } from 'rxjs';
@@ -32,7 +32,8 @@ export class AdjustMenuComponent implements OnInit {
 
   subjects: Observable<SubjectCommissions[]>; // combinacion almacenada por la materia
   subjectsBehaviour: BehaviorSubject<SubjectCommissions[]> = new BehaviorSubject([]);
-  
+  selectedSubject: Subject;
+
   constructor(private combinacionDeHorarioService: CombinacionDeHorarioService) { }
 
   ngOnInit() {
@@ -66,12 +67,24 @@ export class AdjustMenuComponent implements OnInit {
     this.currentSelectedCode = this.options[+selected];
   }
   subjectChanged(commission: SubjectCommissions){
+    console.log("Subject changed");
+    console.log(commission);
+
     for (let i in this.dataSubjectModified[this.currentSelectedCode]){
       if (this.dataSubjectModified[this.currentSelectedCode][i].subject.code == commission.subject.code){
         // we found it
         this.dataSubjectModified[this.currentSelectedCode][i].commissions[0] = commission.commissions[0];
         this.subjectsBehaviour.next(this.dataSubjectModified[this.currentSelectedCode]);
       }
+    }
+  }
+  changeSelectedSubject(subject: Subject){
+    this.selectedSubject = subject;
+  }
+  resetSubjects(){
+    console.log("reset subjects");
+    for (let i in this.dataSubjectModified){
+      this.dataSubjectModified[this.currentSelectedCode][i].commissions[0] = this.dataSubject[this.currentSelectedCode][i].commissions[0];
     }
   }
 }

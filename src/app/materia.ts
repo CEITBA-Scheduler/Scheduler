@@ -3,7 +3,7 @@ import { Combination, Timeblock as TimeblockAlgo } from './algorithm/algorithm-o
 
 import {Time} from '@angular/common';
 import { Observable, of, BehaviorSubject } from 'rxjs';
-import { addMinutes } from 'date-fns';
+import { addMinutes, sub } from 'date-fns';
 
 export interface Subject {
     name: string;
@@ -95,5 +95,15 @@ export function generateSubjectCommissionsFromCombionation(combination: Combinat
       }
     )
   };
+  return ans;
+}
+export function generateSubjectCommissionsCopy(subjectCommissions: SubjectCommissions[]){
+  var ans: SubjectCommissions[] = [];
+  for (let subjectCommission of subjectCommissions){
+    ans.push({
+      subject: subjectCommission.subject,
+      commissions: subjectCommission.commissions
+    }); 
+  }
   return ans;
 }
