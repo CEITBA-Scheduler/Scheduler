@@ -157,10 +157,21 @@ export class CalendarComponent implements OnInit {
       var schedules = [];
 
       var colors = [
-        'rgba(200,0,0,0.5)',
+        'rgba(128,255,0,0.5)',
         'rgba(0,200,200,0.5)',
         'rgba(0,0,200,0.5)',
-        'rgba(0,200,0,0.5)'
+        'rgba(0,200,0,0.5)',
+        'rgba(255,238,0,0.5)',
+        'rgba(204,0,102,0.5)',
+        'rgba(255,128,0,0.5)',
+        'rgba(255,0,255,0.5)',
+        'rgba(0,0,255,0.5)',
+        'rgba(200,0,0,0.5)',
+        'rgba(51,0,25,0.5)',
+        'rgba(100,124,6,0.5)',
+        'rgba(96,96,96,0.5)',
+        'rgba(153,0,0,0.5)',
+        'rgba(0,51,25,0.5)'
       ];
       var i = 0;
 
@@ -190,7 +201,7 @@ export class CalendarComponent implements OnInit {
             commissionTimes: times
           },
         );
-        i = (i + 1) % 4;
+        i = (i + 1) % 15;
       }
       this.subjectList = [];
       for (let i = 0; i < schedules.length ; i++ ) {
@@ -232,10 +243,21 @@ export class CalendarComponent implements OnInit {
     };
 
     var colors = [
-      'rgba(200,0,0,0.6)',
-      'rgba(0,200,200,0.6)',
-      'rgba(0,0,200,0.6)',
-      'rgba(0,200,0,0.6)'
+      'rgba(128,255,0,0.5)',
+      'rgba(0,200,200,0.5)',
+      'rgba(0,0,200,0.5)',
+      'rgba(0,200,0,0.5)',
+      'rgba(255,238,0,0.5)',
+      'rgba(204,0,102,0.5)',
+      'rgba(255,128,0,0.5)',
+      'rgba(255,0,255,0.5)',
+      'rgba(0,0,255,0.5)',
+      'rgba(200,0,0,0.5)',
+      'rgba(51,0,25,0.5)',
+      'rgba(100,124,6,0.5)',
+      'rgba(96,96,96,0.5)',
+      'rgba(153,0,0,0.5)',
+      'rgba(0,51,25,0.5)'
     ];
     var u = 0;
 
@@ -264,7 +286,7 @@ export class CalendarComponent implements OnInit {
         )
         console.log(this.subjectsOfDay[this.subjectList[m].subject.commissionTimes[i].day]);
       }
-      u = (u + 1) % 4;
+      u = (u + 1) % 15;
     }
   }
 

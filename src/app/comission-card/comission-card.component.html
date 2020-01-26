@@ -7,8 +7,7 @@
             <div *ngFor="let timeblock of commission.schedule">
                 {{timeblock.day}} {{myFunc(timeblock.start.minutes, timeblock.start.hours)}} - {{myFunc(timeblock.end.minutes,timeblock.end.hours)}}
             </div>
-          </div>
-        
+          </div>    
     </mat-grid-tile>
     <mat-grid-tile [colspan]=3 [rowspan]=2 Align="center">
         <div>
