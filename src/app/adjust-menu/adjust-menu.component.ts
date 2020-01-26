@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { SubjectCommissionConfigComponent } from '../subject-commission-config/subject-commission-config.component';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import { Subject, Commission, SubjectCommissions, generateSubjectCommissionsFromCombionation, generateSubjectCommissionsCopy } from '../materia';
 import { CombinacionDeHorarioService } from '../combinacion-de-horario.service';
@@ -11,7 +12,7 @@ import { Observable, BehaviorSubject, of } from 'rxjs';
   styleUrls: ['./adjust-menu.component.css']
 })
 export class AdjustMenuComponent implements OnInit {
-  
+  @ViewChild('subjectCommissionConfig', {static: false}) subjectCommissionConfig: SubjectCommissionConfigComponent;
   options: string[] = [
     '12',
     '13',
@@ -62,19 +63,22 @@ export class AdjustMenuComponent implements OnInit {
   }
   selectOption(selected: number){
     console.log(`selected ${selected}`)
+    this.currentSelectedCode = this.options[+selected];
     this.selectedBehavioural.next(+selected);
     this.subjectsBehaviour.next(this.dataSubjectModified[this.options[+selected]]);
-    this.currentSelectedCode = this.options[+selected];
+    
   }
   subjectChanged(commission: SubjectCommissions){
     console.log("Subject changed");
     console.log(commission);
+    this.subjectCommissionConfig.setAvoidMyself();
 
     for (let i in this.dataSubjectModified[this.currentSelectedCode]){
       if (this.dataSubjectModified[this.currentSelectedCode][i].subject.code == commission.subject.code){
         // we found it
-        this.dataSubjectModified[this.currentSelectedCode][i].commissions[0] = commission.commissions[0];
+        this.dataSubjectModified[this.currentSelectedCode][i].commissions[0] = commission.commissions[0];    
         this.subjectsBehaviour.next(this.dataSubjectModified[this.currentSelectedCode]);
+      
       }
     }
   }
@@ -82,9 +86,11 @@ export class AdjustMenuComponent implements OnInit {
     this.selectedSubject = subject;
   }
   resetSubjects(){
-    console.log("reset subjects");
-    for (let i in this.dataSubjectModified){
-      this.dataSubjectModified[this.currentSelectedCode][i].commissions[0] = this.dataSubject[this.currentSelectedCode][i].commissions[0];
+    console.log("Reset subjects");
+    for (let i in this.dataSubjectModified[this.currentSelectedCode]){
+      this.dataSubjectModified[this.currentSelectedCode][i].commissions[0] = this.dataSubject[this.currentSelectedCode][i].commissions[0]; 
     }
+    this.subjectsBehaviour.next(this.dataSubjectModified[this.currentSelectedCode]);
+
   }
 }

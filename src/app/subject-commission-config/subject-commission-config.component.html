@@ -1,6 +1,6 @@
 <mat-tab-group>
-    <mat-tab *ngFor="let subjectCommission of subjectCommissions" label="{{subjectCommission.subject.name}}"> 
-        <app-carousel-commission-select [data]="subjectCommission" (subjectCommissionUpdate)="commissionChange($event)">
+    <mat-tab *ngFor="let subjectCommission of objectKeys(subjectCommissionsData)" label="{{(subjectCommissionsData[subjectCommission] | async).subject.name}}"> 
+        <app-carousel-commission-select [data]="subjectCommissionsData[subjectCommission]" (subjectCommissionUpdate)="commissionChange($event)">
 
         </app-carousel-commission-select>
     </mat-tab>

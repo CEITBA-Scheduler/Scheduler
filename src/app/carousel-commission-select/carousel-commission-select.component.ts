@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild, Output, EventEmitter, ɵConsole } from '@angular/core';
-import { Commission, SubjectCommissions } from '../materia';
+import { Subject, Commission, SubjectCommissions } from '../materia';
 import { NgbCarousel, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
 import { SgaLinkerService } from '../sga-linker.service';
 import { Observable } from 'rxjs';
@@ -11,11 +11,12 @@ import { Observable } from 'rxjs';
 })
 export class CarouselCommissionSelectComponent implements OnInit {
   @ViewChild('carousel', {static: false}) carousel: NgbCarousel;
-  @Input() data: SubjectCommissions;
+  @Input() data: Observable<SubjectCommissions>;
 
   @Output() subjectCommissionUpdate: EventEmitter<SubjectCommissions> = new EventEmitter<SubjectCommissions>();
 
   startCommission: string = "";
+  subject: Subject = null;
 
   commissions : Commission[] = [];
 
@@ -23,10 +24,21 @@ export class CarouselCommissionSelectComponent implements OnInit {
 
   ngOnInit() {
     if (this.data){
-      this.commissions = this.sgaLinkerService.getCommissions(this.data.subject);
-      this.startCommission = this.data.commissions[0].name;
-      console.log("commissions");
-      console.log(this.commissions);
+      this.data.subscribe((data: SubjectCommissions) => {
+        console.log("new data");
+        console.log(data);
+        
+        this.commissions = this.sgaLinkerService.getCommissions(data.subject);
+        
+        if (this.carousel){
+          this.carousel.select(data.commissions[0].name);
+        }else{
+          this.startCommission = data.commissions[0].name;
+        }
+        this.subject = data.subject;
+
+      });
+      
 
       // Do something after
     }
@@ -50,7 +62,7 @@ export class CarouselCommissionSelectComponent implements OnInit {
 
       this.subjectCommissionUpdate.emit(
         {
-          subject: this.data.subject,
+          subject: this.subject,
           commissions: [this.commissions[index]]
         }
       );

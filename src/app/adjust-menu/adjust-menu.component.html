@@ -29,7 +29,7 @@
     </div>
     <br>
 
-    <app-subject-commission-config (selectedSubject)="changeSelectedSubject($event)" (subjectChanged)="subjectChanged($event)" [subjectCommissionsData]="subjects">
+    <app-subject-commission-config #subjectCommissionConfig (selectedSubject)="changeSelectedSubject($event)" (subjectChanged)="subjectChanged($event)" [subjectCommissionsInput]="subjects">
 
     </app-subject-commission-config>
     <br>

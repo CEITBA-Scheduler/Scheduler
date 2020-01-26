@@ -284,7 +284,7 @@ export class CalendarComponent implements OnInit {
             commission: subjectCommission
           }
         )
-        console.log(this.subjectsOfDay[this.subjectList[m].subject.commissionTimes[i].day]);
+        //console.log(this.subjectsOfDay[this.subjectList[m].subject.commissionTimes[i].day]);
       }
       u = (u + 1) % 15;
     }
