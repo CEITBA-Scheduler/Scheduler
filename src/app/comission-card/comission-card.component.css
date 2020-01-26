@@ -18,21 +18,3 @@ mat-card-content{
 mat-card{
 padding:0;
 }
-
-
-.g1{
-    width: 10% !important ;
-    background-color: red;
-  }
-  .g2{
-    width:30% !important;
-    background-color: blue;
-  }
-  .g3{
-    width:50% !important;
-    background-color: blue;
-  }
-  
-  .fullWidth{
-    width: 100% !important ;
-  }

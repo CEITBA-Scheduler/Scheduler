@@ -148,6 +148,7 @@ export class CalendarComponent implements OnInit {
         this.periodButtonsColorState[day].push(false);
       }
     }
+    this.calendarService.setTimeblocks(this.periodBlocks);
     this.subjectsComissions.subscribe((subjectsComissions: SubjectCommissions[]) => {
       // the next line must be erased  
       console.log("Actualizando schedules ...");

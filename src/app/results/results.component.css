@@ -9,3 +9,14 @@
 .text-combinacion{
   height:120px;
 }
+.error-message-container {
+  width: 50%;
+  vertical-align: bottom;
+  text-align: center;
+}
+.warning-image {
+  background-size: cover;
+}
+.return-button {
+  text-align: center;
+}
