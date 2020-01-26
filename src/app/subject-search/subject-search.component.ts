@@ -16,6 +16,7 @@ import { Subject } from '../materia';
 import { MateriasService } from '../materias.service'
 import { MatTableDataSource} from '@angular/material/table';
 import { SgaLinkerService } from '../sga-linker.service';
+import { GeneralProgramService } from '../general-program.service'
 
 
 @Component({
@@ -28,6 +29,7 @@ export class SubjectSearchComponent implements OnInit {
   // onOptionSelected es la acción a ejecutarse cuando se elije una opción
   //@Input() subjectsSelected:Subject[]; //AGREGO1
   @Input() subjects:Subject[] = []; //AGREGO1
+  @Input() initialStatus: {[code: string]: Observable<boolean>} = {};
   @Output() onOptionSelected : EventEmitter<Subject> = new EventEmitter<Subject>();
 
   options: Observable<Subject[]>;
@@ -37,18 +39,30 @@ export class SubjectSearchComponent implements OnInit {
   displayedColumns: string[] = ['name', 'code'];
 
 
-  constructor(private sgaLinkerService: SgaLinkerService) { }
+  filterByPlan = false;
+  plan = null;
+  filtByPlanName : string = "filtByPlan";
+  filtPlanObs : Observable<boolean>;
+
+  constructor(private sgaLinkerService: SgaLinkerService, private generalProgramService : GeneralProgramService) { }
 
   ngOnInit() {
     this.options = this.sgaLinkerService.getAllSubjectsAsList();
-    /*this.options.subscribe(
-      (materias: Subject[]) => (console.log(materias) )
-    );*/
-
+  
     this.myControl.valueChanges.subscribe(
       val => this.updateWrittenValue(val)
     );
     this.filteredOptions = this.getFilteredValues();
+    /* 
+    this.sgaLinkerService.getCareerPlan().subscribe(data => {
+      this.plan = data
+    });
+    */
+    this.generalProgramService.getCheckboxStatusAsObservable("filtByPlan").subscribe( toggleStatus => {
+      this.filterByPlan = toggleStatus; 
+      // cada vez que cmabia esto cambia el options!!! es lo mas facil
+    })
+
   }
   removeTildes(word: string){
     return word.replace("á","a").replace("é","e").replace("í","i").replace("ó","o").replace("ú","u");
@@ -58,6 +72,7 @@ export class SubjectSearchComponent implements OnInit {
     this.filteredOptions = this.getFilteredValues();
   }
   private getFilteredValues(): Observable<Subject[]> {
+    console.log("entre a get filtered values")
     /// filtramos acorde al input del usuario el observable
     return this.options.pipe(
       map(
