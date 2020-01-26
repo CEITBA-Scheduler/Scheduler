@@ -1,64 +1,80 @@
 <app-navbar></app-navbar>
-<mat-vertical-stepper labelPosition="bottom" linear="true">
-  
-  <mat-step label="ELEGIR 3 COMBINACIONES FAVORITAS">
-    <div fxLayout="row" fxLayoutAlign="center center">
-      <div *ngIf="(hearts | async).length == 0">
-        <button  mat-button>
-          no hay calendarios seleccionados
-        </button>
+<div *ngIf="!areCombinationsAvailable" fxLayoutAlign="center center" style="min-height: 80vh;">
+  <mat-card class="error-message-container">
+    <mat-card-header style="text-align: left;">
+      <div mat-card-avatar fxLayoutAlign="center center">
+        <img class="warning-image" src='../../assets/img/warning.png'>
       </div>
-      <div *ngFor="let heart of hearts | async">
-        <button (click)="selectSlide(heart)" mat-button>
-          Comisión {{heart}}
-        </button>
+      <mat-card-title>No hay combinaciones que cumplan con los requisitos pedidos</mat-card-title>
+      <mat-card-subtitle>Intente de nuevo con otros criterios</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions>
+      <button mat-raised-button (click)="returnToCombiner()">VOLVER</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+<div *ngIf="areCombinationsAvailable">
+  <mat-vertical-stepper labelPosition="bottom" linear="true">
+    
+    <mat-step label="ELEGIR 3 COMBINACIONES FAVORITAS">
+      <div fxLayout="row" fxLayoutAlign="center center">
+        <div *ngIf="(hearts | async).length == 0">
+          <button  mat-button>
+            No hay calendarios seleccionados
+          </button>
+        </div>
+        <div *ngFor="let heart of hearts | async">
+          <button (click)="selectSlide(heart)" mat-button>
+            Comisión {{heart}}
+          </button>
+        </div>
       </div>
-    </div>
-    <br>
+      <br>
 
-    <div fxLayout="column" fxLayoutAlign="center center">
-      <ngb-carousel [showNavigationArrows]="false" #carousel interval="false">
-        <ng-template ngbSlide *ngFor="let combination of combinations; index as i">
-          <div class="carousel-caption" fxLayout="row" fxLayoutAlign="center center">
-            Combinación {{combinationNames[i]}} 
-              <div *ngIf="((hearts | async).indexOf(combinationNames[i]) != -1) || (hearts | async)?.length < 3">
-                <app-favourite-button (selectedChange)="selected(combinationNames[i], $event)">
+      <div fxLayout="column" fxLayoutAlign="center center">
+        <ngb-carousel [showNavigationArrows]="false" #carousel interval="false">
+          <ng-template ngbSlide *ngFor="let combination of combinations; index as i">
+            <div class="carousel-caption" fxLayout="row" fxLayoutAlign="center center">
+              Combinación {{combinationNames[i]}} 
+                <div *ngIf="((hearts | async).indexOf(combinationNames[i]) != -1) || (hearts | async)?.length < 3">
+                  <app-favourite-button (selectedChange)="selected(combinationNames[i], $event)">
 
-                </app-favourite-button><!--{{3-(hearts | async)?.length}}-->
-              </div>
-              <div *ngIf="!(((hearts | async).indexOf(combinationNames[i]) != -1) || (hearts | async)?.length < 3)">
-                <button mat-icon-button disabled aria-label="Example icon-button with a heart icon">
-                  <mat-icon>favorite</mat-icon>
-                </button>
-              </div>
-          </div>
-
-            <div class="picsum-img-wrapper">
-              <div fxLayout="column" fxLayoutAlign="center center" >
-                <app-calendar [subjectsComissions]="commissions[i]" [areSubjectsShown]="true" [style.font-size.em]="0.78">
-
-                </app-calendar>
-                <div class="space">
-
+                  </app-favourite-button><!--{{3-(hearts | async)?.length}}-->
                 </div>
-              </div>
+                <div *ngIf="!(((hearts | async).indexOf(combinationNames[i]) != -1) || (hearts | async)?.length < 3)">
+                  <button mat-icon-button disabled aria-label="Example icon-button with a heart icon">
+                    <mat-icon>favorite</mat-icon>
+                  </button>
+                </div>
             </div>
 
-        </ng-template>
-      </ngb-carousel>
-    </div>
-  </mat-step>
-  <mat-step label="AJUSTAR COMBINACIONES">
+              <div class="picsum-img-wrapper">
+                <div fxLayout="column" fxLayoutAlign="center center" >
+                  <app-calendar [subjectsComissions]="commissions[i]" [areSubjectsShown]="true" [style.font-size.em]="0.78">
 
-    <app-adjust-menu>
+                  </app-calendar>
+                  <div class="space">
 
-    </app-adjust-menu>
-  </mat-step>
-  <mat-step label="FIN">
+                  </div>
+                </div>
+              </div>
 
-  </mat-step>
+          </ng-template>
+        </ngb-carousel>
+      </div>
+    </mat-step>
+    <mat-step label="AJUSTAR COMBINACIONES">
 
-</mat-vertical-stepper>
+      <app-adjust-menu>
+
+      </app-adjust-menu>
+    </mat-step>
+    <mat-step label="FIN">
+
+    </mat-step>
+
+  </mat-vertical-stepper>
+</div>
 
 
 <!--<mdb-carousel [animation]='slide' [interval]="false">
