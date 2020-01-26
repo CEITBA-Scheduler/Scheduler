@@ -1,12 +1,12 @@
-<ngb-carousel [showNavigationArrows]="showNavigationArrows" [showNavigationIndicators]="showNavigationIndicators" #carousel wrap="true" interval="false">
-  <ng-template ngbSlide *ngFor="let commission of commissions; index as i">
+<ngb-carousel  [activeId]="startCommission" [showNavigationArrows]="showNavigationArrows" [showNavigationIndicators]="showNavigationIndicators" #carousel wrap="true" interval="false">
+  <ng-template ngbSlide *ngFor="let commission of commissions; index as i" [id]="commission.name">
     <div class="carousel-caption" fxLayout="row" fxLayoutAlign="center center">
     </div>
 
     <div class="picsum-img-wrapper">
       <div fxLayout="row" fxLayoutAlign="center center">
         <div>
-          <button mat-button (click)="prevCommission()" mat-icon-button aria-label="Example icon-button with a heart icon">
+          <button class="buttonCard" mat-button (click)="prevCommission()" mat-icon-button aria-label="Example icon-button with a heart icon">
             <mat-icon>navigate_before</mat-icon>
           </button>
         </div>
@@ -15,11 +15,11 @@
 
           </app-comission-card>
         </div>
-        <div>
-          <button mat-button (click)="nextCommission()" mat-icon-button aria-label="Example icon-button with a heart icon">
+        <div >
+          <button class="buttonCard" mat-button (click)="nextCommission()" mat-icon-button aria-label="Example icon-button with a heart icon">
             <mat-icon>navigate_next</mat-icon>
           </button>
-        </div>
+        </div >
       </div>
     </div>
   </ng-template>

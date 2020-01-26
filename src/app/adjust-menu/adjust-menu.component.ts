@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import { Commission, SubjectCommissions, generateSubjectCommissionsFromCombionation } from '../materia';
 import { CombinacionDeHorarioService } from '../combinacion-de-horario.service';
@@ -11,6 +11,7 @@ import { Observable, BehaviorSubject, of } from 'rxjs';
   styleUrls: ['./adjust-menu.component.css']
 })
 export class AdjustMenuComponent implements OnInit {
+  
   options: string[] = [
     '12',
     '13',
@@ -26,10 +27,12 @@ export class AdjustMenuComponent implements OnInit {
   selectedOption: Observable<number>;
   selectedBehavioural: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   dataSubject: {[code: string]: SubjectCommissions[]} = {};
-  
+  dataSubjectModified: {[code: string]: SubjectCommissions[]} = {};
+  currentSelectedCode: string;
+
   subjects: Observable<SubjectCommissions[]>; // combinacion almacenada por la materia
   subjectsBehaviour: BehaviorSubject<SubjectCommissions[]> = new BehaviorSubject([]);
-
+  
   constructor(private combinacionDeHorarioService: CombinacionDeHorarioService) { }
 
   ngOnInit() {
@@ -43,6 +46,7 @@ export class AdjustMenuComponent implements OnInit {
 
       for (let option of this.options){
         this.dataSubject[option] = generateSubjectCommissionsFromCombionation(this.algorithmResults[+option-1]);
+        this.dataSubjectModified[option] = generateSubjectCommissionsFromCombionation(this.algorithmResults[+option-1]);
       }
       //console.log(this.subjects);
       console.log(this.options);
@@ -58,8 +62,16 @@ export class AdjustMenuComponent implements OnInit {
   selectOption(selected: number){
     console.log(`selected ${selected}`)
     this.selectedBehavioural.next(+selected);
-    this.subjectsBehaviour.next(this.dataSubject[this.options[+selected]]);
-    
+    this.subjectsBehaviour.next(this.dataSubjectModified[this.options[+selected]]);
+    this.currentSelectedCode = this.options[+selected];
   }
-
+  subjectChanged(commission: SubjectCommissions){
+    for (let i in this.dataSubjectModified[this.currentSelectedCode]){
+      if (this.dataSubjectModified[this.currentSelectedCode][i].subject.code == commission.subject.code){
+        // we found it
+        this.dataSubjectModified[this.currentSelectedCode][i].commissions[0] = commission.commissions[0];
+        this.subjectsBehaviour.next(this.dataSubjectModified[this.currentSelectedCode]);
+      }
+    }
+  }
 }

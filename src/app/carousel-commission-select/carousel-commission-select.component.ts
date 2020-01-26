@@ -1,6 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Commission } from '../materia';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Commission, SubjectCommissions } from '../materia';
 import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
+import { SgaLinkerService } from '../sga-linker.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-carousel-commission-select',
@@ -9,41 +11,20 @@ import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
 })
 export class CarouselCommissionSelectComponent implements OnInit {
   @ViewChild('carousel', {static: false}) carousel: NgbCarousel;
+  @Input() data: SubjectCommissions;
+  startCommission: string = "";
 
-  commissions : Commission[] = [
-    {
-      name: "A",
-      professors: ["Juan", "Martinez"],
-      schedule: [{
-        day: "Lunes",
-        start: {minutes:0, hours:8},
-        end: {minutes:0, hours:10}
-      }],
-    },
-    {
-      name: "B",
-      professors: ["Juan", "Perez"],
-      schedule: [{
-        day: "Martes",
-        start: {minutes:0, hours:8},
-        end: {minutes:0, hours:10}
-      }]
-    },
-    {
-      name: "C",
-      professors: ["Juan", "Orlandez"],
-      schedule: [{
-        day: "Martes",
-        start: {minutes:0, hours:8},
-        end: {minutes:0, hours:10}
-      }]
-    }
-  ];
+  commissions : Commission[] = [];
 
-  constructor() { }
+  constructor(private sgaLinkerService: SgaLinkerService) { }
 
   ngOnInit() {
-    console.log(this.commissions);
+    if (this.data){
+      this.commissions = this.sgaLinkerService.getCommissions(this.data.subject);
+      this.startCommission = this.data.commissions[0].name;
+
+      // Do something after
+    }
   }
   nextCommission(){
     this.carousel.next();

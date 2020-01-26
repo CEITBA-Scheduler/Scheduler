@@ -29,28 +29,11 @@
     </div>
     <br>
 
-    <mat-tab-group>
-        <mat-tab label="Mátematica I"> 
-            <app-carousel-commission-select>
+    <app-subject-commission-config (subjectChanged)="subjectChanged($event)" [subjectCommissionsData]="subjects">
 
-            </app-carousel-commission-select>
-        </mat-tab>
-        <mat-tab label="Algebra Lineal">
-            <app-carousel-commission-select>
-
-            </app-carousel-commission-select>
-        </mat-tab>
-        <mat-tab label="Matemtica II">
-            <app-carousel-commission-select>
-
-            </app-carousel-commission-select>
-        </mat-tab>
-        
-    </mat-tab-group>
+    </app-subject-commission-config>
     <br>
     <button mat-button>Reestablecer horarios originales</button>
-
-    
 
 </div>
     <!---->

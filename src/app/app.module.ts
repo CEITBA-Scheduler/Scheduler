@@ -56,6 +56,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { CalendarAdjustMenuComponent } from './calendar-adjust-menu/calendar-adjust-menu.component';
 import { CarouselCommissionSelectComponent } from './carousel-commission-select/carousel-commission-select.component';
 import { CommissionCardV2Component } from './commission-card-v2/commission-card-v2.component';
+import { SubjectCommissionConfigComponent } from './subject-commission-config/subject-commission-config.component';
 
 @NgModule({
   declarations: [
@@ -86,7 +87,8 @@ import { CommissionCardV2Component } from './commission-card-v2/commission-card-
     AdjustMenuComponent,
     CalendarAdjustMenuComponent,
     CarouselCommissionSelectComponent,
-    CommissionCardV2Component
+    CommissionCardV2Component,
+    SubjectCommissionConfigComponent
   ],
   imports: [
     BrowserModule,
