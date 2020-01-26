@@ -18,7 +18,7 @@ export class CheckboxItemComponent implements OnInit {
 
   ngOnInit() {
     if (this.startChecked){
-      console.log(this.startChecked);
+      //console.log(this.startChecked);
       this.startChecked.subscribe((data: boolean) => {
         this.checked = data;
       });

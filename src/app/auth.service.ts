@@ -49,8 +49,8 @@ export class AuthService implements CanActivate {
           displayName: user.displayName,
           imageUrl: user.photoURL
         };
-        console.log("user logged in");
-        console.log(this.user);
+        //console.log("user logged in");
+        //console.log(this.user);
 
         this.generateUserDb();
 
@@ -100,11 +100,11 @@ export class AuthService implements CanActivate {
 
     this.afs.collection("users").doc(this.user.uid).get().subscribe(data => {
       if (!data.exists){
-        console.log("First user login")
-        console.log("Generating user db ...");
+        //console.log("First user login")
+        //console.log("Generating user db ...");
         this.getSgaInfo().subscribe((udata: {[id: string] : string}) => {
-          console.log("udata = ");
-          console.log(udata);
+          //console.log("udata = ");
+          //console.log(udata);
 
           if (Object.keys(udata).length != 0){
             if (udata.success == "true"){
@@ -127,8 +127,8 @@ export class AuthService implements CanActivate {
 
 
       }else{
-        console.log("Welcome user " + this.user);
-        console.log(data.data());
+        //console.log("Welcome user " + this.user);
+        //console.log(data.data());
 
         if ("plan" in data.data()){
           this.user.plan = data.data()["plan"];
@@ -224,6 +224,7 @@ export class AuthService implements CanActivate {
     this.afAuth.auth.signInWithPopup(provider).then(
       result =>{
         this.credentials = result;
+        this.loading = true;
         //console.log("Success... Google account Linked!")
 
       }).catch(err=> {
