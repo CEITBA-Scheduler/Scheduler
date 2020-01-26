@@ -23,16 +23,25 @@ export class DragCommissionsComponent implements OnInit {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
-      transferArrayItem(event.previousContainer.data,
-                        event.container.data,
-                        event.previousIndex,
-                        event.currentIndex);
-        // if (this.done.length == 4){
-        //   transferArrayItem(event.previousContainer.data,
-        //     event.container.data,
-        //     event.previousIndex,
-        //     event.currentIndex);
-        // }
+      var num1 = Number(event.previousContainer._dropListRef.id.replace(/\D/g, ''));
+      var num2 = Number(event.container._dropListRef.id.replace(/\D/g, ''));
+      
+      if(num1<num2){
+          //num1 is on the left, I am adding from TODO to DONE
+          if(this.done.length <= 2){
+            transferArrayItem(event.previousContainer.data,
+              event.container.data,
+              event.previousIndex,
+              event.currentIndex);
+          }
+
+      }else{
+          //num1 is on the right, I am poping items from DONE to TODO
+          transferArrayItem(event.previousContainer.data,
+            event.container.data,
+            event.previousIndex,
+            event.currentIndex);
+      }
     }
     this.selectedCommissions.next(this.done);
   }
@@ -45,22 +54,23 @@ export class DragCommissionsComponent implements OnInit {
     let getValues = (dic: {[id: string]: Commission}): Commission[] => {
       var ans : Commission[] = [];
       for (let key in dic){
+        
         ans.push(dic[key]);
       }
       return ans;
     };
-    this.todo = getValues(this.commissions);
+    this.todo = getValues(this.commissions); // this is all comissions from the subject
 
     this.setCommissionData.emit(this.selectedCommissions.asObservable());
 
     this.preSelectedCommissions.subscribe((commissions: Commission[]) => {
-      /// we update commissions from data arrived from server
+          /// we update commissions from data arrived from server
       var comString: { [code: string]: boolean } = {};
 
       for (let com of commissions){
-        comString[com.name] = true;
+        comString[com.name] = true;  
       }
-
+    
       this.done = commissions;
 
       for (let i = this.todo.length-1; i >= 0; i--) {
@@ -68,6 +78,7 @@ export class DragCommissionsComponent implements OnInit {
           this.todo.splice(i, 1);
         }
       }
+      
     });
     this.selectedCommissions.next(this.done);
   }

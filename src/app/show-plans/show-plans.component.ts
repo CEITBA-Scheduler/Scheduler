@@ -9,17 +9,20 @@ import { SgaLinkerService } from '../sga-linker.service';
 export class ShowPlansComponent implements OnInit {
 
   careerPlan = null
-
   constructor(private sgaLinkerService : SgaLinkerService) {  
   }
 
   ngOnInit() {
     this.sgaLinkerService.getCareerPlan().subscribe(data => {
       this.careerPlan = data
-      console.log("Este es el plan by lucas")
-      console.log(this.careerPlan)
+      this.careerPlan.cycles = this.careerPlan.cycles.filter(
+        (elem, i, arr) => {
+          if (arr.indexOf(elem) === i) {
+            return elem
+          }
+        })
     });
   }
-
+      
 }
 

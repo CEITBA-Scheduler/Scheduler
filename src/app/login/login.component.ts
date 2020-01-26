@@ -30,6 +30,7 @@ export class LoginComponent implements OnInit {
   }
 
   iniciarSesion() {
+    this.authService.notreg = false;
     this.authService.signInWithGoogle();
   }
 }
