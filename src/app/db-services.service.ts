@@ -155,8 +155,8 @@ export class DbServicesService {
         this.subjectCodes.push(matI.subjectCode);
         this.commissionNames[matI.subjectCode] = matI.commissions;
         // the next line must be erased
-        console.log("commissions:");
-        console.log(matI.commissions);
+        //console.log("commissions:");
+        //console.log(matI.commissions);
         // the last line must be erased
       }
     }

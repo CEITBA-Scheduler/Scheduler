@@ -33,8 +33,8 @@ export class CommissionSelectorComponent implements OnInit {
         //this.selectedCommissionsData = data;
 
         // the next line must be erased
-        console.log("updating selected commissions");
-        console.log(data); // ok
+        //console.log("updating selected commissions");
+        //console.log(data); // ok
         // the last line must be erased
 
         for (let code in data){
@@ -43,7 +43,7 @@ export class CommissionSelectorComponent implements OnInit {
           }
 
           data[code].subscribe((newCommissions: Commission[]) => {
-            console.log(newCommissions);
+            //console.log(newCommissions);
             this.selectedCommissionsData[code].next(newCommissions);
           });
 

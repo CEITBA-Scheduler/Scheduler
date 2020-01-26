@@ -4,24 +4,33 @@
       <img src="../../assets/img/Imagen3.bmp" alt="Login Logo" width=400 height=400>
     </figure>
   </div>
-  <div fxLayout="column" fxLayoutAlign="center center" > 
-    <button mat-raised-button color="primary" (click)="iniciarSesion()" style="background-color: #01579b ">
-      <div fxLayout="row" fxLayoutAlign="space-between center">
-        <span>
-          <img class="center" src="../../assets/img/googleLogo.jpg" alt="Google Logo" width=20 height=20>
-        </span>
-        &nbsp;
-        &nbsp;
-        <span class="label" data-analytics-event="clickedLoginWithGmailButton"> 
-          Acceder con Google 
-        </span>
-      </div>
-    </button>
-
+  <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="30px"> 
+    <div>
+      <button mat-raised-button color="primary" (click)="iniciarSesion()" style="background-color: #01579b ">
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <span>
+            <img class="center" src="../../assets/img/googleLogo.jpg" alt="Google Logo" width=20 height=20>
+          </span>
+          &nbsp;
+          &nbsp;
+          <span class="label" data-analytics-event="clickedLoginWithGmailButton"> 
+            Acceder con Google 
+          </span>
+        </div>
+      </button>
+    </div>
     
-  </div>   
-  <br>
+
+    <div *ngIf="this.authService.loading">  
+      <mat-spinner diameter="40">
+
+      </mat-spinner>
+    </div>      
+  </div>
+
+  
   <div *ngIf="this.authService.notreg"> 
+    <br>
     <div class="noreg">
       Cuenta no registrada en el ITBA. 
       <br>

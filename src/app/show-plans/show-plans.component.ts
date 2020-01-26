@@ -15,15 +15,12 @@ export class ShowPlansComponent implements OnInit {
   ngOnInit() {
     this.sgaLinkerService.getCareerPlan().subscribe(data => {
       this.careerPlan = data
-      console.log(data.cycles)
       this.careerPlan.cycles = this.careerPlan.cycles.filter(
         (elem, i, arr) => {
           if (arr.indexOf(elem) === i) {
             return elem
           }
         })
-        console.log(this.careerPlan.cycles)
-      
     });
   }
       
