@@ -54,6 +54,8 @@ import { FavouriteButtonComponent } from './favourite-button/favourite-button.co
 import { AdjustMenuComponent } from './adjust-menu/adjust-menu.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CalendarAdjustMenuComponent } from './calendar-adjust-menu/calendar-adjust-menu.component';
+import { CarouselCommissionSelectComponent } from './carousel-commission-select/carousel-commission-select.component';
+import { CommissionCardV2Component } from './commission-card-v2/commission-card-v2.component';
 
 @NgModule({
   declarations: [
@@ -82,7 +84,9 @@ import { CalendarAdjustMenuComponent } from './calendar-adjust-menu/calendar-adj
     ShowPlansComponent,
     FavouriteButtonComponent,
     AdjustMenuComponent,
-    CalendarAdjustMenuComponent
+    CalendarAdjustMenuComponent,
+    CarouselCommissionSelectComponent,
+    CommissionCardV2Component
   ],
   imports: [
     BrowserModule,

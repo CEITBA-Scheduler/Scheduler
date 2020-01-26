@@ -16,7 +16,6 @@ export class GeneralProgramService {
 
   // diccionario, clave name, contenido es un BehaviorSubject<boolean> que es una clase contiene el estado del checkbox
   // y administra cuando hay cambios. Con el metodo asObservable se puede conseguir un observable asociado al checkbox
-  
   constructor() { }
 
   createCheckbox(checkboxName: string){ // crear un nuevo checkbox

@@ -16,9 +16,8 @@
     </div>
     <br>
 
-    
     <div fxLayout="column" fxLayoutAlign="center center">
-      <ngb-carousel #carousel interval="false">
+      <ngb-carousel [showNavigationArrows]="false" #carousel interval="false">
         <ng-template ngbSlide *ngFor="let combination of combinations; index as i">
           <div class="carousel-caption" fxLayout="row" fxLayoutAlign="center center">
             Combinación {{combinationNames[i]}} 
@@ -54,9 +53,6 @@
     <app-adjust-menu>
 
     </app-adjust-menu>
-  </mat-step>
-  <mat-step label="ELEGIR OPCIÓN DEFINITIVA">
-
   </mat-step>
   <mat-step label="FIN">
 

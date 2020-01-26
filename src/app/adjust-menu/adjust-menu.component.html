@@ -1,11 +1,57 @@
 
-<div fxLayout="row" class="example-list-top">
-    <div *ngFor="let timePeriod of timePeriods" class="example-box-top">Opción elegida</div>
-</div>
-<div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
-    <div class="example-box" *ngFor="let timePeriod of timePeriods" cdkDrag>{{timePeriod}}</div>
-</div>
+<div fxLayout="column" fxLayoutAlign="center center">
+    <div fxLayoutAlign="center center" fxLayout="row" class="example-list-top">
+        <div fxLayoutAlign="center center" *ngFor="let option of options; index as i" class="example-box-top">
+            Opción {{optionNames[i]}}
+        </div>
+    </div>
+    <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
+        <div fxLayoutAlign="center center" class="example-box" *ngFor="let option of options; index as i" cdkDrag>
+            <button class="button-option" mat-button (click)="selectOption(i)">Opción {{option}}</button>
+        </div>
+    </div>
+    <mat-divider>
+    </mat-divider>
+    <br>
+    <div fxLayoutAlign="center center">
+        <h5>Ajustando <b>Opción {{options[this.selectedOption | async]}}</b></h5>
+    </div>
 
-    <!--<app-calendar-adjust-menu>
-    </app-calendar-adjust-menu>-->
+    <br>
+    <div *ngIf="subjects">
+        
+        <app-calendar [areSubjectsShown]="true" [style.font-size.em]="0.78" [subjectsComissions]="subjects">
+        </app-calendar>
+    </div>
+    <div *ngIf="!subjects">
+        <app-calendar [areSubjectsShown]="true" [style.font-size.em]="0.78">
+        </app-calendar>
+    </div>
+    <br>
+
+    <mat-tab-group>
+        <mat-tab label="Mátematica I"> 
+            <app-carousel-commission-select>
+
+            </app-carousel-commission-select>
+        </mat-tab>
+        <mat-tab label="Algebra Lineal">
+            <app-carousel-commission-select>
+
+            </app-carousel-commission-select>
+        </mat-tab>
+        <mat-tab label="Matemtica II">
+            <app-carousel-commission-select>
+
+            </app-carousel-commission-select>
+        </mat-tab>
+        
+    </mat-tab-group>
+    <br>
+    <button mat-button>Reestablecer horarios originales</button>
+
+    
+
+</div>
+    <!---->
     

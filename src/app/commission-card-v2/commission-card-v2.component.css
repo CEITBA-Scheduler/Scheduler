@@ -1,0 +1,42 @@
+
+
+
+.mat-card-header{
+    width: 100%;
+    background: white;
+    padding: 5px;
+    color:black;
+    text-align: center;
+    font-size: 15px;
+}
+
+mat-card-content{
+/*padding: 0px;*/
+
+}
+
+mat-card{
+padding:0;
+}
+
+
+.g1{
+    width: 10% !important ;
+    background-color: red;
+  }
+  .g2{
+    width:30% !important;
+    background-color: blue;
+  }
+  .g3{
+    width:45% !important;
+    background-color: blue;
+  }
+  .g4{
+    width:5% !important;
+    background-color: blue;
+  }
+  
+  .fullWidth{
+    width: 100% !important ;
+  }

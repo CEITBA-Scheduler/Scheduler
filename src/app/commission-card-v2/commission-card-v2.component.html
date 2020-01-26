@@ -1,0 +1,22 @@
+
+<mat-grid-list class="mat-card-header" [cols]=7 rowHeight="2:1">
+    <mat-grid-tile [colspan]=1 [rowspan]=2 Align="center"> <h3>{{commission.name}}</h3> </mat-grid-tile >
+    <mat-grid-tile [colspan]=2 [rowspan]=2 Align="center">
+        <div>
+            <div *ngFor="let timeblock of commission.schedule">
+                {{timeblock.day}} {{myFunc(timeblock.start.minutes, timeblock.start.hours)}} - {{myFunc(timeblock.end.minutes,timeblock.end.hours)}}
+            </div>
+          </div>
+        
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]=3 [rowspan]=2 Align="center">
+        <div>
+          <div *ngFor="let professor of commission.professors">
+            <h6>{{professor}}</h6>
+          </div>
+       </div>
+    </mat-grid-tile>
+</mat-grid-list>
+
+
+
