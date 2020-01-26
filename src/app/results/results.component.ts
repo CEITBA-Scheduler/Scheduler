@@ -32,6 +32,8 @@ export class ResultsComponent implements OnInit {
   images = [944, 1011, 984].map((n) => `https://picsum.photos/id/${n}/900/500`);
   combinations: Combination[];
   combinationNames: string[] = [];
+  // By default, the program suposes it will recieve at least one combination
+  areCombinationsAvailable: boolean = true;
 
   hearts: Observable<string[]> = of([]);
   
@@ -46,51 +48,56 @@ export class ResultsComponent implements OnInit {
   ngOnInit() {
 
     this.combinations = this.combinacionDeHorarioService.getAlgorithmResults();
-    for (let combination in this.combinations){
-      this.combinationNames.push(`${(+combination+1)}`);
-    }
+    // If combinations is empty, the boolean (used along with *ngIf on .html) turns to false
+    if (this.combinations.length === 0)
+      this.areCombinationsAvailable = false;
+    else {
+      for (let combination in this.combinations){
+        this.combinationNames.push(`${(+combination+1)}`);
+      }
 
-    this.hearts = this.combinacionDeHorarioService.getHeartList();
+      this.hearts = this.combinacionDeHorarioService.getHeartList();
 
-    // the next lines must be erased
-    console.log(this.combinations);
+      // the next lines must be erased
+      console.log(this.combinations);
 
-    //this.commissionsTest = this.subjectsBehavioural.asObservable();
-    //this.sgaLinkerService.getDataFromApi();
-    //var subjectsData: Subject[] =
+      //this.commissionsTest = this.subjectsBehavioural.asObservable();
+      //this.sgaLinkerService.getDataFromApi();
+      //var subjectsData: Subject[] =
 
-    /*this.sgaLinkerService.getAllSubjects().subscribe(
-      (data: { [id: string]: Subject; }) => {
-        //console.log("data = ");
-        //console.log(data);
+      /*this.sgaLinkerService.getAllSubjects().subscribe(
+        (data: { [id: string]: Subject; }) => {
+          //console.log("data = ");
+          //console.log(data);
 
-        var subjectCommissionsTest: SubjectCommissions[] = [];
+          var subjectCommissionsTest: SubjectCommissions[] = [];
 
-        if (Object.keys(data).length > 0){
-          subjectCommissionsTest.push(
-            {subject: data["93.02"], commissions: [data["93.02"].commissions[0]]},
-            {subject: data["93.03"], commissions: [data["93.03"].commissions[2]]},
-            {subject: data["93.18"], commissions: [data["93.18"].commissions[1]]},
-            {subject: data["61.19"], commissions: [data["61.19"].commissions[0]]}
-          )
+          if (Object.keys(data).length > 0){
+            subjectCommissionsTest.push(
+              {subject: data["93.02"], commissions: [data["93.02"].commissions[0]]},
+              {subject: data["93.03"], commissions: [data["93.03"].commissions[2]]},
+              {subject: data["93.18"], commissions: [data["93.18"].commissions[1]]},
+              {subject: data["61.19"], commissions: [data["61.19"].commissions[0]]}
+            )
 
-        }
-        this.subjectsBehavioural.next(subjectCommissionsTest);
-      });*/
-    //this.sgaLinkerService.getAllSubjects().subscribe(
-     // (data: { [id: string]: Subject; }) => {
+          }
+          this.subjectsBehavioural.next(subjectCommissionsTest);
+        });*/
+      //this.sgaLinkerService.getAllSubjects().subscribe(
+      // (data: { [id: string]: Subject; }) => {
 
-    //});
-    
-    // the last lines must be erased
-    
-    var i = 0;
+      //});
+      
+      // the last lines must be erased
+      
+      var i = 0;
 
-    for (let combination of this.combinations){
-      var coms: SubjectCommissions[] = generateSubjectCommissionsFromCombionation(combination);
-      this.subjectsBehavioural.push(new BehaviorSubject(coms));
-      this.commissions.push(this.subjectsBehavioural[i].asObservable());
-      i ++;
+      for (let combination of this.combinations){
+        var coms: SubjectCommissions[] = generateSubjectCommissionsFromCombionation(combination);
+        this.subjectsBehavioural.push(new BehaviorSubject(coms));
+        this.commissions.push(this.subjectsBehavioural[i].asObservable());
+        i ++;
+      }
     }
 
   }
@@ -107,5 +114,8 @@ export class ResultsComponent implements OnInit {
   selectSlide(slide: string){
     console.log(`Select slide ${+slide}`)
     this.carousel.select('ngb-slide-' + (+slide-1));
+  }
+  returnToCombiner() {
+    this.router.navigate(['/combinadorDeHorarios']);
   }
 }
