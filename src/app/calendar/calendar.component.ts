@@ -479,6 +479,7 @@ export class CalendarComponent implements OnInit {
 
   endTogglePeriodMarker(day: string, indexHour: number) {
     this.isMouseClicked = false;
+    this.calendarService.setTimeblocks(this.periodBlocks);
     console.log(this.periodBlocks); // Used to track this.periodBlocks content
   }
 
@@ -500,9 +501,9 @@ export class CalendarComponent implements OnInit {
               if (startHour === 0) // En caso de que el último periodo esté "solo" (sin ningun periodo arriba)
                 startHour = j + 8;
               endHour = j + 9;
-              if (!this.existsOnPeriodBlocks(i, startHour, endHour)) {
-                this.deletePeriodBlocksInsideOf(i, startHour, endHour);
-                this.periodBlocks.push(new Timeblock(i, startHour, endHour));
+              if (!this.existsOnPeriodBlocks(i+1, startHour, endHour)) {
+                this.deletePeriodBlocksInsideOf(i+1, startHour, endHour);
+                this.periodBlocks.push(new Timeblock(i+1, startHour, endHour));
               }
               startHour = 0;  // Reseteo las variables
               endHour = 0;
@@ -517,9 +518,9 @@ export class CalendarComponent implements OnInit {
           else {
             if (timeBlockGenerator) {
               endHour = j + 8;
-              if (!this.existsOnPeriodBlocks(i, startHour, endHour)) {
-                this.deletePeriodBlocksInsideOf(i, startHour, endHour);
-                this.periodBlocks.push(new Timeblock(i, startHour, endHour));
+              if (!this.existsOnPeriodBlocks(i+1, startHour, endHour)) {
+                this.deletePeriodBlocksInsideOf(i+1, startHour, endHour);
+                this.periodBlocks.push(new Timeblock(i+1, startHour, endHour));
               }
               startHour = 0;  // Reseteo las variables
               endHour = 0;
@@ -529,12 +530,11 @@ export class CalendarComponent implements OnInit {
         }
         else if (option === "REMOVE") {
           if (!this.periodButtonsColorState[this.days[i]][j]) {
-            this.deletePeriodBlock(i, j+8, j+9);
+            this.deletePeriodBlock(i+1, j+8, j+9);
           }
         }
       }
     }
-    this.calendarService.setTimeblocks(this.periodBlocks);
   }
 
   existsOnPeriodBlocks(day: number, start: number, end: number): boolean {
