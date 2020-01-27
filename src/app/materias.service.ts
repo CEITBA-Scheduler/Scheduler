@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {catchError, map, tap } from 'rxjs/operators';
 
-import { Subject } from './materia';
+import { Subject , Commission , Timeblock } from './materia';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,7 @@ export class MateriasService {
     private http: HttpClient,
     private messageService: MessageService
   ) { }
-  
+
   buscarMaterias(term : string) : Observable<Subject[]> {
     if (!term.trim()){
       return of([]);

@@ -12,11 +12,14 @@ import { pipe } from 'rxjs';
 import { filter, map, startWith } from 'rxjs/operators';
 import { FormsModule, ReactiveFormsModule, FormControl} from '@angular/forms';
 import { debounceTime, multicast, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { Subject } from '../materia';
+import { Subject } from '../materia';;
 import { MateriasService } from '../materias.service'
 import { MatTableDataSource} from '@angular/material/table';
 import { SgaLinkerService } from '../sga-linker.service';
 import { GeneralProgramService } from '../general-program.service'
+import { CareerTerm } from '../career-object';
+import { ICareerSubject } from '../career-interface';
+import { from , of} from 'rxjs'
 
 
 @Component({
@@ -37,30 +40,65 @@ export class SubjectSearchComponent implements OnInit {
   searchValue: string = "";
   myControl = new FormControl();
   displayedColumns: string[] = ['name', 'code'];
+  optionsPosta : Observable<Subject[]> ;
+  optionBehavior : BehaviorSubject<Subject[]> = new BehaviorSubject([]);
 
+  sus1 : any = null;
+  sus2 : any = null;
 
   filterByPlan = false;
-  plan = null;
   filtByPlanName : string = "filtByPlan";
   filtPlanObs : Observable<boolean>;
+
+  planSubjects : Subject[] = [];
+  auxSubj : Subject = null;
 
   constructor(private sgaLinkerService: SgaLinkerService, private generalProgramService : GeneralProgramService) { }
 
   ngOnInit() {
     this.options = this.sgaLinkerService.getAllSubjectsAsList();
-  
+    
     this.myControl.valueChanges.subscribe(
-      val => this.updateWrittenValue(val)
+      val => {
+        this.updateWrittenValue(val);
+        console.log("clickeado");
+      } 
     );
     this.filteredOptions = this.getFilteredValues();
-    /* 
+     
     this.sgaLinkerService.getCareerPlan().subscribe(data => {
-      this.plan = data
+      for (let careerCycle of data.cycles) {
+        for (let term of careerCycle.terms){
+          for (let careerSubj of term.subjects){
+            this.auxSubj = {
+              name: careerSubj.subjectName,
+              code : careerSubj.subjectCode,
+              search : "", // si hay un bug es esto
+              commissions : null, // Commission[]
+              priority : 0, // number
+              credits: careerSubj.credits 
+            };
+            this.planSubjects.push(
+              this.auxSubj  
+            )
+          }
+        }
+      }        
     });
-    */
+    
     this.generalProgramService.getCheckboxStatusAsObservable("filtByPlan").subscribe( toggleStatus => {
       this.filterByPlan = toggleStatus; 
-      // cada vez que cmabia esto cambia el options!!! es lo mas facil
+      if(!toggleStatus){
+        this.optionsPosta = of(this.planSubjects);
+        this.options.subscribe(data => {
+          this.sus1 = this.optionBehavior.next(data);
+        }) 
+      }else{
+        this.optionBehavior.next(this.planSubjects);
+        if(this.sus1){
+          this.sus1.unsubscribe();
+        }
+      }
     })
 
   }
@@ -72,17 +110,15 @@ export class SubjectSearchComponent implements OnInit {
     this.filteredOptions = this.getFilteredValues();
   }
   private getFilteredValues(): Observable<Subject[]> {
-    console.log("entre a get filtered values")
-    /// filtramos acorde al input del usuario el observable
-    return this.options.pipe(
+    return this.optionBehavior.asObservable().pipe(
       map(
-        (options: Subject[]) => options.filter((option: Subject) =>
-        (option.search.includes(this.removeTildes(this.searchValue)) && !(this.areEqual(option,this.subjects)))))
-    );
+      (options: Subject[]) => options.filter((option: Subject) =>
+      (option.search.includes(this.removeTildes(this.searchValue)) && !(this.areEqual(option,this.subjects)))))
+      );
   }
+
   optionSelected(value: Subject) {
     this.onOptionSelected.emit(value);
-
     this.myControl.setValue('');
   }
 

@@ -39,6 +39,11 @@ export interface UserSelection {
   selection: SubjectCommissions[];
   noCourseTime: Timeblock[];
 }
+
+
+
+
+
 export function generateTimeblockFromITimeblock(timeblock: ITimeblock): Timeblock {
   var weekday: string;
 
