@@ -35,7 +35,7 @@
         <ngb-carousel [showNavigationArrows]="false" (slide)='loadMore($event)' #carousel interval="false">
           <ng-template ngbSlide *ngFor="let combination of slideCombinations; index as i" [id]="generateSlideId(i)">
             <div class="carousel-caption" fxLayout="row" fxLayoutAlign="center center">
-              Combinación {{combinationNames[i + leftSlideIndex]}}
+              Combinación {{combinationNames[i + leftSlideIndex]}} de {{combinations.length}}
                 <div *ngIf="((hearts | async).indexOf(combinationNames[i + leftSlideIndex]) != -1) || (hearts | async)?.length < 3">
                   <app-favourite-button (selectedChange)="selected(combinationNames[i + leftSlideIndex], $event)">
 

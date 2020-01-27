@@ -39,6 +39,7 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule, MatButtonModule } from '@angular/material';
 import { InfoSubjectInterestComponent } from './info-subject-interest/info-subject-interest.component';
 import { DragSubjectsComponent } from './drag-subjects/drag-subjects.component';

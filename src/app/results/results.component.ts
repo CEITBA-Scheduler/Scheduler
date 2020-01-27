@@ -110,17 +110,15 @@ export class ResultsComponent implements OnInit {
   }
 
   loadMore(event) {
-    console.log(event);
-    console.log(this.leftSlideIndex);
-    console.log(this.rightSlideIndex);
-
-    const currentArray = event.current.split('-');
-    const currentIndex = Number(currentArray[currentArray.length - 1]);
-    if (currentIndex > 0) {
-      if (currentIndex === this.leftSlideIndex) {
-        this.updateSlideCombinations('left');
-      } else if (currentIndex === this.rightSlideIndex) {
-        this.updateSlideCombinations('right');
+    if (event.hasOwnProperty('current')) {
+      const currentArray = event.current.split('-');
+      const currentIndex = Number(currentArray[currentArray.length - 1]);
+      if (currentIndex > 0) {
+        if (currentIndex === this.leftSlideIndex) {
+          this.updateSlideCombinations('left');
+        } else if (currentIndex === this.rightSlideIndex) {
+          this.updateSlideCombinations('right');
+        }
       }
     }
   }
