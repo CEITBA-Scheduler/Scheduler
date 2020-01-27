@@ -23,7 +23,7 @@ export class SubjectSelectorComponent implements OnInit {
   ngOnInit() {
 
     this.combinacionService.setSubjectData(this.dataSource.asObservable());
-    if (this.userSelection){
+    if (this.userSelection) {
       this.userSelection.subscribe((data: Subject[]) => {
         this.plainData = data;
         this.dataSource.next(this.plainData);

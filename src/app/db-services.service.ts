@@ -38,7 +38,7 @@ export class DbServicesService {
 
   // go subject info from user data
   gotUserSubjectInfo: boolean;
-  
+
   // to store subject codes loaded from db
   subjectCodes: string[] = [];
 
@@ -182,7 +182,7 @@ export class DbServicesService {
   // get user last commissions selection
   getUserCommissionSelection(): Observable<{[code: string]: Observable<Commission[]>}>{
     return this.dbSubjectsCommissions.asObservable();
-  } 
+  }
 
   getUserInitialConfigStatus(): {[code: string]: Observable<boolean>} {
     var ans : {[code: string]: Observable<boolean>} = {};
@@ -190,7 +190,7 @@ export class DbServicesService {
     for (let i in this.dbConfigCheckbox){
       ans[i] = this.dbConfigCheckbox[i].asObservable();
     }
-    
+
     return this.dbConfigCheckbox;
   }
 

@@ -187,7 +187,7 @@ export class CombinerComponent implements OnInit {
     );
 
     this.scheduleCombinerServices.setAlgorithmResults(
-      this.combinations.slice(0, 25)
+      this.combinations
     );
 
     // Using the algorithm... Let's run it!
