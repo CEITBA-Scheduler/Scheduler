@@ -222,6 +222,8 @@ export class DbServicesService {
     this.dbSubjectsCommissions.next(subjectsCommissions);
   }
   generateOption(combination: SubjectCommissions[]){
+    console.log(combination);
+    
     var userSelection = [];
 
     for (var subjectSelection of combination){
@@ -229,7 +231,7 @@ export class DbServicesService {
         {
           subjectCode: subjectSelection.subject.code,
           subjectName: subjectSelection.subject.name,
-          commission: subjectSelection.subject.commissions[0]
+          commission: subjectSelection.commissions[0].name
         }
       );
     }
@@ -245,11 +247,20 @@ export class DbServicesService {
     }
   }
   updateUserSelections(combination1: SubjectCommissions[], combionation2: SubjectCommissions[], combinacion3: SubjectCommissions[]){ // store in order user selection in db
+    console.log("updating data");
+    
     const user: User = this.auth.getUser();
 
     var firstOption = this.generateOption(combination1);
     var secondOption = this.generateOption(combionation2);
     var thirdOption = this.generateOption(combinacion3);
+    console.log({
+        options: {
+          userFirstOption: firstOption,
+          userSecondOption: secondOption,
+          userThirdOption: thirdOption
+        }
+      });
 
     this.afs.collection("users").doc(user.uid).update(
       {
@@ -260,6 +271,15 @@ export class DbServicesService {
         }
       }
     );
+  }
+  updateUserComment(comment: string){
+    const user: User = this.auth.getUser();
+    
+    this.afs.collection("users").doc(user.uid).update(
+      {
+        comment: comment
+      }
+    )
   }
 
 }
