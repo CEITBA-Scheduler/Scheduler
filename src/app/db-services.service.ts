@@ -105,30 +105,25 @@ export class DbServicesService {
       //console.log(data);
     });*/
 
-    this.afs.collection("users").valueChanges().subscribe(data => {
-      //console.log("data recibida");
-      //console.log(data);
-      for (let key in subjects) {
-        for (var commission in subjects[key].commissions){
-          subjects[key].commissions[commission].people = [0, 0, 0]; // reseteamos personas de cada comision
-        }
-      }
-        //si es con get(), iria data.doc
-      for (let docName in data){ // for each document
-        var doc = data[docName]; // y aca .data()
-        //console.log("doc data");
-        //console.log(doc);
-        for (let subject in doc["userSelection"]) {
-          var subjectCode: string = doc["userSelection"][subject].subjectCode;
-          var subjectData = doc["userSelection"][subject];
-          //console.log("subject data");
-          //console.log(subjectData);
+    //this.afs.collection("users").valueChanges().subscribe(data => {
 
-          if (subjectCode in subjects){
+      //for (let key in subjects) {
+      //  for (var commission in subjects[key].commissions){
+      //    subjects[key].commissions[commission].people = [0, 0, 0]; // reseteamos personas de cada comision
+      //  }
+      //}
+        //si es con get(), iria data.doc
+      //for (let docName in data){ // for each document
+      //  var doc = data[docName]; // y aca .data()
+
+        /*for (let subject in doc["userSelection"]) {
+          var subjectCode: string = doc["userSelection"][subject].subjectCode;
+          var subjectData = doc["userSelection"][subject];*/
+
+
+          /*if (subjectCode in subjects){
 
             for (let commission in subjects[subjectCode].commissions){
-              //console.log("analizando ");
-              //console.log(commission);
 
               if (subjects[subjectCode].commissions[commission].name == subjectData.commissions[0]){
                 subjects[subjectCode].commissions[commission].people[0] ++;
@@ -141,11 +136,11 @@ export class DbServicesService {
               }
 
             }
-          }
-        }
+          }*/
+        //}
 
-      }
-    });
+      //}
+    //});
   }
 
   askForUserSubjectSelection() {

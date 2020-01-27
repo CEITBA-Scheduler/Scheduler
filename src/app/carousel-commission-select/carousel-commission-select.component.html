@@ -1,27 +1,27 @@
 
-<ngb-carousel (slide)=changeSlide($event) [activeId]="startCommission" #carousel wrap="true" interval="false">
+<ngb-carousel (slide)=changeSlide($event) [activeId]="startCommission" #carousel wrap="true" interval="false" [showNavigationArrows]="true" [showNavigationIndicators]="false">
   <ng-template ngbSlide *ngFor="let commission of commissions; index as i" [id]="commission.name">
     <div class="carousel-caption" fxLayout="row" fxLayoutAlign="center center">
     </div>
 
-    <div class="picsum-img-wrapper">
+
       <div fxLayout="row" fxLayoutAlign="center center">
-        <div>
+        <div fxFlex="20">
           <button class="buttonCard" mat-button (click)="prevCommission()" mat-icon-button aria-label="Example icon-button with a heart icon">
             <mat-icon>navigate_before</mat-icon>
           </button>
         </div>
-        <div fxFlex="55">
+        <div fxFlex="60">
           <app-commission-card-v2 class="commissionCard"  [commission]="commissions[i]">
 
           </app-commission-card-v2>
         </div>
-        <div >
+        <div fxFlex="20">
           <button class="buttonCard" mat-button (click)="nextCommission()" mat-icon-button aria-label="Example icon-button with a heart icon">
             <mat-icon>navigate_next</mat-icon>
           </button>
         </div >
       </div>
-    </div>
+
   </ng-template>
 </ngb-carousel>
