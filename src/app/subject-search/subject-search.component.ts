@@ -73,7 +73,7 @@ export class SubjectSearchComponent implements OnInit {
             this.auxSubj = {
               name: careerSubj.subjectName,
               code : careerSubj.subjectCode,
-              search : "", // si hay un bug es esto
+              search : this.removeTildes((careerSubj.subjectName + careerSubj.subjectCode).toLowerCase()), // si hay un bug es esto
               commissions : null, // Commission[]
               priority : 0, // number
               credits: careerSubj.credits 
