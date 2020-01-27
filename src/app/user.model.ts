@@ -22,4 +22,5 @@ export interface TickboxSelection {
   freeday: boolean;
   buildingChange: boolean;
   travelTime: boolean;
+  filtByPlan: boolean;
 }

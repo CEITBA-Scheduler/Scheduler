@@ -1,4 +1,5 @@
-<form class="example-form">
+
+  <form class="example-form">
     <mat-form-field class="example-full-width">
       <input type="text" placeholder="Buscar materia" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
       <mat-autocomplete #auto="matAutocomplete">
@@ -9,4 +10,6 @@
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
+    <app-checkbox-item storeName="filtByPlan" name="Filtrar materias por plan" [startChecked]="initialStatus['filtByPlan']">
+    </app-checkbox-item>
   </form>
