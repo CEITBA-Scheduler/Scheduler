@@ -33,6 +33,14 @@ export class CombinacionDeHorarioService {
   hearts: string[] = [];
   heartBehavioural: BehaviorSubject<string[]> = new BehaviorSubject([]);
   
+  combination1: SubjectCommissions[] = null;
+  combination2: SubjectCommissions[] = null;
+  combination3: SubjectCommissions[] = null;
+
+  combination1Behaviour: BehaviorSubject<SubjectCommissions[]> = new BehaviorSubject(null);
+  combination2Behaviour: BehaviorSubject<SubjectCommissions[]> = new BehaviorSubject(null);
+  combination3Behaviour: BehaviorSubject<SubjectCommissions[]> = new BehaviorSubject(null);
+
   constructor(
     private sgaLinkerService: SgaLinkerService,
     private authService: AuthService
@@ -121,5 +129,38 @@ export class CombinacionDeHorarioService {
   }
   getHeartList(): Observable<string[]>{
     return this.heartBehavioural.asObservable();
+  }
+  resetHeartList(){
+    this.heartBehavioural.next([]);
+  }
+  getCombination1(): SubjectCommissions[]{
+    return this.combination1;
+  }
+  getCombination2(): SubjectCommissions[] {
+    return this.combination2
+  }
+  getCombination3(): SubjectCommissions[] {
+    return this.combination3;
+  }
+  getCombination1Obs(): Observable<SubjectCommissions[]>{
+    return this.combination1Behaviour.asObservable();
+  }
+  getCombination2Obs(): Observable<SubjectCommissions[]>{
+    return this.combination2Behaviour.asObservable();
+  }
+  getCombination3Obs(): Observable<SubjectCommissions[]>{
+    return this.combination3Behaviour.asObservable();
+  }
+  setCombination1(combination: SubjectCommissions[]){
+    this.combination1Behaviour.next(combination);
+    this.combination1 = combination;
+  }
+  setCombination2(combination: SubjectCommissions[]){
+    this.combination2Behaviour.next(combination);
+    this.combination2 = combination;
+  }
+  setCombination3(combination: SubjectCommissions[]){
+    this.combination3Behaviour.next(combination);
+    this.combination3 = combination;
   }
 }

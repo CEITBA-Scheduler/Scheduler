@@ -45,6 +45,7 @@ export class DbServicesService {
   // to store commission names loaded from db
   commissionNames: {[subjectCode: string]: string[]} = {};
 
+
   constructor(
     private afs: AngularFirestore,
     private auth: AuthService,
@@ -217,11 +218,48 @@ export class DbServicesService {
     "freeday": new BehaviorSubject<boolean>(false),
     "buildingChange": new BehaviorSubject<boolean>(false),
     "travelTime": new BehaviorSubject<boolean>(false)*/
-
-    
-
     this.dbSubjects.next(subjects);
     this.dbSubjectsCommissions.next(subjectsCommissions);
   }
-  
+  generateOption(combination: SubjectCommissions[]){
+    var userSelection = [];
+
+    for (var subjectSelection of combination){
+      userSelection.push(
+        {
+          subjectCode: subjectSelection.subject.code,
+          subjectName: subjectSelection.subject.name,
+          commission: subjectSelection.subject.commissions[0]
+        }
+      );
+    }
+    if (combination){
+      return {
+        exists: true,
+        userSelection: userSelection
+      }
+    }else{
+      return {
+        exists: false
+      }
+    }
+  }
+  updateUserSelections(combination1: SubjectCommissions[], combionation2: SubjectCommissions[], combinacion3: SubjectCommissions[]){ // store in order user selection in db
+    const user: User = this.auth.getUser();
+
+    var firstOption = this.generateOption(combination1);
+    var secondOption = this.generateOption(combionation2);
+    var thirdOption = this.generateOption(combinacion3);
+
+    this.afs.collection("users").doc(user.uid).update(
+      {
+        options: {
+          userFirstOption: firstOption,
+          userSecondOption: secondOption,
+          userThirdOption: thirdOption
+        }
+      }
+    );
+  }
+
 }

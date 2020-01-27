@@ -1,0 +1,28 @@
+<div fxLayoutAlign="center center" fxLayout="row">
+    <div *ngIf="selection1 | async" fxLayoutAlign="center center" fxLayout="column">
+        <h3>Elección principal </h3>
+        <div *ngFor="let selection of (selection1 | async)">
+            {{selection.subject.name}} ({{selection.subject.code}})- Comisión <b>{{selection.commissions[0].name}}</b>
+        </div>
+    </div>
+    <br>
+    <mat-divider [vertical]="true"></mat-divider>
+    <div *ngIf="selection2 | async" fxLayoutAlign="center center" fxLayout="column">
+        <h3>Plan B </h3>
+        <div *ngFor="let selection of (selection2 | async)">
+            {{selection.subject.name}} ({{selection.subject.code}}) - Comisión <b>{{selection.commissions[0].name}}</b>
+        </div>
+    </div>
+    <br>
+    <mat-divider [vertical]="true">
+    </mat-divider>
+    <div *ngIf="selection3 | async" fxLayoutAlign="center center" fxLayout="column">
+        <h3>Plan C </h3>
+        <div *ngFor="let selection of (selection3 | async)">
+            {{selection.subject.name}} ({{selection.subject.code}}) - Comisión <b>{{selection.commissions[0].name}}</b>
+        </div>
+    </div>
+</div>
+<div fxLayoutAlign="center center" >
+    <button (click)="done()"  mdbBtn type="button" color="primary" outline="true" mdbWavesEffect>Guardar resultados</button>
+</div>

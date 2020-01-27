@@ -26,6 +26,8 @@ export class AdjustMenuComponent implements OnInit {
   ]
   algorithmResults: Combination[];
   selectedOption: Observable<number>;
+  selectedOptionNumber: number;
+
   selectedBehavioural: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   dataSubject: {[code: string]: SubjectCommissions[]} = {};
   dataSubjectModified: {[code: string]: SubjectCommissions[]} = {};
@@ -41,8 +43,12 @@ export class AdjustMenuComponent implements OnInit {
     this.algorithmResults = this.combinacionDeHorarioService.getAlgorithmResults();
 
     this.selectedOption = this.selectedBehavioural.asObservable();
-    this.subjects = this.subjectsBehaviour.asObservable();
+    this.selectedOption.subscribe((value: number) =>{
+      this.selectedOptionNumber = value;
+    })
 
+    this.subjects = this.subjectsBehaviour.asObservable();
+    
     this.combinacionDeHorarioService.getHeartList().subscribe((options: string[]) => {
       this.options = options
 
@@ -52,9 +58,43 @@ export class AdjustMenuComponent implements OnInit {
       }
       //console.log(this.subjects);
       console.log(this.options);
-      //this.selectOption(0);
+      //this.selectOption(0); causa erroes esta linea
+      
+
+      let i = 0;
+      for (var opt of this.options){
+        if (i == 0){
+          this.combinacionDeHorarioService.setCombination1(this.dataSubject[opt]);
+        }else if(i == 1){
+          this.combinacionDeHorarioService.setCombination2(this.dataSubject[opt]);
+        }else if(i == 2){
+          this.combinacionDeHorarioService.setCombination3(this.dataSubject[opt]);
+        }
+        i++;
+      }
     });
-  
+    
+    this.subjects.subscribe((combination: SubjectCommissions[]) => {
+      
+      /*console.log(this.options);
+      console.log(this.currentSelectedCode, this.options[0]);
+      console.log(this.currentSelectedCode, this.options[1]);
+      console.log(this.currentSelectedCode, this.options[2]);*/
+
+      if (this.currentSelectedCode == this.options[0]){
+        console.log("updating first option");
+        this.combinacionDeHorarioService.setCombination1(combination);
+
+      }else if(this.currentSelectedCode == this.options[1]){
+        console.log("updating second option");
+        this.combinacionDeHorarioService.setCombination2(combination);
+
+      }else if(this.currentSelectedCode == this.options[2]){
+        console.log("updating third option");
+        this.combinacionDeHorarioService.setCombination3(combination);
+        
+      }
+    });
 
   }
 
