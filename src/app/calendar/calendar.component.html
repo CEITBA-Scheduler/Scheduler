@@ -29,7 +29,7 @@
         <div *ngIf="areSubjectsShown">
           <div *ngFor="let subject of this.subjectsOfDay[day]">
             <div class="subjectRelative" fxLayoutAlign="center center" [style.background-color]="subject.color" [style.height.px]="subject.height" [style.top.px]="subject.startPos">
-              {{ subject.name }} <br> Comisión {{ subject.commission }}
+              {{ subject.name }} <br> Comisión {{ subject.commission }} <br> {{ subject.location }}
             </div>
           </div>
         </div>
