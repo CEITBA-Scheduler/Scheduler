@@ -4,7 +4,8 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, 
-.mat-step-header .mat-step-icon-state-edit {
+.mat-step-header .mat-step-icon-state-edit .img{
     background-color: rgb(1,87,155) !important;
     color: white !important;
 }
+
