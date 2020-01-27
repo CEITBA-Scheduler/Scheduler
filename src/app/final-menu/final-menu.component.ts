@@ -17,7 +17,7 @@ export class FinalMenuComponent implements OnInit {
     private router: Router,
     private dbServices: DbServicesService) { }
 
-  
+
   sel1: SubjectCommissions[] = null;
   sel2: SubjectCommissions[] = null;
   sel3: SubjectCommissions[] = null;
@@ -40,7 +40,7 @@ export class FinalMenuComponent implements OnInit {
     this.selection3.subscribe((data: SubjectCommissions[]) =>{
       this.sel3 = data;
     });
-  
+
   }
   done(){
     this.router.navigate(['/credits']);

@@ -244,7 +244,7 @@ export class DbServicesService {
       }
     }
   }
-  updateUserSelections(combination1: SubjectCommissions[], combionation2: SubjectCommissions[], combinacion3: SubjectCommissions[]){ // store in order user selection in db
+    updateUserSelections(combination1: SubjectCommissions[], combionation2: SubjectCommissions[], combinacion3: SubjectCommissions[]){ // store in order user selection in db
     const user: User = this.auth.getUser();
 
     var firstOption = this.generateOption(combination1);

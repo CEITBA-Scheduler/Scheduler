@@ -44,14 +44,6 @@ export class ResultsComponent implements OnInit {
     {value: 'tacos-2', viewValue: 'Tacos'}
   ];
 
-<<<<<<< HEAD
-  constructor(
-    private router: Router, 
-    private sgaLinkerService: SgaLinkerService, 
-    private combinacionDeHorarioService: CombinacionDeHorarioService,
-    private dbServices: DbServicesService) 
-    { }
-=======
   /**
    * Adding some private code to manage which part of the combinations
    * list will be used to be displayed as a slide
@@ -59,19 +51,14 @@ export class ResultsComponent implements OnInit {
   private leftSlideIndex = null;
   private rightSlideIndex = null;
   public  slideCombinations: Combination[];
->>>>>>> results-refactor
 
   constructor(
     private router: Router,
+    private dbServices: DbServicesService,
     private combinacionDeHorarioService: CombinacionDeHorarioService) { }
 
   ngOnInit() {
     this.combinations = this.combinacionDeHorarioService.getAlgorithmResults();
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> results-refactor
     // If combinations is empty, the boolean (used along with *ngIf on .html) turns to false
     if (this.combinations.length === 0) {
       this.areCombinationsAvailable = false;
@@ -81,51 +68,10 @@ export class ResultsComponent implements OnInit {
       }
 
       this.hearts = this.combinacionDeHorarioService.getHeartList();
-<<<<<<< HEAD
-      this.combinacionDeHorarioService.resetHeartList();
-      
-      // the next lines must be erased
-      console.log(this.combinations);
-
-      //this.commissionsTest = this.subjectsBehavioural.asObservable();
-      //this.sgaLinkerService.getDataFromApi();
-      //var subjectsData: Subject[] =
-
-      /*this.sgaLinkerService.getAllSubjects().subscribe(
-        (data: { [id: string]: Subject; }) => {
-          //console.log("data = ");
-          //console.log(data);
-
-          var subjectCommissionsTest: SubjectCommissions[] = [];
-
-          if (Object.keys(data).length > 0){
-            subjectCommissionsTest.push(
-              {subject: data["93.02"], commissions: [data["93.02"].commissions[0]]},
-              {subject: data["93.03"], commissions: [data["93.03"].commissions[2]]},
-              {subject: data["93.18"], commissions: [data["93.18"].commissions[1]]},
-              {subject: data["61.19"], commissions: [data["61.19"].commissions[0]]}
-            )
-
-          }
-          this.subjectsBehavioural.next(subjectCommissionsTest);
-        });*/
-      //this.sgaLinkerService.getAllSubjects().subscribe(
-      // (data: { [id: string]: Subject; }) => {
-
-      //});
-      
-      // the last lines must be erased
-      
-      var i = 0;
-
-      for (let combination of this.combinations){
-        var coms: SubjectCommissions[] = generateSubjectCommissionsFromCombionation(combination);
-=======
 
       let i = 0;
       for (const combination of this.combinations) {
         const coms: SubjectCommissions[] = generateSubjectCommissionsFromCombionation(combination);
->>>>>>> results-refactor
         this.subjectsBehavioural.push(new BehaviorSubject(coms));
         this.commissions.push(this.subjectsBehavioural[i].asObservable());
         i++;
@@ -197,12 +143,12 @@ export class ResultsComponent implements OnInit {
   returnToCombiner() {
     this.router.navigate(['/combinadorDeHorarios']);
   }
-  done(){
-    console.log("updating db");
+
+  done() {
     this.dbServices.updateUserSelections(
       this.combinacionDeHorarioService.getCombination1(),
       this.combinacionDeHorarioService.getCombination2(),
-      this.combinacionDeHorarioService.getCombination2()
+      this.combinacionDeHorarioService.getCombination3()
     );
   }
 }
