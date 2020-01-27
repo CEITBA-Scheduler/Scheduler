@@ -11,7 +11,8 @@ export class GeneralProgramService {
     superposition: false,
     freeday: false,
     buildingChange: false,
-    travelTime: false
+    travelTime: false,
+    filtByPlan: false
   };
 
   // diccionario, clave name, contenido es un BehaviorSubject<boolean> que es una clase contiene el estado del checkbox
@@ -19,7 +20,9 @@ export class GeneralProgramService {
   constructor() { }
 
   createCheckbox(checkboxName: string){ // crear un nuevo checkbox
-    this.checkboxStatus[checkboxName] = new BehaviorSubject<boolean>(false);
+    if(!this.checkboxStatus[checkboxName]){
+      this.checkboxStatus[checkboxName] = new BehaviorSubject<boolean>(false);
+    }
     // inicializamos la clase con el valor de checkbox inicial falso
   }
   /** 
@@ -35,12 +38,17 @@ export class GeneralProgramService {
   // actualizar estado de un checkbox
   updateCheckbox(checkboxName: string, status: boolean){
     this.allCheckboxStatus[checkboxName] = status;
-
+    //console.log("checkbox y status")
+    //console.log(checkboxName)
+    //console.log(status)
     this.checkboxStatus[checkboxName].next(status); // actualizamos el estado del BehaviorSubject<boolean> al valor status
     // esto le indica al observable asociado que cambio de valor!
   }
   // obtener el estado de un checkbox
   getCheckboxStatusAsObservable(name: string): Observable<boolean> {
+    if(!this.checkboxStatus[name]){
+      this.createCheckbox(name);
+    }
     return this.checkboxStatus[name].asObservable();
     // esto se puede hacer con observables para que this.checkboxStatus no sea modificado desde observar
   }

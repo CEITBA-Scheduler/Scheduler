@@ -183,19 +183,8 @@ export class CombinerComponent implements OnInit {
     );
 
     this.scheduleCombinerServices.setAlgorithmResults(
-      this.combinations.slice(0, 25)
+      this.combinations
     );
-
-    // Using the algorithm... Let's run it!
-
-    /*console.log('=== Subjects ===');
-    console.log(this.subjects);
-    console.log('=== Subjects Selected ===');
-    console.log(this.subjectSelections);
-    console.log('=== Priorities ===');
-    console.log(this.priorities);
-    console.log('=== Combinations ===');
-    console.log(this.combinations);*/
 
     this.router.navigate(['/results']);
   }

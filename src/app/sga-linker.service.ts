@@ -44,6 +44,9 @@ export class SgaLinkerService {
     this.getCareerDataFromApi();
   }
 
+
+
+
   /**
    *  Generates the url for the HTTP Request using the GET method by formatting
    *  the string content with the url, endpoint and its parameters.

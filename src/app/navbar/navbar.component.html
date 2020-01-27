@@ -38,8 +38,13 @@
                   <div> 
                     {{authService.getUser().career}} - {{authService.getUser().plan}} 
                   </div>
-  
-                  <button (click)="logOut()"  mdbBtn type="button" color="primary" outline="true" mdbWavesEffect>Cerrar sesión</button>
+
+                  <br>
+                  
+                  <button mat-raised-button (click)="logOut()"  color="primary" style="background-color: #01579b ">
+                    Cerrar sesión
+                  </button>
+
                 </div>
               </div>
             <!--<div class="dropdown-item waves-light" mdbWavesEffect > 

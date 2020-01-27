@@ -32,7 +32,7 @@ export class CombinacionDeHorarioService {
   algorithmResults: Combination[]= [];
   hearts: string[] = [];
   heartBehavioural: BehaviorSubject<string[]> = new BehaviorSubject([]);
-  
+
   combination1: SubjectCommissions[] = null;
   combination2: SubjectCommissions[] = null;
   combination3: SubjectCommissions[] = null;
@@ -55,7 +55,7 @@ export class CombinacionDeHorarioService {
     return this.subjectData.asObservable();
   }
   setSubjectData(data: Observable<Subject[]>) {
-    
+
     data.subscribe((subjects: Subject[]) => {
       this.subjectData.next(subjects);
       this.subjects = subjects;
@@ -122,7 +122,7 @@ export class CombinacionDeHorarioService {
       }
     }else{
       var index = this.hearts.indexOf(id);
-      this.hearts.splice(index, 1);  
+      this.hearts.splice(index, 1);
     }
     this.heartBehavioural.next(this.hearts);
     console.log(`this.hearts = ${this.hearts}`);
@@ -137,7 +137,7 @@ export class CombinacionDeHorarioService {
     return this.combination1;
   }
   getCombination2(): SubjectCommissions[] {
-    return this.combination2
+    return this.combination2;
   }
   getCombination3(): SubjectCommissions[] {
     return this.combination3;
