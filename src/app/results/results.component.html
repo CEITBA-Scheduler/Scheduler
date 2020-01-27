@@ -17,7 +17,7 @@
 </div>
 <div *ngIf="areCombinationsAvailable">
   <mat-vertical-stepper labelPosition="bottom" linear="true">
-    
+
     <mat-step label="ELEGIR 3 COMBINACIONES FAVORITAS">
       <div fxLayout="row" fxLayoutAlign="center center">
         <div *ngIf="(hearts | async).length == 0">
@@ -34,16 +34,16 @@
       <br>
 
       <div fxLayout="column" fxLayoutAlign="center center">
-        <ngb-carousel [showNavigationArrows]="false" #carousel interval="false">
-          <ng-template ngbSlide *ngFor="let combination of combinations; index as i">
+        <ngb-carousel [showNavigationArrows]="false" (slide)='loadMore($event)' #carousel interval="false">
+          <ng-template ngbSlide *ngFor="let combination of slideCombinations; index as i" [id]="generateSlideId(i)">
             <div class="carousel-caption" fxLayout="row" fxLayoutAlign="center center">
-              Combinación {{combinationNames[i]}} 
-                <div *ngIf="((hearts | async).indexOf(combinationNames[i]) != -1) || (hearts | async)?.length < 3">
-                  <app-favourite-button (selectedChange)="selected(combinationNames[i], $event)">
+              Combinación {{combinationNames[i + leftSlideIndex]}} de {{combinations.length}}
+                <div *ngIf="((hearts | async).indexOf(combinationNames[i + leftSlideIndex]) != -1) || (hearts | async)?.length < 3">
+                  <app-favourite-button (selectedChange)="selected(combinationNames[i + leftSlideIndex], $event)">
 
                   </app-favourite-button><!--{{3-(hearts | async)?.length}}-->
                 </div>
-                <div *ngIf="!(((hearts | async).indexOf(combinationNames[i]) != -1) || (hearts | async)?.length < 3)">
+                <div *ngIf="!(((hearts | async).indexOf(combinationNames[i + leftSlideIndex]) != -1) || (hearts | async)?.length < 3)">
                   <button mat-icon-button disabled aria-label="Example icon-button with a heart icon">
                     <mat-icon>favorite</mat-icon>
                   </button>
@@ -52,7 +52,7 @@
 
               <div class="picsum-img-wrapper">
                 <div fxLayout="column" fxLayoutAlign="center center" >
-                  <app-calendar [subjectsComissions]="commissions[i]" [areSubjectsShown]="true" [style.font-size.em]="0.78">
+                  <app-calendar [subjectsComissions]="commissions[i + leftSlideIndex]" [areSubjectsShown]="true" [style.font-size.em]="0.78">
 
                   </app-calendar>
                   <div class="space">
