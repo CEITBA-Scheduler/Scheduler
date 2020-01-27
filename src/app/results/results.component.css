@@ -1,10 +1,10 @@
 .space{
   height: 90px;
   width: 100%;
-  background-color: #82b1ff;
+  background-color: rgb(1,87,155);/*#82b1ff;*/
 }
 .all{
-  background-color: #82b1ff;
+  background-color: rgb(1,87,155);/*#82b1ff;*/
 }
 .text-combinacion{
   height:120px;

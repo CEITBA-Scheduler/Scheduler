@@ -1,7 +1,7 @@
 <!-- horizotnal stepper -->
 <!-- https://stackblitz.com/edit/angular-carousel-component carrousel -->
 
-<mat-vertical-stepper labelPosition="bottom" linear="true">
+<mat-vertical-stepper labelPosition="bottom" linear="true" color=red>  
 
     <mat-step label="ELEGIR MATERIAS">
       
@@ -28,8 +28,15 @@
     <mat-step label="EJECUTAR ALGORITMO">
       <!--mat-card-->
         <div fxLayoutAlign="center center" >
-          <button (click)="done()"  mdbBtn type="button" color="primary" outline="true" mdbWavesEffect>Calcular combinaciones</button>
+          <button mat-raised-button (click)="done()"  color="primary" style="background-color: #01579b ">
+            Calcular combinaciones
+          </button>
         </div>
+
+
       <!--/mat-card-->
     </mat-step>
 </mat-vertical-stepper>
+
+
+
