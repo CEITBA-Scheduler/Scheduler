@@ -1,20 +1,20 @@
 <!-- horizotnal stepper -->
 <!-- https://stackblitz.com/edit/angular-carousel-component carrousel -->
 
-<mat-vertical-stepper labelPosition="bottom" linear="true">
+<mat-vertical-stepper labelPosition="bottom" linear="true" >
 
     <mat-step label="ELEGIR MATERIAS">
-      
+
       <app-show-plans>
       </app-show-plans>
 
       <br>
-      
+
       <app-subject-selector [userSelection]="userSelection">
       </app-subject-selector>
 
-  
-        
+
+
 
       <!-- ACA VIENE EL NUEVO COMPONENTE-->
     </mat-step>

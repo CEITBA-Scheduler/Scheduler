@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject, Commission, Timeblock } from './materia';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { filter, map, startWith, shareReplay } from 'rxjs/operators';
 import { parse } from 'date-fns';
 import { UserSelection } from './materia';
@@ -46,7 +46,7 @@ export class SgaLinkerService {
 
 
 
-  
+
   /**
    *  Generates the url for the HTTP Request using the GET method by formatting
    *  the string content with the url, endpoint and its parameters.
