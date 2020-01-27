@@ -4,8 +4,6 @@ import { Subject, SubjectCommissions, generateSubjectCommissionsFromCombionation
 import { Observable, BehaviorSubject, of } from 'rxjs';
 import { SgaLinkerService } from '../sga-linker.service';
 import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
-
-import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   SubjectSelection,
   Priority,
@@ -35,9 +33,8 @@ export class ResultsComponent implements OnInit {
   combinations: Combination[];
   combinationNames: string[] = [];
 
-  inputVal : string = "";
 
-  formGroup: FormGroup;
+  
   // By default, the program suposes it will recieve at least one combination
   areCombinationsAvailable = true;
 
@@ -53,21 +50,15 @@ export class ResultsComponent implements OnInit {
    * Adding some private code to manage which part of the combinations
    * list will be used to be displayed as a slide
    */
-  private leftSlideIndex = null;
-  private rightSlideIndex = null;
+  public leftSlideIndex = null;
+  public rightSlideIndex = null;
   public  slideCombinations: Combination[];
 
   constructor(
     private router: Router,
     private dbServices: DbServicesService,
     private combinacionDeHorarioService: CombinacionDeHorarioService) {
-      this.formGroup = new FormGroup({
-        feedbackField: new FormControl('', [
-          Validators.required, 
-          Validators.minLength(10), 
-          Validators.maxLength(3000)
-        ])
-      })
+      
      }
 
   ngOnInit() {
@@ -98,46 +89,7 @@ export class ResultsComponent implements OnInit {
     }
   }
 
-  getErrorMessage(control: AbstractControl): string {
-    // Don't say anything if control doesn't exist, or is valid
-    if (!control || control.valid) {
-      return '';
-    }
 
-    // Required always comes first
-    if (control.hasError('required')) {
-      return "No puede estar vacío";
-    }
-    if (control.hasError('email')) {
-      return "Debe ser un e-mail valido";
-    }
-    if (control.hasError('minlength')) {
-      const limit = control.getError('minlength').requiredLength;
-      return `Debe tener por lo menos ${limit} caracteres`;
-    }
-    if (control.hasError('minlength')) {
-      const limit = control.getError('maxlength').requiredLength;
-      return `No debe tener más de ${limit} caracteres`;
-    }
-
-    // Default general error message
-    return "Entrada inválida";
-  }
-
-  onSubmit() {
-    console.log("mando")
-    console.log(this.inputVal)
-    this.dbServices.updateUserComment(this.inputVal)
-    this.formGroup.reset()
-  }
-
-  get emailField(): AbstractControl {
-    return this.formGroup.get('emailField');
-  }
-
-  get feedbackField(): AbstractControl {
-    return this.formGroup.get('feedbackField');
-  }
 
 
 

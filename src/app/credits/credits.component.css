@@ -1,3 +1,40 @@
 .space{
     height:10px;
 }
+.grid-container {
+    display: grid;
+    justify-content: space-evenly;
+    grid-template-columns: 50px 50px 50px; 
+    grid-gap: 10px;
+    background-color: rgba(255,255,255,0.8);
+    padding: 10px;
+  }
+  
+  .grid-container > div {
+    background-color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    padding: 20px 0;
+    font-size: 30px;
+  }
+  .grid-profile {
+    display: grid;
+    text-align: center;
+    justify-content:  space-evenly;
+  }
+  .grid-item{
+    font-size: 14px
+  
+  }
+  .testerthanks{
+    text-align: center;
+    justify-content: space-evenly;
+  }
+  .equipo{
+    text-align: center;
+    justify-content: space-evenly;
+  }
+  
+  .comentarios{
+    text-align: center;
+    justify-content: space-evenly;
+  }
