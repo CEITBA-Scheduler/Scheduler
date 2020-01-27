@@ -239,33 +239,20 @@
           </div>
         </div>                
       </div>
-      <!--
-      <h3>Dejanos tu opinión para poder seguir mejorando</h3>
-      <div [formGroup]="formGroup2">
-        <mat-form-field>
-          <input matInput placeholder="Escribí tu e-mail" [formControl]="emailField" required>
-          <mat-error *ngIf="emailField.invalid">{{ getErrorMessage(emailField) }}</mat-error>
-        </mat-form-field>
-        
-        
-        <div>
-          
-         
-        
-        </div>
- 
+      
+      <h3 class="comentarios">Dejanos tu opinión para poder seguir mejorando</h3>
+      <div class="comentarios" [formGroup]="formGroup">
         <div>
           <mat-form-field class="half-width">
-            <textarea matInput placeholder="Escribí tus comentarios acá" [formControl]="feedbackField" required></textarea>
+            <textarea matInput placeholder="Escribí tus comentarios acá" [(ngModel)]='inputVal' [formControl]="feedbackField" required></textarea>
             <mat-error *ngIf="feedbackField.invalid">{{ getErrorMessage(feedbackField) }}</mat-error>
           </mat-form-field>
         </div>
-        <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="formGroup.invalid">
+        <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="feedbackField.invalid">
           Enviar comentarios
         </button>
-        
       </div>
-      -->
+      
     </mat-step>
   
 
