@@ -127,11 +127,7 @@ export class CombinerComponent implements OnInit {
     // Here, we take the other priorities from the general purpose service
     // and because the user interface has been simplified we use some
     // default values for the priority's settings
-<<<<<<< HEAD
-    const DEFAULT_SUPERPOSITION = 6.0;    // max amount of overlapped hours
-=======
     const DEFAULT_SUPERPOSITION = 4.0;    // max amount of overlapped hours
->>>>>>> a17f1167650d92fca8302ca489b502044728da65
     const DEFAULT_FREEDAY = Weekday.ANY;  // which freeday
     const DEFAULT_TRAVEL = 1.0;
     const userPreferences = this.generalProgramService.getAllCheckboxStatus();
