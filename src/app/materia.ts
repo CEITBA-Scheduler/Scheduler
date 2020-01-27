@@ -20,8 +20,8 @@ export interface Timeblock {
   end: Time;
   classroom?: string;
   building?: string;
-
 }
+
 export interface Commission {
     name: string;
     professors: string[];
@@ -66,7 +66,9 @@ export function generateTimeblockFromITimeblock(timeblock: ITimeblock): Timebloc
   return {
     day: weekday,
     start: {minutes: timeblock.getStartMinutes(), hours: timeblock.getStartHours()},
-    end: {minutes: timeblock.getEndMinutes(), hours: timeblock.getEndHours()}
+    end: {minutes: timeblock.getEndMinutes(), hours: timeblock.getEndHours()},
+    building: timeblock.building,
+    classroom: timeblock.classroom
   };
 }
 export function generateSubjectCommissionsFromCombionation(combination: Combination) {

@@ -39,6 +39,7 @@ interface SubjectBlock { // graphical subject block
   color: string;
   name: string;
   commission: string;
+  location?: string;
 }
 
 // Uses to list data on the lateral bar (needed checked as extra property so each subject has its own functional checkbox)
@@ -153,6 +154,7 @@ export class CalendarComponent implements OnInit {
       // the next line must be erased  
       console.log("Actualizando schedules ...");
       // the last line must be erased
+      console.log(subjectsComissions);
 
       /// actualizamos possibleSchedules
       var schedules = [];
@@ -179,6 +181,7 @@ export class CalendarComponent implements OnInit {
       for (let subjectComission of subjectsComissions){
 
         var times = [];
+        var location = {};
 
         for (let schedule of subjectComission.commissions[0].schedule){
           times.push({
@@ -190,7 +193,9 @@ export class CalendarComponent implements OnInit {
             finalHour: {
               hours: schedule.end.hours,
               minutes: schedule.end.minutes
-            }
+            },
+            location: schedule.building,
+            //classroom: schedule.classroom // <-- Uncomment to get classroom too
           });
         }
 
@@ -225,6 +230,7 @@ export class CalendarComponent implements OnInit {
       this.isLoading = false;
     });
   }
+
   setLoading(){
     this.isLoading = true;
   }
@@ -274,6 +280,7 @@ export class CalendarComponent implements OnInit {
 
         var subjectName: string = this.subjectList[m].subject.name;
         var subjectCommission: string = this.subjectList[m].subject.commissionName;
+        var location: string = this.subjectList[m].subject.commissionTimes[i].location;
         //console.log(this.subjectList[m].subject.commissionTimes[i].day);
         // por cada horario de la materia
         this.subjectsOfDay[this.subjectList[m].subject.commissionTimes[i].day].push(
@@ -282,10 +289,12 @@ export class CalendarComponent implements OnInit {
             height: endPos - startPos,
             color: colors[u],
             name: subjectName,
-            commission: subjectCommission
+            commission: subjectCommission,
+            location: location
           }
         )
-        //console.log(this.subjectsOfDay[this.subjectList[m].subject.commissionTimes[i].day]);
+        console.log("=== LOCATION OF " + subjectName + " ===");
+        console.log(this.subjectsOfDay[this.subjectList[m].subject.commissionTimes[i].location]);
       }
       u = (u + 1) % 15;
     }
@@ -503,7 +512,7 @@ export class CalendarComponent implements OnInit {
   endTogglePeriodMarker(day: string, indexHour: number) {
     this.isMouseClicked = false;
     this.calendarService.setTimeblocks(this.periodBlocks);
-    console.log(this.periodBlocks); // Used to track this.periodBlocks content
+    // console.log(this.periodBlocks);  <-- Used to track this.periodBlocks content
   }
 
   mouseIsNotOnCalendar() {
