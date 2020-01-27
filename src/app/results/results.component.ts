@@ -11,6 +11,7 @@ import {
   Combination
 } from '../algorithm/algorithm-object';
 import { Router } from '@angular/router';
+import { DbServicesService } from '../db-services.service';
 
 export interface Food {
   value: string;
@@ -43,11 +44,17 @@ export class ResultsComponent implements OnInit {
     {value: 'tacos-2', viewValue: 'Tacos'}
   ];
 
-  constructor(private router: Router, private sgaLinkerService: SgaLinkerService, private combinacionDeHorarioService: CombinacionDeHorarioService) { }
+  constructor(
+    private router: Router, 
+    private sgaLinkerService: SgaLinkerService, 
+    private combinacionDeHorarioService: CombinacionDeHorarioService,
+    private dbServices: DbServicesService) 
+    { }
 
   ngOnInit() {
 
     this.combinations = this.combinacionDeHorarioService.getAlgorithmResults();
+    
     // If combinations is empty, the boolean (used along with *ngIf on .html) turns to false
     if (this.combinations.length === 0)
       this.areCombinationsAvailable = false;
@@ -57,7 +64,8 @@ export class ResultsComponent implements OnInit {
       }
 
       this.hearts = this.combinacionDeHorarioService.getHeartList();
-
+      this.combinacionDeHorarioService.resetHeartList();
+      
       // the next lines must be erased
       console.log(this.combinations);
 
@@ -117,5 +125,13 @@ export class ResultsComponent implements OnInit {
   }
   returnToCombiner() {
     this.router.navigate(['/combinadorDeHorarios']);
+  }
+  done(){
+    console.log("updating db");
+    this.dbServices.updateUserSelections(
+      this.combinacionDeHorarioService.getCombination1(),
+      this.combinacionDeHorarioService.getCombination2(),
+      this.combinacionDeHorarioService.getCombination2()
+    );
   }
 }

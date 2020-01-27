@@ -111,7 +111,7 @@ export class CombinerComponent implements OnInit {
             for (const subjectCommission of subject.commissions) {
               commissionPriorities.push(
                 Priority.gpCommission(subjectCommission.name, subjectCode)
-                        .setExclusive(false)
+                        .setExclusive(true)
               );
             }
             if (commissionPriorities.length > 0) {
@@ -127,13 +127,17 @@ export class CombinerComponent implements OnInit {
     // Here, we take the other priorities from the general purpose service
     // and because the user interface has been simplified we use some
     // default values for the priority's settings
-    const DEFAULT_SUPERPOSITION = 1.0;    // max amount of overlapped hours
+<<<<<<< HEAD
+    const DEFAULT_SUPERPOSITION = 6.0;    // max amount of overlapped hours
+=======
+    const DEFAULT_SUPERPOSITION = 4.0;    // max amount of overlapped hours
+>>>>>>> a17f1167650d92fca8302ca489b502044728da65
     const DEFAULT_FREEDAY = Weekday.ANY;  // which freeday
     const DEFAULT_TRAVEL = 1.0;
     const userPreferences = this.generalProgramService.getAllCheckboxStatus();
     if (userPreferences.superposition) {
       this.priorities.push(
-        Priority.gpSuperposition(DEFAULT_SUPERPOSITION).setExclusive(true)
+        Priority.gpSuperposition(DEFAULT_SUPERPOSITION).setExclusive(false)
       );
     } else {
       this.priorities.push(
@@ -168,12 +172,12 @@ export class CombinerComponent implements OnInit {
     // Then, we set the priority weights
     this.priorities = Priority.generateWeightedPriorities(this.priorities);
 
-    console.log('=== Subjects ===');
+    /*console.log('=== Subjects ===');
     console.log(this.subjects);
     console.log('=== Subjects Selected ===');
     console.log(this.subjectSelections);
     console.log('=== Priorities ===');
-    console.log(this.priorities);
+    console.log(this.priorities);*/
 
     this.combinations = this.algorithmServices.schedulerAlgorithm(
       this.subjects,            // All the possible subjects
@@ -188,14 +192,14 @@ export class CombinerComponent implements OnInit {
 
     // Using the algorithm... Let's run it!
 
-    console.log('=== Subjects ===');
+    /*console.log('=== Subjects ===');
     console.log(this.subjects);
     console.log('=== Subjects Selected ===');
     console.log(this.subjectSelections);
     console.log('=== Priorities ===');
     console.log(this.priorities);
     console.log('=== Combinations ===');
-    console.log(this.combinations);
+    console.log(this.combinations);*/
 
     this.router.navigate(['/results']);
   }

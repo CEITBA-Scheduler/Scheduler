@@ -57,6 +57,8 @@ import { CalendarAdjustMenuComponent } from './calendar-adjust-menu/calendar-adj
 import { CarouselCommissionSelectComponent } from './carousel-commission-select/carousel-commission-select.component';
 import { CommissionCardV2Component } from './commission-card-v2/commission-card-v2.component';
 import { SubjectCommissionConfigComponent } from './subject-commission-config/subject-commission-config.component';
+import { FinalMenuComponent } from './final-menu/final-menu.component';
+import { CreditsComponent } from './credits/credits.component';
 
 @NgModule({
   declarations: [
@@ -88,7 +90,9 @@ import { SubjectCommissionConfigComponent } from './subject-commission-config/su
     CalendarAdjustMenuComponent,
     CarouselCommissionSelectComponent,
     CommissionCardV2Component,
-    SubjectCommissionConfigComponent
+    SubjectCommissionConfigComponent,
+    FinalMenuComponent,
+    CreditsComponent
   ],
   imports: [
     BrowserModule,
@@ -101,7 +105,7 @@ import { SubjectCommissionConfigComponent } from './subject-commission-config/su
       { path: 'testingModule3', component: TestingModule3Component },
       { path: 'infoSubject', component: InfoSubjectInterestComponent },
       { path: 'results', component: ResultsComponent },
-      { path: 'adjustMenu', component: AdjustMenuComponent }
+      { path: 'credits', component: CreditsComponent}
     ]),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule,
