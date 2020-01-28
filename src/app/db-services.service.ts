@@ -322,14 +322,15 @@ export class DbServicesService {
     )
   }
   convertToCastedDict(doc: any) : {[code: string] : number} {
-    var ans: {[code: string] : number} = {};
-
-    for (let item in doc){
-      ans[item] = doc[`${item}`];
+    if (doc != undefined){
+      var ans: {[code: string] : number} = {};
+      for (let item in doc){
+        ans[item] = doc[`${item}`];
+      }
+      return ans;
+    }else{
+      return {};
     }
-    
-    return ans;
-    
   }
 
 }
