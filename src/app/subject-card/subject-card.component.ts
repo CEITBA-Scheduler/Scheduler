@@ -7,12 +7,10 @@ import { Subject } from '../materia';
   styleUrls: ['./subject-card.component.css']
 })
 export class SubjectCardComponent implements OnInit {
-
   @Input() subject: Subject;
-  
+
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
 }

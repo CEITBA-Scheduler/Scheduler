@@ -30,6 +30,7 @@ export class SgaLinkerService {
   public allCommissions = null;
 
   public careerPlan: BehaviorSubject<CareerPlan>;
+  public careerPlanSubjects: CareerPlan;
 
   public rawSubjectsResponse = null;
   public rawCareerResponse = null;
@@ -39,6 +40,7 @@ export class SgaLinkerService {
     private authService: AuthService
   ) {
     this.allSubjects = new BehaviorSubject<{ [id: string]: Subject; }>({});
+    this.careerPlanSubjects = null;
     this.careerPlan = new BehaviorSubject<CareerPlan>(new CareerPlan());
     this.getSubjectsDataFromApi();
     this.getCareerDataFromApi();
@@ -251,6 +253,7 @@ export class SgaLinkerService {
               }
 
               this.careerPlan.next(careerPlan);
+              this.careerPlanSubjects = careerPlan;
             }
           );
         }
@@ -322,6 +325,13 @@ export class SgaLinkerService {
 
       this.allSubjects.next(this.allSubjectsValue);
     });
+  }
+
+  /**
+   * Returns the career plan as an object
+   */
+  getCareerPlanSubjects(): CareerPlan {
+    return this.careerPlanSubjects;
   }
 
   /**

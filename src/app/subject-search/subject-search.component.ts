@@ -29,91 +29,92 @@ import { from , of} from 'rxjs'
 })
 
 export class SubjectSearchComponent implements OnInit {
-  // onOptionSelected es la acción a ejecutarse cuando se elije una opción
-  //@Input() subjectsSelected:Subject[]; //AGREGO1
-  @Input() subjects:Subject[] = []; //AGREGO1
+  @Input() subjects: Subject[] = [];
   @Input() initialStatus: {[code: string]: Observable<boolean>} = {};
   @Output() onOptionSelected : EventEmitter<Subject> = new EventEmitter<Subject>();
 
   options: Observable<Subject[]>;
   filteredOptions: Observable<Subject[]>;
-  searchValue: string = "";
+  searchValue = '';
   myControl = new FormControl();
   displayedColumns: string[] = ['name', 'code'];
-  optionsPosta : Observable<Subject[]> ;
-  optionBehavior : BehaviorSubject<Subject[]> = new BehaviorSubject([]);
+  optionsPosta: Observable<Subject[]> ;
+  optionBehavior: BehaviorSubject<Subject[]> = new BehaviorSubject([]);
 
-  sus1 : any = null;
-  sus2 : any = null;
+  sus1: any = null;
+  sus2: any = null;
 
   filterByPlan = false;
-  filtByPlanName : string = "filtByPlan";
-  filtPlanObs : Observable<boolean>;
+  filtByPlanName = 'filtByPlan';
+  filtPlanObs: Observable<boolean>;
 
-  planSubjects : Subject[] = [];
-  auxSubj : Subject = null;
+  planSubjects: Subject[] = [];
+  auxSubj: Subject = null;
 
-  constructor(private sgaLinkerService: SgaLinkerService, private generalProgramService : GeneralProgramService) { }
+  constructor(
+    private sgaLinkerService: SgaLinkerService,
+    private generalProgramService: GeneralProgramService) { }
 
   ngOnInit() {
     this.options = this.sgaLinkerService.getAllSubjectsAsList();
-    
+
     this.myControl.valueChanges.subscribe(
       val => {
         this.updateWrittenValue(val);
-        console.log("clickeado");
-      } 
+      }
     );
     this.filteredOptions = this.getFilteredValues();
-     
+
     this.sgaLinkerService.getCareerPlan().subscribe(data => {
       for (let careerCycle of data.cycles) {
-        for (let term of careerCycle.terms){
-          for (let careerSubj of term.subjects){
+        for (let term of careerCycle.terms) {
+          for (let careerSubj of term.subjects) {
             this.auxSubj = {
               name: careerSubj.subjectName,
               code : careerSubj.subjectCode,
               search : this.removeTildes((careerSubj.subjectName + careerSubj.subjectCode).toLowerCase()), // si hay un bug es esto
               commissions : null, // Commission[]
               priority : 0, // number
-              credits: careerSubj.credits 
+              credits: careerSubj.credits
             };
             this.planSubjects.push(
-              this.auxSubj  
-            )
+              this.auxSubj
+            );
           }
         }
-      }        
+      }
     });
-    
+
     this.generalProgramService.getCheckboxStatusAsObservable("filtByPlan").subscribe( toggleStatus => {
-      this.filterByPlan = toggleStatus; 
-      if(!toggleStatus){
+      this.filterByPlan = toggleStatus;
+      if (!toggleStatus) {
         this.optionsPosta = of(this.planSubjects);
         this.options.subscribe(data => {
           this.sus1 = this.optionBehavior.next(data);
-        }) 
-      }else{
+        });
+      } else {
         this.optionBehavior.next(this.planSubjects);
-        if(this.sus1){
+        if (this.sus1) {
           this.sus1.unsubscribe();
         }
       }
-    })
-
+    });
   }
-  removeTildes(word: string){
+
+  removeTildes(word: string) {
     return word.replace("á","a").replace("é","e").replace("í","i").replace("ó","o").replace("ú","u");
   }
-  private updateWrittenValue(value){
+
+  private updateWrittenValue(value) {
     this.searchValue = value.toLowerCase();
     this.filteredOptions = this.getFilteredValues();
   }
+
   private getFilteredValues(): Observable<Subject[]> {
     return this.optionBehavior.asObservable().pipe(
       map(
       (options: Subject[]) => options.filter((option: Subject) =>
-      (option.search.includes(this.removeTildes(this.searchValue)) && !(this.areEqual(option,this.subjects)))))
+      (option.search.includes(this.removeTildes(this.searchValue)) && !(this.areEqual(option, this.subjects)))))
       );
   }
 
@@ -122,14 +123,12 @@ export class SubjectSearchComponent implements OnInit {
     this.myControl.setValue('');
   }
 
-  private areEqual(subject_: Subject, subjects_: Subject[]){
-    for(var i=0; i<subjects_.length ;i++){
-      if(subject_.code == subjects_[i].code)
-      {
+  private areEqual(subject_: Subject, subjects_: Subject[]) {
+    for (let i = 0 ; i < subjects_.length ; i++) {
+      if (subject_.code === subjects_[i].code) {
         return true;
       }
     }
     return false;
   }
-
 }
