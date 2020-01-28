@@ -1,5 +1,5 @@
 import { CombinacionDeHorarioService } from './../combinacion-de-horario.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Subject, SubjectCommissions, generateSubjectCommissionsFromCombionation } from '../materia';
 import { Observable, BehaviorSubject, of } from 'rxjs';
 import { SgaLinkerService } from '../sga-linker.service';
@@ -22,8 +22,9 @@ export interface Food {
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.css']
 })
-export class ResultsComponent implements OnInit {
-  @ViewChild(NgbCarousel, {static: false}) carousel: NgbCarousel;
+export class ResultsComponent implements OnInit
+{
+  @ViewChild('carousel', {static: false}) carousel: NgbCarousel;
 
   commissions: Observable<SubjectCommissions[]>[] = [];
 

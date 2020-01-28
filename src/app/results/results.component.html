@@ -39,7 +39,7 @@
       <br>
 
       <div fxLayout="column" fxLayoutAlign="center center">
-        <ngb-carousel #carousel='ngbCarousel' [showNavigationArrows]="false" (slide)='loadMore($event)' interval="false">
+        <ngb-carousel #carousel [showNavigationArrows]="false" (slide)='loadMore($event)' interval="false">
           <ng-template ngbSlide *ngFor="let combination of slideCombinations; index as i" [id]="generateSlideId(i)">
             <div class="carousel-caption" fxLayout="row" fxLayoutAlign="center center">
               Combinación {{combinationNames[i + leftSlideIndex]}} de {{combinations.length}}

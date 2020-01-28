@@ -77,9 +77,11 @@ export class SubjectSearchComponent implements OnInit {
               priority : 0, // number
               credits: careerSubj.credits
             };
-            this.planSubjects.push(
-              this.auxSubj
-            );
+            if (!this.planSubjects.find(subject => subject.code === this.auxSubj.code)) {
+              this.planSubjects.push(
+                this.auxSubj
+              );
+            }
           }
         }
       }
