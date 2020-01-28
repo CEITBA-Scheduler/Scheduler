@@ -3,7 +3,7 @@
     <app-checkbox-item storeName="filtByPlan" name="Filtrar materias por plan" [startChecked]="initialStatus['filtByPlan']">
     </app-checkbox-item>
     <mat-form-field class="example-full-width">
-      <input type="text" placeholder="Buscar materia" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
+      <input type="text" placeholder="Haz click para buscar materia" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
       <mat-autocomplete #auto="matAutocomplete">
         <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name" (click)="optionSelected(option)">
           {{option.name}} - {{option.code}} &nbsp;
