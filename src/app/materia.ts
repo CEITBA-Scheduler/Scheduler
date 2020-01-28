@@ -28,6 +28,7 @@ export interface Commission {
     subject?: Subject;
     schedule: Timeblock[];
     people?: number[]; // personas que eligieron la comision como opcion 1, 2 y 3
+    annotated?: Observable<number>;
 }
 
 export interface SubjectCommissions {

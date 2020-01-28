@@ -1,5 +1,7 @@
 import { SgaLinkerService } from './sga-linker.service';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, pipe } from 'rxjs';
+import { filter, map, startWith } from 'rxjs/operators';
+
 import { Injectable } from '@angular/core';
 import { User, FirestoreCommissionSelection } from './user.model';
 
@@ -313,6 +315,21 @@ export class DbServicesService {
         comment: comment
       }
     )
+  }
+  getSubjectCommissionsPeople(subject: Subject) : Observable<{[code: string] : number}>{
+    return this.afs.collection("subjectAnalytics").doc(subject.code).valueChanges().pipe(
+      map(doc => this.convertToCastedDict(doc))
+    )
+  }
+  convertToCastedDict(doc: any) : {[code: string] : number} {
+    var ans: {[code: string] : number} = {};
+
+    for (let item in doc){
+      ans[item] = doc[`${item}`];
+    }
+    
+    return ans;
+    
   }
 
 }
