@@ -11,9 +11,9 @@ admin.initializeApp();
 // });
 
 
-export const test = functions.firestore.document("users/{uid}").onWrite(
+export const test = functions.firestore.document("usersSelection/{uid}").onWrite(
     (change, context) => {
-        console.log(change.after.data());
+        //console.log(change.after.data());
 
         var preIncrement = [];
         var preDecrement = [];
@@ -27,8 +27,8 @@ export const test = functions.firestore.document("users/{uid}").onWrite(
         if (change.before.exists && change.before.data()){
             const data = change.before.data();
             if (data){    
-                console.log(data);
-                console.log(data["options"]["userFirstOption"]);
+               // console.log(data);
+                //console.log(data["options"]["userFirstOption"]);
                 const userSelection = data["options"]["userFirstOption"]["userSelection"];
                 
 
@@ -51,9 +51,9 @@ export const test = functions.firestore.document("users/{uid}").onWrite(
             const data = change.after.data();
             
             if (data){
-                console.log(data);
-                console.log(data["options"]);
-                console.log(data["options"]["userFirstOption"]);
+                //console.log(data);
+                //console.log(data["options"]);
+                //console.log(data["options"]["userFirstOption"]);
                 const userSelection = data["options"]["userFirstOption"]["userSelection"];
 
                 if (userSelection){
@@ -85,79 +85,250 @@ export const test = functions.firestore.document("users/{uid}").onWrite(
                 decrement.push(dec);
             }
         }
-        console.log("hello world my friends");
+        var totalQueries : {[code: string]: string} = {}; 
 
-        console.log(increment);
-        console.log(decrement);
+        for (let inc of increment){
+            totalQueries[inc.subjectCode] = inc.subjectName;
+        }
+        for (let dec of decrement){
+            totalQueries[dec.subjectCode] = dec.subjectName;
+        }
+        console.log("Total queries = ");
+        console.log(totalQueries);
 
         const db = admin.firestore();
+        var count: number = 0;
 
-        console.log("increment");
+        var allData : {[code: string]: any} = {};
+
+        for (let query of Object.keys(totalQueries)){
+            console.log(`asking ${query} - ${totalQueries[query]}`);
+
+            db.collection("subjectAnalytics").doc(`${query}`).get().then(doc => {
+                allData[query] = doc;
+                console.log(`answer of ${query} - ${totalQueries[query]} received`);
+                count ++;
+                if (count == Object.keys(totalQueries).length){
+                    updateData(allData, increment, decrement);
+                }
+            });
+        }
+
+        console.log("program has finished");
+    return 1;
+});
+
+function updateData(allData: {[code: string]: any}, increment : any[], decrement: any[]){
+    const db = admin.firestore();
+
+    console.log("All data was obtained");
+    console.log(allData);
+    console.log("updating db");
+
+    for (let inc of increment){
+        console.log(`updating increment ${inc}`);
+        console.log(`asking for ${inc.subjectCode}`);
+
+        var doc = allData[inc.subjectCode];
+        if (!doc.exists){
+            console.log(`document does not exist, writting ${inc.subjectCode}/${inc.commission}=1`);
+
+            db.collection("subjectAnalytics").doc(`${inc.subjectCode}`).set({
+                [`${inc.commission}`]: 1,
+                subjectName: inc.subjectName
+            }, {merge: true}).then(data => {
+            }).then(data => {
+                console.log(`successfully written ${inc.subjectCode}/${inc.commission}`)
+            });
+        }else{
+            console.log(`document does exist, incrementing ${inc.subjectCode}/${inc.commission}`);
+            const data = doc.data();
+
+            if (data){
+                console.log("there is data in document")
+                console.log(data[`${inc.commission}`]);
+                var prevValue : number = data[`${inc.commission}`];
+
+                console.log(`prevValue = ${prevValue}`);
+
+                if (prevValue == undefined){
+                    console.log("not valid prev value");
+                    db.collection("subjectAnalytics").doc(`${inc.subjectCode}`).set({
+                        [`${inc.commission}`]: 1
+                    }, {merge: true}).then(data => {
+                        console.log(`successfully written ${inc.subjectCode}/${inc.commission}`)
+                    });
+                }else{
+                    console.log("valid prev value");
+                    db.collection("subjectAnalytics").doc(`${inc.subjectCode}`).set({
+                        [`${inc.commission}`]: prevValue + 1
+                    }, {merge: true}).then(data => {
+                        console.log(`successfully written ${inc.subjectCode}/${inc.commission}`)
+                    });
+                }
+            }else{
+                console.log("there is no data in document")
+            }
+        }
+    }
+    
+    for (var dec of decrement){
+        console.log(`updating decrement ${dec}`);
+        console.log(`asking for ${dec.subjectCode}`);
+
+        var doc = allData[dec.subjectCode];
+
+        if (!doc.exists){
+            console.log(`document does not exist, writting ${dec.subjectCode}/${dec.commission}=0`);
+
+            db.collection("subjectAnalytics").doc(`${dec.subjectCode}`).set({
+                [`${dec.commission}`]: 0,
+                subjectName: dec.subjectName
+            }, {merge: true}).then(data => {
+            }).then(data => {
+                console.log(`successfully written ${dec.subjectCode}/${dec.commission}`)
+            });
+        }else{
+            console.log(`document does exist, decrementing ${dec.subjectCode}/${dec.commission}`);
+            const data = doc.data();
+
+            if (data){
+                console.log("there is data in document")
+                console.log(data[`${dec.commission}`]);
+                var prevValue : number = data[`${dec.commission}`];
+
+                console.log(`prevValue = ${prevValue}`);
+
+                if (prevValue == undefined){
+                    console.log("not valid prev value");
+                    db.collection("subjectAnalytics").doc(`${dec.subjectCode}`).set({
+                        [`${dec.commission}`]: 0
+                    }, {merge: true}).then(data => {
+                        console.log(`successfully written ${dec.subjectCode}/${dec.commission}`)
+                    });
+                }else{
+                    console.log("valid prev value");
+                    db.collection("subjectAnalytics").doc(`${dec.subjectCode}`).set({
+                        [`${dec.commission}`]: prevValue - 1,
+                    }, {merge: true}).then(data => {
+                        console.log(`successfully written ${dec.subjectCode}/${dec.commission}`)
+                    });
+                }
+            }else{
+                console.log("there is no data in document")
+            }
+        }
+    }
+}
+
+    /*    console.log("increment = ");
+        console.log(increment);
+        console.log("decrements = ");
+        console.log(decrement);
+
+
         for (let inc of increment){
+            console.log(`updating increment ${inc}`);
+            console.log(`asking for ${inc.subjectCode}`);
+
             db.collection("subjectAnalytics").doc(`${inc.subjectCode}`).get().then(doc => {
+                console.log(`answer of ${inc.subjectCode} received`);
+
                 if (!doc.exists){
-                    console.log("not exist");
+                    console.log(`document does not exist, writting ${inc.subjectCode}/${inc.commission}=1`);
+
                     db.collection("subjectAnalytics").doc(`${inc.subjectCode}`).set({
                         [`${inc.commission}`]: 1,
                         subjectName: inc.subjectName
                     }, {merge: true}).then(data => {
-                        console.log(data);
+                    }).then(data => {
+                        console.log(`successfully written ${inc.subjectCode}/${inc.commission}`)
                     });
                 }else{
-                    console.log("exist");
+                    console.log(`document does exist, incrementing ${inc.subjectCode}/${inc.commission}`);
                     const data = doc.data();
-                    console.log(data);
+
                     if (data){
-                        var prevValue = data[`${inc.commission}`];
-                        if (!prevValue){
+                        console.log("there is data in document")
+                        console.log(data[`${inc.commission}`]);
+                        var prevValue : number = data[`${inc.commission}`];
+
+                        console.log(`prevValue = ${prevValue}`);
+
+                        if (prevValue == undefined){
+                            console.log("not valid prev value");
                             db.collection("subjectAnalytics").doc(`${inc.subjectCode}`).set({
                                 [`${inc.commission}`]: (prevValue + 1)
-                            }, {merge: true});
+                            }, {merge: true}).then(data => {
+                                console.log(`successfully written ${inc.subjectCode}/${inc.commission}`)
+                            });
                         }else{
+                            console.log("valid prev value");
                             db.collection("subjectAnalytics").doc(`${inc.subjectCode}`).set({
                                 [`${inc.commission}`]: 1
-                            }, {merge: true});
+                            }, {merge: true}).then(data => {
+                                console.log(`successfully written ${inc.subjectCode}/${inc.commission}`)
+                            });
                         }
+                    }else{
+                        console.log("there is no data in document")
                     }
                 }
             });
-
         }
-        console.log("decrement");
+
+
         for (let dec of decrement){
+            console.log(`updating decrement ${dec}`);
+            console.log(`asking for ${dec.subjectCode}`);
+
             db.collection("subjectAnalytics").doc(`${dec.subjectCode}`).get().then(doc => {
+                console.log(`answer of ${dec.subjectCode} received`);
+
                 if (!doc.exists){
-                    console.log("not exist");
+                    console.log(`document does not exist, writting ${dec.subjectCode}/${dec.commission}=0`);
+
                     db.collection("subjectAnalytics").doc(`${dec.subjectCode}`).set({
                         [`${dec.commission}`]: 0,
                         subjectName: dec.subjectName
                     }, {merge: true}).then(data => {
-                        console.log(data);
-                    });;
+                    }).then(data => {
+                        console.log(`successfully written ${dec.subjectCode}/${dec.commission}`)
+                    });
                 }else{
-                    console.log("exist");
+                    console.log(`document does exist, decrementing ${dec.subjectCode}/${dec.commission}`);
                     const data = doc.data();
-                    console.log(data);
 
                     if (data){
-                        var prevValue = data[`${dec.commission}`];
-                        if (!prevValue){
+                        console.log("there is data in document")
+                        console.log(data[`${dec.commission}`]);
+                        var prevValue : number = data[`${dec.commission}`];
+
+                        console.log(`prevValue = ${prevValue}`);
+
+                        if (prevValue == undefined){
+                            console.log("not valid prev value");
                             db.collection("subjectAnalytics").doc(`${dec.subjectCode}`).set({
                                 [`${dec.commission}`]: (prevValue - 1)
-                            }, {merge: true});
+                            }, {merge: true}).then(data => {
+                                console.log(`successfully written ${dec.subjectCode}/${dec.commission}`)
+                            });
                         }else{
+                            console.log("valid prev value");
                             db.collection("subjectAnalytics").doc(`${dec.subjectCode}`).set({
-                                [`${dec.commission}`]: 0
-                            }, {merge: true});
+                                [`${dec.commission}`]: 1
+                            }, {merge: true}).then(data => {
+                                console.log(`successfully written ${dec.subjectCode}/${dec.commission}`)
+                            });
                         }
+                    }else{
+                        console.log("there is no data in document")
                     }
                 }
             });
-        }
+        }*/
 
-        console.log(increment);
-        console.log(decrement);
-
-        console.log("hello world my friends");
+       /* console.log("program has finished");
+        return 1;
     }
-);
+);*/
