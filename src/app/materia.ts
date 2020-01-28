@@ -27,7 +27,7 @@ export interface Commission {
     professors: string[];
     subject?: Subject;
     schedule: Timeblock[];
-    quota: number;
+    quota?: number;
     people?: number; // personas que eligieron la comision como opcion 1, 2 y 3
 }
 
