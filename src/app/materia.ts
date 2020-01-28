@@ -27,7 +27,8 @@ export interface Commission {
     professors: string[];
     subject?: Subject;
     schedule: Timeblock[];
-    people?: number[]; // personas que eligieron la comision como opcion 1, 2 y 3
+    quota: number;
+    people?: number; // personas que eligieron la comision como opcion 1, 2 y 3
 }
 
 export interface SubjectCommissions {
@@ -110,7 +111,7 @@ export function generateSubjectCommissionsCopy(subjectCommissions: SubjectCommis
     ans.push({
       subject: subjectCommission.subject,
       commissions: subjectCommission.commissions
-    }); 
+    });
   }
   return ans;
 }

@@ -313,6 +313,7 @@ export class SgaLinkerService {
         const currCommission: Commission = {
           name: commission.commissionName,
           professors: commission.professors,
+          quota: commission.quota,
           subject: null,
           schedule: timeBlockArr
         };
