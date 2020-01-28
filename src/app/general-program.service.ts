@@ -25,16 +25,7 @@ export class GeneralProgramService {
     }
     // inicializamos la clase con el valor de checkbox inicial falso
   }
-  /** 
-  createCheckboxTrue(checkboxName: string,initialStatus: boolean){ // crear un nuevo checkbox
-    if (initialStatus){
-      this.checkboxStatus[checkboxName] = new BehaviorSubject<boolean>(true);
-    }
-    else
-      this.checkboxStatus[checkboxName] = new BehaviorSubject<boolean>(false);
-    // inicializamos la clase con el valor de checkbox inicial true
-  }
-  **/
+
   // actualizar estado de un checkbox
   updateCheckbox(checkboxName: string, status: boolean){
     this.allCheckboxStatus[checkboxName] = status;

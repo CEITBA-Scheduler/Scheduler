@@ -33,8 +33,6 @@ export class ResultsComponent implements OnInit {
   combinations: Combination[];
   combinationNames: string[] = [];
 
-
-  
   // By default, the program suposes it will recieve at least one combination
   areCombinationsAvailable = true;
 
@@ -58,11 +56,11 @@ export class ResultsComponent implements OnInit {
     private router: Router,
     private dbServices: DbServicesService,
     private combinacionDeHorarioService: CombinacionDeHorarioService) {
-      
+
      }
 
   ngOnInit() {
-    
+
     this.combinations = this.combinacionDeHorarioService.getAlgorithmResults();
     // If combinations is empty, the boolean (used along with *ngIf on .html) turns to false
     if (this.combinations.length === 0) {
@@ -122,7 +120,9 @@ export class ResultsComponent implements OnInit {
         if (currentIndex === this.leftSlideIndex) {
           this.updateSlideCombinations('left');
         } else if (currentIndex === this.rightSlideIndex) {
-          this.updateSlideCombinations('right');
+          if (currentIndex < this.combinations.length - 1) {
+            this.updateSlideCombinations('right');
+          }
         }
       }
     }
