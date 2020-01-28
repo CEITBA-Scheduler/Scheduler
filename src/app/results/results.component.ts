@@ -23,7 +23,7 @@ export interface Food {
   styleUrls: ['./results.component.css']
 })
 export class ResultsComponent implements OnInit {
-  @ViewChild('carousel', {static: false}) carousel: NgbCarousel;
+  @ViewChild(NgbCarousel, {static: false}) carousel: NgbCarousel;
 
   commissions: Observable<SubjectCommissions[]>[] = [];
 
@@ -96,8 +96,10 @@ export class ResultsComponent implements OnInit {
 
     switch (action) {
       case 'default':
+      case 'restart-left':
         this.leftSlideIndex = DEFAULT_LEFT;
         this.rightSlideIndex = this.combinations.length <= DEFAULT_RIGHT ? this.combinations.length - 1 : DEFAULT_RIGHT;
+        this.selectSlide(this.leftSlideIndex);
         break;
       case 'left':
         this.leftSlideIndex -= 1;
@@ -107,22 +109,35 @@ export class ResultsComponent implements OnInit {
         this.leftSlideIndex += 1;
         this.rightSlideIndex += 1;
         break;
+      case 'restart-right':
+        this.leftSlideIndex = this.combinations.length <= DEFAULT_RIGHT ? DEFAULT_LEFT : this.combinations.length - 1 - DEFAULT_RIGHT;
+        this.rightSlideIndex = this.combinations.length - 1;
+        this.selectSlide(this.rightSlideIndex);
+        break;
     }
 
     this.slideCombinations = this.combinations.slice(this.leftSlideIndex, this.rightSlideIndex + 1);
   }
 
   loadMore(event) {
-    if (event.hasOwnProperty('current')) {
+    console.log(event);
+    if (event.hasOwnProperty('current') && event.hasOwnProperty('prev')) {
       const currentArray = event.current.split('-');
+      const prevArray = event.prev.split('-');
       const currentIndex = Number(currentArray[currentArray.length - 1]);
-      if (currentIndex > 0) {
-        if (currentIndex === this.leftSlideIndex) {
+      const prevIndex = Number(prevArray[prevArray.length - 1]);
+
+      if (prevIndex === 0 && currentIndex !== 1) {
+        this.updateSlideCombinations('restart-right');
+      } else if (prevIndex === (this.combinations.length - 1) && currentIndex !== (this.combinations.length - 2)) {
+        this.updateSlideCombinations('restart-left');
+      } else if (currentIndex === this.leftSlideIndex) {
+        if (currentIndex > 0) {
           this.updateSlideCombinations('left');
-        } else if (currentIndex === this.rightSlideIndex) {
-          if (currentIndex < this.combinations.length - 1) {
-            this.updateSlideCombinations('right');
-          }
+        }
+      } else if (currentIndex === this.rightSlideIndex) {
+        if (currentIndex < this.combinations.length - 1) {
+          this.updateSlideCombinations('right');
         }
       }
     }
@@ -141,7 +156,9 @@ export class ResultsComponent implements OnInit {
   }
 
   selectSlide(slide: string) {
-    this.carousel.select('ngb-slide-' + (+slide - 1));
+    if (this.carousel !== undefined) {
+      this.carousel.select('ngb-slide-' + (+slide - 1));
+    }
   }
 
   returnToCombiner() {
