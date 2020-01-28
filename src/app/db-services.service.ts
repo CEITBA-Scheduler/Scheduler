@@ -26,10 +26,10 @@ export class DbServicesService {
   dbSubjects: BehaviorSubject<Subject[]> = new BehaviorSubject([]);
   dbSubjectsCommissions: BehaviorSubject<{[code: string]: Observable<Commission[]>}> = new BehaviorSubject({});
   dbConfigCheckbox: {[code: string]: BehaviorSubject<boolean>} = {
-    "superposition": new BehaviorSubject<boolean>(false),
-    "freeday": new BehaviorSubject<boolean>(false),
-    "buildingChange": new BehaviorSubject<boolean>(false),
-    "travelTime": new BehaviorSubject<boolean>(false)
+    superposition: new BehaviorSubject<boolean>(false),
+    freeday: new BehaviorSubject<boolean>(false),
+    buildingChange: new BehaviorSubject<boolean>(false),
+    travelTime: new BehaviorSubject<boolean>(false)
   };
 
   subjectsData: { [id: string]: Subject };
@@ -68,7 +68,7 @@ export class DbServicesService {
 
   storeUserPreAlgorithmSelection(){
 
-    ///primero actualizamos informacion del usuario
+    // primero actualizamos informacion del usuario
     this.auth.updateUserSelection(
       this.combinacionDeHorarioService.getSelectedData(),
       this.generalProgramService.getAllCheckboxStatus()
@@ -76,8 +76,8 @@ export class DbServicesService {
 
     // luego esos valores los publicamos en la base de datos
 
-    //this.firestore.collection("users).set("userSelection", this.getUserObjectFromUserSelection(userSelection));
-    //console.log("Updating user db ...");
+    // this.firestore.collection("users).set("userSelection", this.getUserObjectFromUserSelection(userSelection));
+    // console.log("Updating user db ...");
     const user: User = this.auth.getUser();
 
     var userSelectionData = [];
@@ -107,18 +107,18 @@ export class DbServicesService {
       //console.log(data);
     });*/
 
-    this.afs.collection("users").valueChanges().subscribe(data => {
+    this.afs.collection('users').valueChanges().subscribe(data => {
 
-      for (let key in subjects) {
-        for (var commission in subjects[key].commissions){
+      for (const key in subjects) {
+        for (const commission in subjects[key].commissions){
           subjects[key].commissions[commission].people = [0, 0, 0]; // reseteamos personas de cada comision
         }
       }
-        //si es con get(), iria data.doc
-      for (let docName in data){ // for each document
+        // si es con get(), iria data.doc
+      for (const docName in data){ // for each document
         var doc = data[docName]; // y aca .data()
 
-        for (let subject in doc["userSelection"]) {
+        for (const subject in doc["userSelection"]) {
           var subjectCode: string = doc["userSelection"][subject].subjectCode;
           var subjectData = doc["userSelection"][subject];
 
@@ -153,8 +153,8 @@ export class DbServicesService {
         this.subjectCodes.push(matI.subjectCode);
         this.commissionNames[matI.subjectCode] = matI.commissions;
         // the next line must be erased
-        //console.log("commissions:");
-        //console.log(matI.commissions);
+        // console.log("commissions:");
+        // console.log(matI.commissions);
         // the last line must be erased
       }
     }
@@ -220,7 +220,7 @@ export class DbServicesService {
   }
   generateOption(combination: SubjectCommissions[]){
     if (combination){
-      
+
       var userSelection = [];
       for (var subjectSelection of combination){
         userSelection.push(
@@ -251,7 +251,7 @@ export class DbServicesService {
     const user: User = this.auth.getUser();
     var option = this.generateOption(combination1);
     this.afs.collection("usersSelection").doc(user.uid).set(
-      { 
+      {
         options: {
           userFirstOption: option
         }
@@ -262,7 +262,7 @@ export class DbServicesService {
     const user: User = this.auth.getUser();
     var option = this.generateOption(combination2);
     this.afs.collection("usersSelection").doc(user.uid).set(
-      { 
+      {
         options: {
           userSecondOption: option
         }
@@ -273,7 +273,7 @@ export class DbServicesService {
     const user: User = this.auth.getUser();
     var option = this.generateOption(combination3);
     this.afs.collection("usersSelection").doc(user.uid).set(
-      { 
+      {
         options: {
           userThirdOption: option
         }
@@ -283,7 +283,7 @@ export class DbServicesService {
 
   updateUserSelections(combination1: SubjectCommissions[], combionation2: SubjectCommissions[], combinacion3: SubjectCommissions[]){ // store in order user selection in db
     console.log("updating data");
-    
+
     const user: User = this.auth.getUser();
 
     var firstOption = this.generateOption(combination1);
@@ -298,7 +298,7 @@ export class DbServicesService {
       });
 
     this.afs.collection("usersSelection").doc(user.uid).set(
-      { 
+      {
         options: {
           userFirstOption: firstOption,
           userSecondOption: secondOption,
@@ -309,7 +309,7 @@ export class DbServicesService {
   }
   updateUserComment(comment: string){
     const user: User = this.auth.getUser();
-    
+
     this.afs.collection("users").doc(user.uid).update(
       {
         comment: comment

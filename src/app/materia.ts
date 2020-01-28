@@ -28,7 +28,7 @@ export interface Commission {
     subject?: Subject;
     schedule: Timeblock[];
     quota?: number;
-    people?: number; // personas que eligieron la comision como opcion 1, 2 y 3
+    people?: number[]; // personas que eligieron la comision como opcion 1, 2 y 3
 }
 
 export interface SubjectCommissions {
