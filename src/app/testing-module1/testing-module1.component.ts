@@ -29,7 +29,7 @@ export class TestingModule1Component implements OnInit {
         if (Object.keys(data).length > 0){
           console.log(data);
           console.log("Informacion de comisión:");
-          this.dbServices.getSubjectCommissionsPeople(data["93.03"]).subscribe(data => {
+          this.dbServices.getSubjectCommissionsPeople(data["93.42"]).subscribe(data => {
             console.log(data);
           });
         }

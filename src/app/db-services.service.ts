@@ -318,18 +318,26 @@ export class DbServicesService {
   }
   getSubjectCommissionsPeople(subject: Subject) : Observable<{[code: string] : number}>{
     return this.afs.collection("subjectAnalytics").doc(subject.code).valueChanges().pipe(
-      map(doc => this.convertToCastedDict(doc))
+      map(doc => this.convertToCastedDict(subject, doc))
     )
   }
-  convertToCastedDict(doc: any) : {[code: string] : number} {
+  convertToCastedDict(subject: Subject, doc: any) : {[code: string] : number} {
     if (doc != undefined){
       var ans: {[code: string] : number} = {};
-      for (let item in doc){
-        ans[item] = doc[`${item}`];
+      for (let commission of subject.commissions){
+        if (`${commission.name}` in doc){
+          ans[commission.name] = doc[`${commission.name}`];
+        }else{
+          ans[commission.name] = 0;
+        }
       }
       return ans;
     }else{
-      return {};
+      var ans: {[code: string] : number} = {};
+      for (let commission of subject.commissions){
+        ans[commission.name] = 0;
+      }
+      return ans;
     }
   }
 
