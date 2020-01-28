@@ -88,14 +88,6 @@ export class ResultsComponent implements OnInit {
       this.updateSlideCombinations();
     }
   }
-
-
-
-
-
-
-
-
   generateSlideId(index: number) {
     return `ngb-slide-${index + this.leftSlideIndex}`;
   }
@@ -157,10 +149,10 @@ export class ResultsComponent implements OnInit {
   }
 
   done() {
-    this.dbServices.updateUserSelections(
+    /*this.dbServices.updateUserSelections(
       this.combinacionDeHorarioService.getCombination1(),
       this.combinacionDeHorarioService.getCombination2(),
       this.combinacionDeHorarioService.getCombination3()
-    );
+    );*/
   }
 }

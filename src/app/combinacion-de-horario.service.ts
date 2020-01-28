@@ -131,6 +131,7 @@ export class CombinacionDeHorarioService {
     return this.heartBehavioural.asObservable();
   }
   resetHeartList(){
+    this.hearts = [];
     this.heartBehavioural.next([]);
   }
   getCombination1(): SubjectCommissions[]{

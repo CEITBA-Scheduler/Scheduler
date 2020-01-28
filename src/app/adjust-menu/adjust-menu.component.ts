@@ -5,6 +5,8 @@ import { Subject, Commission, SubjectCommissions, generateSubjectCommissionsFrom
 import { CombinacionDeHorarioService } from '../combinacion-de-horario.service';
 import { Combination } from '../algorithm/algorithm-object';
 import { Observable, BehaviorSubject, of } from 'rxjs';
+import { DbServicesService } from '../db-services.service';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-adjust-menu',
@@ -36,8 +38,11 @@ export class AdjustMenuComponent implements OnInit {
   subjects: Observable<SubjectCommissions[]>; // combinacion almacenada por la materia
   subjectsBehaviour: BehaviorSubject<SubjectCommissions[]> = new BehaviorSubject([]);
   selectedSubject: Subject;
+  updateObs: Observable<any>;
+  updateSub: BehaviorSubject<any> = new BehaviorSubject(0);
+  selectOptionSubj: BehaviorSubject<any> = new BehaviorSubject({last: -1, next: -1});
 
-  constructor(private combinacionDeHorarioService: CombinacionDeHorarioService) { }
+  constructor(private combinacionDeHorarioService: CombinacionDeHorarioService, private dbServices: DbServicesService) { }
 
   ngOnInit() {
     this.algorithmResults = this.combinacionDeHorarioService.getAlgorithmResults();
@@ -50,17 +55,30 @@ export class AdjustMenuComponent implements OnInit {
     this.subjects = this.subjectsBehaviour.asObservable();
     
     this.combinacionDeHorarioService.getHeartList().subscribe((options: string[]) => {
-      this.options = options
+      console.log("update heart list");
+      this.options = options;
 
       for (let option of this.options){
         this.dataSubject[option] = generateSubjectCommissionsFromCombionation(this.algorithmResults[+option-1]);
         this.dataSubjectModified[option] = generateSubjectCommissionsFromCombionation(this.algorithmResults[+option-1]);
       }
       //console.log(this.subjects);
-      console.log(this.options);
+      //console.log(this.options);
       //this.selectOption(0); causa erroes esta linea
+      //this.subjectsBehaviour.next(this.dataSubjectModified[this.options[0]]);
+      //this.selec(0);
+     // this.selectOption(1);
+      //this.selectOption(2);
+      //console.log("option = ")
+      //console.log(this.dataSubjectModified[this.options[0]]);
+      if (this.options.length == 1){
+        this.selectOption(0);
+      }else if (this.options.length == 2){
+        this.selectOption(1);
+      }else if (this.options.length == 3){
+        this.selectOption(2);
+      }
       
-
       let i = 0;
       for (var opt of this.options){
         if (i == 0){
@@ -94,23 +112,71 @@ export class AdjustMenuComponent implements OnInit {
         this.combinacionDeHorarioService.setCombination3(combination);
         
       }
+      console.log("db should be updated");
+      this.updateSub.next(
+        {
+          c1: this.combinacionDeHorarioService.getCombination1(),
+          c2: this.combinacionDeHorarioService.getCombination2(),
+          c3: this.combinacionDeHorarioService.getCombination3()
+        }
+      );
+        
+      
     });
+    this.updateObs = this.updateSub.asObservable().pipe(
+      debounceTime(5000),
+      distinctUntilChanged()
+    )
+    this.updateObs.subscribe((data: any) => {
+      console.log("update db");
+      this.dbServices.updateUserSelections(
+        data.c1,
+        data.c2,
+        data.c3
+      );
 
+    })
+
+    this.selectOptionSubj.asObservable().pipe(
+      debounceTime(10),
+      distinctUntilChanged()
+    ).subscribe(data =>{
+      if (data.last != -1){
+        this.selectOption(data.last);
+        this.selectOption(data.next);
+      }
+    })
   }
 
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.options, event.previousIndex, event.currentIndex);
+    /*this.updateSub.next(
+      {
+        c1: this.combinacionDeHorarioService.getCombination1(),
+        c2: this.combinacionDeHorarioService.getCombination2(),
+        c3: this.combinacionDeHorarioService.getCombination3()
+      }
+    );*/ // update db
+    //console.log("index = ");
+    //console.log(event.currentIndex);
+
+    this.selectOptionSubj.next({
+      last: event.previousIndex, 
+      next: event.currentIndex
+    });
   }
   selectOption(selected: number){
-    console.log(`selected ${selected}`)
-    this.currentSelectedCode = this.options[+selected];
-    this.selectedBehavioural.next(+selected);
+    //console.log(`selected ${selected}`)
+    this.currentSelectedCode = this.options[selected];
+    this.selectedBehavioural.next(selected);
+    //console.log("data subject");
+    //console.log(this.dataSubjectModified[this.options[+selected]]);
     this.subjectsBehaviour.next(this.dataSubjectModified[this.options[+selected]]);
     
   }
   subjectChanged(commission: SubjectCommissions){
-    console.log("Subject changed");
-    console.log(commission);
+    //console.log("Subject changed");
+    //console.log(commission);
     this.subjectCommissionConfig.setAvoidMyself();
 
     for (let i in this.dataSubjectModified[this.currentSelectedCode]){

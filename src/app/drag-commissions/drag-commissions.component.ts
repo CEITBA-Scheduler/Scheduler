@@ -23,26 +23,34 @@ export class DragCommissionsComponent implements OnInit {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
-      var num1 = Number(event.previousContainer._dropListRef.id.replace(/\D/g, ''));
-      var num2 = Number(event.container._dropListRef.id.replace(/\D/g, ''));
+      transferArrayItem(event.previousContainer.data,
+                        event.container.data,
+                        event.previousIndex,
+                        event.currentIndex);
+    }
+    //if (event.previousContainer === event.container) {
+    //  moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    //} else {
+      //var num1 = Number(event.previousContainer._dropListRef.id.replace(/\D/g, ''));
+      //var num2 = Number(event.container._dropListRef.id.replace(/\D/g, ''));
       
-      if(num1<num2){
+     // if(num1<num2){
           //num1 is on the left, I am adding from TODO to DONE
-          if(this.done.length <= 2){
+         /* if(this.done.length <= 2){
             transferArrayItem(event.previousContainer.data,
               event.container.data,
               event.previousIndex,
               event.currentIndex);
-          }
+          }*/
 
-      }else{
+     // }else{
           //num1 is on the right, I am poping items from DONE to TODO
-          transferArrayItem(event.previousContainer.data,
+         /* transferArrayItem(event.previousContainer.data,
             event.container.data,
             event.previousIndex,
-            event.currentIndex);
-      }
-    }
+            event.currentIndex);*/
+      //}
+    //}
     this.selectedCommissions.next(this.done);
   }
 

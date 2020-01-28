@@ -23,10 +23,10 @@ export class SubjectCommissionConfigComponent implements OnInit {
 
   ngOnInit() {
     this.subjectCommissionsInput.subscribe((data: SubjectCommissions[]) => {
-      console.log(`avoid myself=${this.avoidMyself}`);
+      //console.log(`avoid myself=${this.avoidMyself}`);
       
       if (!this.avoidMyself){
-        console.log("update subject commissions");
+        //console.log("update subject commissions");
         this.subjectCommissions = data;
         for (var i of data){
           if (!this.subjectCommissionsBehaviour[i.subject.name]){

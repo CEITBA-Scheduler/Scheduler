@@ -150,85 +150,87 @@ export class CalendarComponent implements OnInit {
       }
     }
     this.calendarService.setTimeblocks(this.periodBlocks);
-    this.subjectsComissions.subscribe((subjectsComissions: SubjectCommissions[]) => {
-      // the next line must be erased  
-      console.log("Actualizando schedules ...");
-      // the last line must be erased
-      console.log(subjectsComissions);
+    if (this.subjectsComissions){
+      this.subjectsComissions.subscribe((subjectsComissions: SubjectCommissions[]) => {
+        // the next line must be erased  
+        //console.log("Actualizando schedules ...");
+        // the last line must be erased
+      // console.log(subjectsComissions);
 
-      /// actualizamos possibleSchedules
-      var schedules = [];
+        /// actualizamos possibleSchedules
+        var schedules = [];
 
-      var colors = [
-        'rgba(128,255,0,0.5)',
-        'rgba(0,200,200,0.5)',
-        'rgba(0,0,200,0.5)',
-        'rgba(0,200,0,0.5)',
-        'rgba(255,238,0,0.5)',
-        'rgba(204,0,102,0.5)',
-        'rgba(255,128,0,0.5)',
-        'rgba(255,0,255,0.5)',
-        'rgba(0,0,255,0.5)',
-        'rgba(200,0,0,0.5)',
-        'rgba(51,0,25,0.5)',
-        'rgba(100,124,6,0.5)',
-        'rgba(96,96,96,0.5)',
-        'rgba(153,0,0,0.5)',
-        'rgba(0,51,25,0.5)'
-      ];
-      var i = 0;
+        var colors = [
+          'rgba(128,255,0,0.5)',
+          'rgba(0,200,200,0.5)',
+          'rgba(0,0,200,0.5)',
+          'rgba(0,200,0,0.5)',
+          'rgba(255,238,0,0.5)',
+          'rgba(204,0,102,0.5)',
+          'rgba(255,128,0,0.5)',
+          'rgba(255,0,255,0.5)',
+          'rgba(0,0,255,0.5)',
+          'rgba(200,0,0,0.5)',
+          'rgba(51,0,25,0.5)',
+          'rgba(100,124,6,0.5)',
+          'rgba(96,96,96,0.5)',
+          'rgba(153,0,0,0.5)',
+          'rgba(0,51,25,0.5)'
+        ];
+        var i = 0;
 
-      for (let subjectComission of subjectsComissions){
+        for (let subjectComission of subjectsComissions){
 
-        var times = [];
-        var location = {};
+          var times = [];
+          var location = {};
 
-        for (let schedule of subjectComission.commissions[0].schedule){
-          times.push({
-            day: schedule.day,
-            initialHour: {
-              hours: schedule.start.hours,
-              minutes: schedule.start.minutes
-            },
-            finalHour: {
-              hours: schedule.end.hours,
-              minutes: schedule.end.minutes
-            },
-            location: schedule.building,
-            //classroom: schedule.classroom // <-- Uncomment to get classroom too
-          });
-        }
-
-        schedules.push(
-          {
-            name: subjectComission.subject.name,
-            color: colors[i],
-            commissionName: subjectComission.commissions[0].name,
-            commissionTimes: times
-          },
-        );
-        i = (i + 1) % 15;
-      }
-      this.subjectList = [];
-      for (let i = 0; i < schedules.length ; i++ ) {
-        this.subjectList.push(
-          {
-            checked: true, subject: Object.assign({}, schedules[i])
+          for (let schedule of subjectComission.commissions[0].schedule){
+            times.push({
+              day: schedule.day,
+              initialHour: {
+                hours: schedule.start.hours,
+                minutes: schedule.start.minutes
+              },
+              finalHour: {
+                hours: schedule.end.hours,
+                minutes: schedule.end.minutes
+              },
+              location: schedule.building,
+              //classroom: schedule.classroom // <-- Uncomment to get classroom too
+            });
           }
-        );
-      }
 
-      /*for (let day in this.days){
-        for (let hour in this.hours){
-          this.updateSubjectOn(this.days[day], this.hours[hour]);
+          schedules.push(
+            {
+              name: subjectComission.subject.name,
+              color: colors[i],
+              commissionName: subjectComission.commissions[0].name,
+              commissionTimes: times
+            },
+          );
+          i = (i + 1) % 15;
         }
-      }*/
-      this.updateSubjectOnv2();
-      if (subjectsComissions.length > 0){
-        this.isLoading = false; // erase loading icon
-      }
-      this.isLoading = false;
-    });
+        this.subjectList = [];
+        for (let i = 0; i < schedules.length ; i++ ) {
+          this.subjectList.push(
+            {
+              checked: true, subject: Object.assign({}, schedules[i])
+            }
+          );
+        }
+
+        /*for (let day in this.days){
+          for (let hour in this.hours){
+            this.updateSubjectOn(this.days[day], this.hours[hour]);
+          }
+        }*/
+        this.updateSubjectOnv2();
+        if (subjectsComissions.length > 0){
+          this.isLoading = false; // erase loading icon
+        }
+        this.isLoading = false;
+      });
+    }
   }
 
   setLoading(){
@@ -293,8 +295,8 @@ export class CalendarComponent implements OnInit {
             location: location
           }
         )
-        console.log("=== LOCATION OF " + subjectName + " ===");
-        console.log(this.subjectsOfDay[this.subjectList[m].subject.commissionTimes[i].location]);
+        //console.log("=== LOCATION OF " + subjectName + " ===");
+        //console.log(this.subjectsOfDay[this.subjectList[m].subject.commissionTimes[i].location]);
       }
       u = (u + 1) % 15;
     }

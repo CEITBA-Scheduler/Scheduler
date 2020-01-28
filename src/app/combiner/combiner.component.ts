@@ -185,6 +185,10 @@ export class CombinerComponent implements OnInit {
     this.scheduleCombinerServices.setAlgorithmResults(
       this.combinations
     );
+    this.scheduleCombinerServices.resetHeartList();
+    this.scheduleCombinerServices.setCombination1([]);
+    this.scheduleCombinerServices.setCombination2([]);
+    this.scheduleCombinerServices.setCombination3([]);
 
     this.router.navigate(['/results']);
   }

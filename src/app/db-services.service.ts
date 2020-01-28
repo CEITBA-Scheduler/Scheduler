@@ -105,23 +105,23 @@ export class DbServicesService {
       //console.log(data);
     });*/
 
-    //this.afs.collection("users").valueChanges().subscribe(data => {
+    this.afs.collection("users").valueChanges().subscribe(data => {
 
-      //for (let key in subjects) {
-      //  for (var commission in subjects[key].commissions){
-      //    subjects[key].commissions[commission].people = [0, 0, 0]; // reseteamos personas de cada comision
-      //  }
-      //}
+      for (let key in subjects) {
+        for (var commission in subjects[key].commissions){
+          subjects[key].commissions[commission].people = [0, 0, 0]; // reseteamos personas de cada comision
+        }
+      }
         //si es con get(), iria data.doc
-      //for (let docName in data){ // for each document
-      //  var doc = data[docName]; // y aca .data()
+      for (let docName in data){ // for each document
+        var doc = data[docName]; // y aca .data()
 
-        /*for (let subject in doc["userSelection"]) {
+        for (let subject in doc["userSelection"]) {
           var subjectCode: string = doc["userSelection"][subject].subjectCode;
-          var subjectData = doc["userSelection"][subject];*/
+          var subjectData = doc["userSelection"][subject];
 
 
-          /*if (subjectCode in subjects){
+          if (subjectCode in subjects){
 
             for (let commission in subjects[subjectCode].commissions){
 
@@ -136,11 +136,11 @@ export class DbServicesService {
               }
 
             }
-          }*/
-        //}
+          }
+        }
 
-      //}
-    //});
+      }
+    });
   }
 
   askForUserSubjectSelection() {
@@ -217,22 +217,26 @@ export class DbServicesService {
     this.dbSubjectsCommissions.next(subjectsCommissions);
   }
   generateOption(combination: SubjectCommissions[]){
-    console.log(combination);
-    
-    var userSelection = [];
-
-    for (var subjectSelection of combination){
-      userSelection.push(
-        {
-          subjectCode: subjectSelection.subject.code,
-          subjectName: subjectSelection.subject.name,
-          commission: subjectSelection.commissions[0].name
-        }
-      );
-    }
     if (combination){
+      
+      var userSelection = [];
+      for (var subjectSelection of combination){
+        userSelection.push(
+          {
+            subjectCode: subjectSelection.subject.code,
+            subjectName: subjectSelection.subject.name,
+            commission: subjectSelection.commissions[0].name
+          }
+        );
+      }
+      var exists;
+      if (userSelection.length > 0){
+        exists = true;
+      }else{
+        exists = false;
+      }
       return {
-        exists: true,
+        exists: exists,
         userSelection: userSelection
       }
     }else{
@@ -241,6 +245,40 @@ export class DbServicesService {
       }
     }
   }
+  updateUserSelection1(combination1: SubjectCommissions[]){
+    const user: User = this.auth.getUser();
+    var option = this.generateOption(combination1);
+    this.afs.collection("usersSelection").doc(user.uid).set(
+      { 
+        options: {
+          userFirstOption: option
+        }
+      }, {merge: true}
+    );
+  }
+  updateUserSelection2(combination2: SubjectCommissions[]){
+    const user: User = this.auth.getUser();
+    var option = this.generateOption(combination2);
+    this.afs.collection("usersSelection").doc(user.uid).set(
+      { 
+        options: {
+          userSecondOption: option
+        }
+      }, {merge: true}
+    );
+  }
+  updateUserSelection3(combination3: SubjectCommissions[]){
+    const user: User = this.auth.getUser();
+    var option = this.generateOption(combination3);
+    this.afs.collection("usersSelection").doc(user.uid).set(
+      { 
+        options: {
+          userThirdOption: option
+        }
+      }, {merge: true}
+    );
+  }
+
   updateUserSelections(combination1: SubjectCommissions[], combionation2: SubjectCommissions[], combinacion3: SubjectCommissions[]){ // store in order user selection in db
     console.log("updating data");
     
@@ -257,8 +295,8 @@ export class DbServicesService {
         }
       });
 
-    this.afs.collection("users").doc(user.uid).update(
-      {
+    this.afs.collection("usersSelection").doc(user.uid).set(
+      { 
         options: {
           userFirstOption: firstOption,
           userSecondOption: secondOption,

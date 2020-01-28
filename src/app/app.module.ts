@@ -60,6 +60,7 @@ import { CommissionCardV2Component } from './commission-card-v2/commission-card-
 import { SubjectCommissionConfigComponent } from './subject-commission-config/subject-commission-config.component';
 import { FinalMenuComponent } from './final-menu/final-menu.component';
 import { CreditsComponent } from './credits/credits.component';
+import { SaveIconComponent } from './save-icon/save-icon.component';
 
 @NgModule({
   declarations: [
@@ -93,7 +94,8 @@ import { CreditsComponent } from './credits/credits.component';
     CommissionCardV2Component,
     SubjectCommissionConfigComponent,
     FinalMenuComponent,
-    CreditsComponent
+    CreditsComponent,
+    SaveIconComponent
   ],
   imports: [
     BrowserModule,
