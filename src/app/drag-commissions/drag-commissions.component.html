@@ -1,6 +1,8 @@
 <div cdkDropListGroup fxLayout="row"> <!-- para compu queda lindo como row en vez de column. Pero para el telefono column-->
   <div class="example-container">
-    COMISIONES DISPONIBLES (MAXIMO A ELEGIR : 3)
+    COMISIONES DISPONIBLES <button type="button" class="btn btn-outline-secondary" ngbPopover="Más adelante guardarás hasta 3 calendarios posibles ordenados en prioridad, la primera opción guardará las comisiones, siendo las más probables a ser introducidas al SGA al momento de matricularte, siendo estas un estimativo de los posibles cupos de esta comisión." triggers="mouseenter:mouseleave" >
+      Cupos?
+    </button>
 
       <div
         cdkDropList
@@ -15,7 +17,10 @@
 
     <div class="example-container">
       <!-- <h1>Comisiones elegidas</h1> -->
-      COMISIONES ELEGIDAS
+      Arrastrá aquí para elegir comisiones <button type="button" class="btn btn-outline-secondary" ngbPopover="Arrastrá las comisiones por arriba de las anteriores. Estas se ordenan de forma decreciente en importancia para mostrar las combinaciones. Si no seleccionás ninguna se mostrarán todas." triggers="mouseenter:mouseleave" >
+        Info!
+      </button>
+      
       <div
         cdkDropList
         [cdkDropListData]="done"

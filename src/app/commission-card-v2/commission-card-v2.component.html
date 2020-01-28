@@ -4,7 +4,8 @@
   <mat-grid-tile [colspan]=2 [rowspan]=2 Align="center">
       <div>
           <div *ngFor="let timeblock of commission.schedule">
-              {{timeblock.day}} {{myFunc(timeblock.start.minutes, timeblock.start.hours)}} - {{myFunc(timeblock.end.minutes,timeblock.end.hours)}}
+              {{timeblock.day}} {{myFunc(timeblock.start.minutes, timeblock.start.hours)}} - {{myFunc(timeblock.end.minutes,timeblock.end.hours)}} <br>
+              {{timeblock.building}}
           </div>
         </div>    
   </mat-grid-tile>

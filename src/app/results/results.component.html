@@ -27,9 +27,17 @@
       <div fxLayout="row" fxLayoutAlign="center center">
         <div *ngIf="(hearts | async).length == 0">
           <button  mat-button>
-            No hay calendarios seleccionados
+            Clickear corazón para seleccionar hasta 3 calendarios favoritos
           </button>
+
+          
         </div>
+        <button type="button" class="btn btn-outline-secondary" ngbPopover="Clckeá el calendario y movete también con las flechas del teclado!" triggers="mouseenter:mouseleave" >
+          Info!
+        </button>
+        <button type="button" class="btn btn-outline-secondary" ngbPopover="Recordá que las comisiones del primer calendario elegido servirá para estimar los posibles cupos a ocuparse en la matriculación (tal vez sirva para autoregularlos : Dinámica de sistemas: Apalancamiento-Flujo de información?)" triggers="mouseenter:mouseleave" >
+          Cupos
+        </button>
         <div *ngFor="let heart of hearts | async">
           <button (click)="selectSlide(heart)" mat-button>
             Combinación {{heart}}
@@ -70,11 +78,15 @@
         </ngb-carousel>
       </div>
     </mat-step>
-    <mat-step label="AJUSTAR COMBINACIONES">
+    <mat-step label="ARRASTRÁ PARA AJUSTAR COMBINACIONES SELECCIONADAS">
+      
 
       <app-adjust-menu>
 
       </app-adjust-menu>
+      <button type="button" class="btn btn-outline-secondary" ngbPopover="Recordá que las comisiones del primer calendario elegido servirá para estimar los posibles cupos a ocuparse en la matriculación (tal vez sirva para autoregularlos : Dinámica de sistemas: Apalancamiento-Flujo de información?)" triggers="mouseenter:mouseleave" >
+        Cupos
+      </button>
     </mat-step>
     <mat-step label="FIN">
       <app-final-menu>
