@@ -148,7 +148,7 @@ export class SgaLinkerService {
     const params = {
       level: 'GRADUATE',
       year: currentYear,
-      period: currentMonth === 0 || currentMonth === 1 || currentMonth > 6 ? 'FirstSemester' : 'SecondSemester'
+      period: currentMonth === 0 || currentMonth === 1 || currentMonth < 6 ? 'FirstSemester' : 'SecondSemester'
     };
 
     // Generating the url for the HTTP Request and
