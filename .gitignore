@@ -47,3 +47,5 @@ Thumbs.db
 
 # key files
 src/app/secrets.ts
+mls.go
+mls.exe

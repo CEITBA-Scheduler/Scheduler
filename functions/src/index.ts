@@ -21,16 +21,16 @@ export const test = functions.firestore.document("usersSelection/{uid}").onWrite
         var increment: any[] = [];
         var decrement: any[] = [];
 
-        var isInInc: {[code: string]: boolean} = {}; 
-        var isInDec: {[code: string]: boolean} = {}; 
+        var isInInc: {[code: string]: boolean} = {};
+        var isInDec: {[code: string]: boolean} = {};
 
         if (change.before.exists && change.before.data()){
             const data = change.before.data();
-            if (data){    
+            if (data){
                // console.log(data);
                 //console.log(data["options"]["userFirstOption"]);
                 const userSelection = data["options"]["userFirstOption"]["userSelection"];
-                
+
 
                 if (userSelection){
                     for (let selection of userSelection){
@@ -43,13 +43,13 @@ export const test = functions.firestore.document("usersSelection/{uid}").onWrite
                     }
                 }
             }
-            
+
         }
 
 
         if (change.after.exists && change.after.data()){
             const data = change.after.data();
-            
+
             if (data){
                 //console.log(data);
                 //console.log(data["options"]);
@@ -85,7 +85,7 @@ export const test = functions.firestore.document("usersSelection/{uid}").onWrite
                 decrement.push(dec);
             }
         }
-        var totalQueries : {[code: string]: string} = {}; 
+        var totalQueries : {[code: string]: string} = {};
 
         for (let inc of increment){
             totalQueries[inc.subjectCode] = inc.subjectName;
@@ -147,7 +147,7 @@ function updateData(allData: {[code: string]: any}, increment : any[], decrement
             if (data){
                 console.log("there is data in document")
                 console.log(data[`${inc.commission}`]);
-                var prevValue : number = data[`${inc.commission}`];
+                const prevValue : number = data[`${inc.commission}`];
 
                 console.log(`prevValue = ${prevValue}`);
 
@@ -171,12 +171,12 @@ function updateData(allData: {[code: string]: any}, increment : any[], decrement
             }
         }
     }
-    
+
     for (var dec of decrement){
         console.log(`updating decrement ${dec}`);
         console.log(`asking for ${dec.subjectCode}`);
 
-        var doc = allData[dec.subjectCode];
+        let doc = allData[dec.subjectCode];
 
         if (!doc.exists){
             console.log(`document does not exist, writting ${dec.subjectCode}/${dec.commission}=0`);
@@ -195,7 +195,7 @@ function updateData(allData: {[code: string]: any}, increment : any[], decrement
             if (data){
                 console.log("there is data in document")
                 console.log(data[`${dec.commission}`]);
-                var prevValue : number = data[`${dec.commission}`];
+                let prevValue : number = data[`${dec.commission}`];
 
                 console.log(`prevValue = ${prevValue}`);
 
