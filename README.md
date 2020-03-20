@@ -8,7 +8,7 @@ El framework de [Angular](https://angular.io/) le da una experiencia sin igual a
 
 
 ## Por los alumnos, para los alumnos
-Somos un grupo de alumnos multidisciplinario sin hierarquía particular. Cada uno aportó su parte a gusto.
+Somos un grupo de alumnos multidisciplinario sin hierarquía particular.
 
 ## Cientos de usuarios
 Se observaron 800 usos durante la matriculación de febrero 2020.
