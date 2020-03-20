@@ -1,3 +1,15 @@
 # Scheduler
+**Un combinador de horarios web amigable**
 
-Este proyecto denominado combinador de horarios se trata de una iniciativa iniciada por estudiantes del ITBA que ofreció una alternativa para poder organizar de una manera sencilla el horario semanal de los alumnos. Fue un proyecto largo que pudo ser concluido y tuvo un uso de 800 usuarios durante la matriculación
+<img src="./_assets/usage.gif" alt="Uso de la aplicación." width="60%">
+
+## Amigable? ¡Pues claro!
+El framework de [Angular](https://angular.io/) le da una experiencia sin igual al usuario. La aplicación tiene un layout intuitivo y facil de seguir y es estéticamente agradable. El calendario semanal que se obtiene es facil de leer y robusto. ¡Permite mostrar superposiciones sin problemas!
+
+
+## Por los alumnos, para los alumnos
+Somos un grupo de alumnos multidisciplinario sin hierarquía particular. Cada uno aportó su parte a gusto.
+
+## Cientos de usuarios
+Se observaron 800 usos durante la matriculación de febrero 2020.
+
