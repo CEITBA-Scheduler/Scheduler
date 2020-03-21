@@ -144,11 +144,13 @@ export class SgaLinkerService {
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth();
-
+    // SEPT - MARZO    y   ABRIL - AGOSTO.  Optimo esquema. Las comisiones segundo cuatri se deciden fin de marzo
+    const lastFirstSemesterMonth = 3;  // 3 == Marzo
+    const lastSecondSemesterMonth = 8; // 8 == Agosto
     const params = {
       level: 'GRADUATE',
-      year: currentYear,
-      period: currentMonth === 0 || currentMonth === 1 || currentMonth < 6 ? 'FirstSemester' : 'SecondSemester'
+      year: currentMonth > lastSecondSemesterMonth ?  currentYear + 1 : currentYear,
+      period: currentMonth <= lastFirstSemesterMonth || currentMonth > lastSecondSemesterMonth ? 'FirstSemester' : 'SecondSemester',
     };
 
     // Generating the url for the HTTP Request and
