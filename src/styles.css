@@ -9,3 +9,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     color: white !important;
 }
 
+.spacebutton{
+    margin:10px;
+  }

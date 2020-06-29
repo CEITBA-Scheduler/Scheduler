@@ -4,12 +4,15 @@
     "source": "functions"
   },
   "hosting": {
-    "public": "dist/AngularTest03",
+    "public": "dist\\AngularTest03",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
-      "_assets/**"
     ]
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
   }
 }

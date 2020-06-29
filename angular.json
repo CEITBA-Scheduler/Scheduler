@@ -143,5 +143,8 @@
       }
     }
   },
-  "defaultProject": "AngularTest03"
+  "defaultProject": "AngularTest03",
+  "cli": {
+    "analytics": "5032608e-5993-453d-a0ff-6aff3c214b57"
+  }
 }
